@@ -384,7 +384,7 @@ switch ($action) {
 		}
 	
 	/* ---------------------- Other -------------------- */
-	case 'main' :
+	case 'ping' :
 		echo Send ( "$login:SERVER:AVAILABILITY:CHECK" );
 		break;
 	
