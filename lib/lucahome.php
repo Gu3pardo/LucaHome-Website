@@ -315,6 +315,41 @@ switch ($action) {
 	case 'deactivateAllSockets' :
 		echo Send ( "$login:REMOTE:SET:SOCKET:ALL:0" );
 		break;
+		
+	/* ----------------- ShoppingList ------------------ */
+	case 'getshoppinglist' :
+		echo Send ( "$login:SHOPPINGLIST:GET:ALL" );
+		break;
+	case 'addshoppingentry' :
+		$id = Get ( 'id' );
+		$name = Get ( 'name' );
+		$group = Get ( 'group' );
+		$quantity = Get ( 'quantity' );
+		if ($id != '' && $name != '' && $group != '' && $quantity != '') {
+			echo Send ( "$login:SHOPPINGLIST:ADD:$id:$name:$group:$quantity" );
+		} else {
+			echo "Error 155:Parameter not found for shopping entry";
+		}
+		break;
+	case 'updateshoppingentry' :
+		$id = Get ( 'id' );
+		$name = Get ( 'name' );
+		$group = Get ( 'group' );
+		$quantity = Get ( 'quantity' );
+		if ($id != '' && $name != '' && $group != '' && $quantity != '') {
+			echo Send ( "$login:SHOPPINGLIST:UPDATE:$id:$name:$group:$quantity" );
+		} else {
+			echo "Error 155:Parameter not found for shopping entry";
+		}
+		break;
+	case 'deleteshoppingentry' :
+		$id = Get ( 'id' );
+		if ($id != '') {
+			echo Send ( "$login:SHOPPINGLIST:DELETE:$id" );
+		} else {
+			echo "Error 155:Parameter not found for shopping entry";
+		}
+		break;
 	
 	/* --------------------- Sound --------------------- */
 	case 'startplaying' :
