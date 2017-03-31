@@ -101,6 +101,32 @@ switch ($action) {
 		}
 		break;
 	
+	/* ------------------- Menu ------------------- */
+	case 'getmenu' :
+		echo Send ( "$login:MENU:GET:ALL" );
+		break;
+	case 'updatemenu' :
+		$weekday = Get ( 'weekday' );
+		$day = Get ( 'day' );
+		$month = Get ( 'month' );
+		$year= Get ( 'year' );
+		$title = Get ( 'title' );
+		$description = Get ( 'description' );
+		if ($weekday != '' & $day != '' & $month != '' & $year != '' & $title != '' & $description != '') {
+			echo Send ( "$login:MENU:UPDATE:$weekday:$day:$month:$year:$title:$description" );
+		} else {
+			echo "Error 164:Parameter not found for menu";
+		}
+		break;
+	case 'clearmenu' :
+		$weekday = Get ( 'weekday' );
+		if ($weekday != '') {
+			echo Send ( "$login:MENU:CLEAR:$weekday" );
+		} else {
+			echo "Error 164:Parameter not found for menu";
+		}
+		break;
+	
 	/* --------------------- Movie --------------------- */
 	case 'getmovies' :
 		$movieCount = Send ( "$login:MOVIE:GET:COUNT" );
