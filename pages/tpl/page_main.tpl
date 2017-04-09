@@ -17,8 +17,11 @@
     <p>To change sockets, schedules or to see stored stuff, please use your android application!</p>
     
     <h3 class="demo-panel-title">Temperature</h3>
-	<a target="_blank" href=[LINK_VALUE]>[LINK_TEXT]</a>
+	<a target="_blank" href=[TEMPERATURE_LINK_VALUE]>[LINK_TEXT]</a>
   	<p>[TEMPERATURE]</p>
+    
+    <h3 class="demo-panel-title">Camera</h3>
+	<a target="_blank" href=[CAMERA_LINK_VALUE]>[CAMERA_LINK_TEXT]</a>
 	
     <h3 class="demo-panel-title">Last changes</h3>
 	<table class="table table-bordered table-striped font-big"

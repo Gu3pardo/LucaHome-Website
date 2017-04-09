@@ -9,6 +9,25 @@ $action = Get ( 'action' );
 
 switch ($action) {
 	
+	/* ----------------- Access Control ---------------- */
+	case 'activatealarm' :
+		echo Send ( "$login:ACCESS:ACTIVATE:ALARM" );
+		break;
+	case 'checkcode' :
+		$code = Get ( 'code' );
+		if ($code != '') {
+			echo Send ( "$login:ACCESS:CHECK:CODE:$code" );
+		} else {
+			echo "Error 200:Parameter not found for access control";
+		}
+		break;
+	case 'playalarm' :
+		echo Send ( "$login:ACCESS:PLAY:ALARM" );
+		break;
+	case 'stopalarm' :
+		echo Send ( "$login:ACCESS:STOP:ALARM" );
+		break;
+	
 	/* ------------------- Birthday -------------------- */
 	case 'getbirthdays' :
 		echo Send ( "$login:BIRTHDAY:GET:ALL" );
@@ -45,6 +64,39 @@ switch ($action) {
 			echo "Error 35:Parameter not found for birthday";
 		}
 		break;
+	case 'setcontroltaskbirthday' :
+		$state = Get ( 'state' );
+		if ($state != '') {
+			echo Send ( "$login:BIRTHDAY:SETCONTROLTASK:$state" );
+		} else {
+			echo "Error 35:Parameter not found for birthday";
+		}
+		break;
+	
+	/* -------------------- Camera -------------------- */
+	case 'startmotion' :
+		echo Send ( "$login:CAMERA:START:MOTION" );
+		break;
+	case 'stopmotion' :
+		echo Send ( "$login:CAMERA:STOP:MOTION" );
+		break;
+	case 'getmotiondata' :
+		echo Send ( "$login:CAMERA:GET:MOTION:DATA" );
+		break;
+	case 'getmotionstate' :
+		echo Send ( "$login:CAMERA:GET:MOTION:STATE" );
+		break;
+	case 'getcameraurl' :
+		echo Send ( "$login:REMOTE:GET:URL:CAMERA" );
+		break;
+	case 'setcontroltaskcamera' :
+		$state = Get ( 'state' );
+		if ($state != '') {
+			echo Send ( "$login:CAMERA:SETCONTROLTASK:$state" );
+		} else {
+			echo "Error 173:Parameter not found for camera";
+		}
+		break;
 	
 	/* -------------------- Changes -------------------- */
 	case 'getchanges' :
@@ -52,6 +104,43 @@ switch ($action) {
 		break;
 	case 'getchangesrest' :
 		echo Send ( "$login:CHANGE:GET:REST" );
+		break;
+	
+	/* ---------------------- Gpio --------------------- */
+	case 'getgpios' :
+		echo Send ( "$login:REMOTE:GET:GPIO:ALL" );
+		break;
+	case 'addgpio' :
+		$name = Get ( 'name' );
+		$gpio = Get ( 'gpio' );
+		if ($name != '' && $gpio != '') {
+			echo Send ( "$login:REMOTE:ADD:GPIO:$name:$gpio:0" );
+		} else {
+			echo "Error 121:Parameter not found for remote";
+		}
+		break;
+	case 'deletegpio' :
+		$name = Get ( 'name' );
+		if ($name != '') {
+			echo Send ( "$login:REMOTE:DELETE:GPIO:$name" );
+		} else {
+			echo "Error 121:Parameter not found for remote";
+		}
+		break;
+	case 'setgpio' :
+		$gpio = Get ( 'gpio' );
+		$state = Get ( 'state' );
+		if ($gpio != '' && $state != '') {
+			echo Send ( "$login:REMOTE:SET:GPIO:$gpio:$state" );
+		} else {
+			echo "Error 121:Parameter not found for remote";
+		}
+		break;
+	case 'activateAllGpios' :
+		echo Send ( "$login:REMOTE:SET:GPIO:ALL:1" );
+		break;
+	case 'deactivateAllGpios' :
+		echo Send ( "$login:REMOTE:SET:GPIO:ALL:0" );
 		break;
 	
 	/* ------------------ Informations ------------------ */
@@ -70,11 +159,12 @@ switch ($action) {
 		$id = Get ( 'id' );
 		$position = Get ( 'position' );
 		$type = Get ( 'type' );
-		$schedules= Get ( 'schedules' );
+		$schedules = Get ( 'schedules' );
 		$sockets = Get ( 'sockets' );
 		$temperatureArea = Get ( 'temperatureArea' );
-		if ($id != '' & $position != '' & $type != '' & $schedules != '' & $sockets != '' & $temperatureArea != '') {
-			echo Send ( "$login:MAPCONTENT:ADD:$id:$position:$type:$schedules:$sockets:$temperatureArea" );
+		$visibility = Get ( 'visibility' );
+		if ($id != '' && $position != '' && $type != '' && $schedules != '' && $sockets != '' && $temperatureArea != '' && $visibility != '') {
+			echo Send ( "$login:MAPCONTENT:ADD:$id:$position:$type:$schedules:$sockets:$temperatureArea:$visibility" );
 		} else {
 			echo "Error 145:Parameter not found for mapcontent";
 		}
@@ -83,11 +173,12 @@ switch ($action) {
 		$id = Get ( 'id' );
 		$position = Get ( 'position' );
 		$type = Get ( 'type' );
-		$schedules= Get ( 'schedules' );
+		$schedules = Get ( 'schedules' );
 		$sockets = Get ( 'sockets' );
 		$temperatureArea = Get ( 'temperatureArea' );
-		if ($id != '' & $position != '' & $type != '' & $schedules != '' & $sockets != '' & $temperatureArea != '') {
-			echo Send ( "$login:MAPCONTENT:UPDATE:$id:$position:$type:$schedules:$sockets:$temperatureArea" );
+		$visibility = Get ( 'visibility' );
+		if ($id != '' && $position != '' && $type != '' && $schedules != '' && $sockets != '' && $temperatureArea != '' && $visibility != '') {
+			echo Send ( "$login:MAPCONTENT:UPDATE:$id:$position:$type:$schedules:$sockets:$temperatureArea:$visibility" );
 		} else {
 			echo "Error 145:Parameter not found for mapcontent";
 		}
@@ -109,10 +200,10 @@ switch ($action) {
 		$weekday = Get ( 'weekday' );
 		$day = Get ( 'day' );
 		$month = Get ( 'month' );
-		$year= Get ( 'year' );
+		$year = Get ( 'year' );
 		$title = Get ( 'title' );
 		$description = Get ( 'description' );
-		if ($weekday != '' & $day != '' & $month != '' & $year != '' & $title != '' & $description != '') {
+		if ($weekday != '' && $day != '' && $month != '' && $year != '' && $title != '' && $description != '') {
 			echo Send ( "$login:MENU:UPDATE:$weekday:$day:$month:$year:$title:$description" );
 		} else {
 			echo "Error 164:Parameter not found for menu";
@@ -193,41 +284,12 @@ switch ($action) {
 		}
 		break;
 	
-	/* ---------------------- Gpio --------------------- */
-	case 'getgpios' :
-		echo Send ( "$login:REMOTE:GET:GPIO:ALL" );
+	/* --------------------- Remote -------------------- */
+	case 'getraspberry' :
+		echo Send ( "$login:REMOTE:GET:RASPBERRY" );
 		break;
-	case 'addgpio' :
-		$name = Get ( 'name' );
-		$gpio = Get ( 'gpio' );
-		if ($name != '' && $gpio != '') {
-			echo Send ( "$login:REMOTE:ADD:GPIO:$name:$gpio:0" );
-		} else {
-			echo "Error 121:Parameter not found for remote";
-		}
-		break;
-	case 'deletegpio' :
-		$name = Get ( 'name' );
-		if ($name != '') {
-			echo Send ( "$login:REMOTE:DELETE:GPIO:$name" );
-		} else {
-			echo "Error 121:Parameter not found for remote";
-		}
-		break;
-	case 'setgpio' :
-		$gpio = Get ( 'gpio' );
-		$state = Get ( 'state' );
-		if ($gpio != '' && $state != '') {
-			echo Send ( "$login:REMOTE:SET:GPIO:$gpio:$state" );
-		} else {
-			echo "Error 121:Parameter not found for remote";
-		}
-		break;
-	case 'activateAllGpios' :
-		echo Send ( "$login:REMOTE:SET:GPIO:ALL:1" );
-		break;
-	case 'deactivateAllGpios' :
-		echo Send ( "$login:REMOTE:SET:GPIO:ALL:0" );
+	case 'getarea' :
+		echo Send ( "$login:REMOTE:GET:AREA" );
 		break;
 	
 	/* -------------------- Schedule ------------------- */
@@ -262,7 +324,7 @@ switch ($action) {
 		$isTimer = Get ( 'isTimer' );
 		$playSound = Get ( 'playSound' );
 		$playRaspberry = Get ( 'playRaspberry' );
-		$isActive = Get( 'isactive' );
+		$isActive = Get ( 'isactive' );
 		if ($name != '' && ($socket != '' || $gpio != '') && $weekday != '' && $hour != '' && $minute != '' && $onoff != '' && $isTimer != '' && $playSound != '' && $playRaspberry != '' && $isActive != '') {
 			echo Send ( "$login:REMOTE:UPDATE:SCHEDULE:$name:$socket:$gpio:$weekday:$hour:$minute:$onoff:$isTimer:$playSound:$playRaspberry:$isActive" );
 		} else {
@@ -293,7 +355,42 @@ switch ($action) {
 		echo Send ( "$login:REMOTE:SET:SCHEDULE:ALL:0" );
 		break;
 	
-	/* ---------------- Wireless Socket ---------------- */
+	/* ----------------- ShoppingList ------------------ */
+	case 'getshoppinglist' :
+		echo Send ( "$login:SHOPPINGLIST:GET:ALL" );
+		break;
+	case 'addshoppingentry' :
+		$id = Get ( 'id' );
+		$name = Get ( 'name' );
+		$group = Get ( 'group' );
+		$quantity = Get ( 'quantity' );
+		if ($id != '' && $name != '' && $group != '' && $quantity != '') {
+			echo Send ( "$login:SHOPPINGLIST:ADD:$id:$name:$group:$quantity" );
+		} else {
+			echo "Error 155:Parameter not found for shopping entry";
+		}
+		break;
+	case 'updateshoppingentry' :
+		$id = Get ( 'id' );
+		$name = Get ( 'name' );
+		$group = Get ( 'group' );
+		$quantity = Get ( 'quantity' );
+		if ($id != '' && $name != '' && $group != '' && $quantity != '') {
+			echo Send ( "$login:SHOPPINGLIST:UPDATE:$id:$name:$group:$quantity" );
+		} else {
+			echo "Error 155:Parameter not found for shopping entry";
+		}
+		break;
+	case 'deleteshoppingentry' :
+		$id = Get ( 'id' );
+		if ($id != '') {
+			echo Send ( "$login:SHOPPINGLIST:DELETE:$id" );
+		} else {
+			echo "Error 155:Parameter not found for shopping entry";
+		}
+		break;
+	
+	/* ---------------- Socket ---------------- */
 	case 'getsockets' :
 		echo Send ( "$login:REMOTE:GET:SOCKET:ALL" );
 		break;
@@ -341,41 +438,6 @@ switch ($action) {
 	case 'deactivateAllSockets' :
 		echo Send ( "$login:REMOTE:SET:SOCKET:ALL:0" );
 		break;
-		
-	/* ----------------- ShoppingList ------------------ */
-	case 'getshoppinglist' :
-		echo Send ( "$login:SHOPPINGLIST:GET:ALL" );
-		break;
-	case 'addshoppingentry' :
-		$id = Get ( 'id' );
-		$name = Get ( 'name' );
-		$group = Get ( 'group' );
-		$quantity = Get ( 'quantity' );
-		if ($id != '' && $name != '' && $group != '' && $quantity != '') {
-			echo Send ( "$login:SHOPPINGLIST:ADD:$id:$name:$group:$quantity" );
-		} else {
-			echo "Error 155:Parameter not found for shopping entry";
-		}
-		break;
-	case 'updateshoppingentry' :
-		$id = Get ( 'id' );
-		$name = Get ( 'name' );
-		$group = Get ( 'group' );
-		$quantity = Get ( 'quantity' );
-		if ($id != '' && $name != '' && $group != '' && $quantity != '') {
-			echo Send ( "$login:SHOPPINGLIST:UPDATE:$id:$name:$group:$quantity" );
-		} else {
-			echo "Error 155:Parameter not found for shopping entry";
-		}
-		break;
-	case 'deleteshoppingentry' :
-		$id = Get ( 'id' );
-		if ($id != '') {
-			echo Send ( "$login:SHOPPINGLIST:DELETE:$id" );
-		} else {
-			echo "Error 155:Parameter not found for shopping entry";
-		}
-		break;
 	
 	/* --------------------- Sound --------------------- */
 	case 'startplaying' :
@@ -408,6 +470,14 @@ switch ($action) {
 		echo Send ( "$login:SOUND:GET:PLAYINGFILE" );
 		break;
 	
+	/* ------------------ System ------------------ */
+	case 'systemreboot' :
+		echo Send ( "$login:SYSTEM:SYSTEM:REBOOT" );
+		break;
+	case 'systemshutdown' :
+		echo Send ( "$login:SYSTEM:SYSTEM:SHUTDOWN" );
+		break;
+	
 	/* ------------------ Temperature ------------------ */
 	case 'getcurrenttemperature' :
 		echo Send ( "$login:TEMPERATURE:GET:WEBSITE" );
@@ -419,34 +489,24 @@ switch ($action) {
 		echo Send ( "$login:REMOTE:GET:URL:TEMPERATURE" );
 		break;
 	
-	/* --------------------- Remote -------------------- */
-	case 'getraspberry' :
-		echo Send ( "$login:REMOTE:GET:RASPBERRY" );
-		break;
-	case 'getarea' :
-		echo Send ( "$login:REMOTE:GET:AREA" );
-		break;
-	
 	/* ---------------------- User --------------------- */
 	case 'validateuser' :
 		echo Send ( "$login:USER:VALIDATE:NOW" );
 		break;
 	
-	/* ----------------- Access Control ---------------- */
-	case 'activatealarm' :
-		echo Send ( "$login:ACCESS:ACTIVATE:ALARM" );
-		break;
-	case 'sendcode' :
-		$code = Get ( 'code' );
-		if ($code != '') {
-			echo Send ( "$login:ACCESS:CHECK:CODE:$code" );
-		} else {
-			echo "Error 200:Parameter not found for access control";
-		}
-	
-	/* ---------------------- Other -------------------- */
+	/* ---------------------- Watchdog -------------------- */
 	case 'ping' :
-		echo Send ( "$login:SERVER:AVAILABILITY:CHECK" );
+		echo Send ( "$login:WATCHDOG:AVAILABILITY:CHECK" );
+		break;
+	case 'watchdogcount' :
+		$count = Get ( 'count' );
+		if ($count != '') {
+			echo Send ( "$login:WATCHDOG:COUNT:CHECK:$count" );
+		} else {
+			echo "Error 192:Parameter not found for watchdog";
+		}
+		break;
+		echo Send ( "$login:WATCHDOG:AVAILABILITY:CHECK" );
 		break;
 	
 	/* ---------------------- Pages -------------------- */
@@ -545,6 +605,26 @@ function GetTemperature() {
 /* ============== Get Temperature Graph URL ============ */
 function GetTemperatureGraphUrl() {
 	return Send ( "Website:234524:REMOTE:GET:URL:TEMPERATURE" );
+}
+
+/* ============== Get Main URL ============ */
+function GetMainUrl() {
+	return Send ( "Website:234524:REMOTE:GET:URL:MAIN" );
+}
+
+/* ============== Get Camera URL ============ */
+function GetCameraUrl() {
+	return Send ( "Website:234524:REMOTE:GET:URL:CAMERA" );
+}
+
+/* ============== Get MOTION State ============ */
+function GetMotionState() {
+	$motionState = Send ( "Website:234524:CAMERA:GET:MOTION:STATE" );
+	if ($motionState == "motion:ON") {
+		return true;
+	} else {
+		return false;
+	}
 }
 
 /* ================== Logger Functions ================= */

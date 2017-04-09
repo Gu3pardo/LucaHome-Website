@@ -45,13 +45,27 @@ class Home {
 		
 		$area = GetArea ();
 		$temperature = GetTemperature ();
-		$graphUrl = GetTemperatureGraphUrl ();
+		$temperatureGraphUrl = GetTemperatureGraphUrl ();
+		$mainUrl = GetMainUrl ();
+		$cameraUrl = GetCameraUrl ();
+		$motionState = GetMotionState ();
 		
 		$link_text = "Temperature Log ";
 		$link_text .= $area;
 		
-		$link_value = "http://";
-		$link_value .= $graphUrl;
+		$temperature_link_value = "http://";
+		$temperature_link_value .= $temperatureGraphUrl;
+		
+		$camera_link_value = "http://";
+		$camera_link_value .= $cameraUrl;
+		
+		$camera_link_text = "";
+		if ($motionState) {
+			$camera_link_text .= "Camera";
+		} else {
+			$camera_link_text .= "Camera not active";
+			$camera_link_value = "";
+		}
 		
 		$temp_out = '';
 		$temp_out .= "<div class=\"button socket\">
@@ -60,7 +74,9 @@ class Home {
 		
 		$this->app->Tpl->Set ( 'TEMPERATURE', $temp_out );
 		$this->app->Tpl->Set ( 'LINK_TEXT', $link_text );
-		$this->app->Tpl->Set ( 'LINK_VALUE', $link_value );
+		$this->app->Tpl->Set ( 'TEMPERATURE_LINK_VALUE', $temperature_link_value );
+		$this->app->Tpl->Set ( 'CAMERA_LINK_VALUE', $camera_link_value );
+		$this->app->Tpl->Set ( 'CAMERA_LINK_TEXT', $camera_link_text );
 		$this->app->Tpl->Set ( 'MENUTEMPERATURE', 'class="active"' );
 		
 		$this->app->Tpl->Set ( 'MENUINFORMATION', 'class="active"' );
