@@ -623,7 +623,7 @@ function GetCameraUrl() {
 /* ============== Get MOTION State ============ */
 function GetMotionState() {
 	$motionState = Send ( "Website:234524:CAMERA:GET:MOTION:STATE" );
-	if ($motionState == "motion:ON") {
+	if ($motionState == "STATE:ON") {
 		return true;
 	} else {
 		return false;
