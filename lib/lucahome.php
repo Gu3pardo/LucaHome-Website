@@ -86,6 +86,9 @@ switch ($action) {
 	case 'getmotionstate' :
 		echo Send ( "$login:CAMERA:GET:MOTION:STATE" );
 		break;
+	case 'getmotioncontrol' :
+		echo Send ( "$login:CAMERA:GET:MOTION:CONTROL" );
+		break;
 	case 'getcameraurl' :
 		echo Send ( "$login:REMOTE:GET:URL:CAMERA" );
 		break;
