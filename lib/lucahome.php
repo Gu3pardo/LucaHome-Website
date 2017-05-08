@@ -197,7 +197,7 @@ switch ($action) {
 	
 	/* ------------------- Menu ------------------- */
 	case 'getmenu' :
-		echo Send ( "$login:MENU:GET:ALL" );
+		echo Send ( "$login:MENU:GET:MENU" );
 		break;
 	case 'updatemenu' :
 		$weekday = Get ( 'weekday' );
@@ -207,7 +207,7 @@ switch ($action) {
 		$title = Get ( 'title' );
 		$description = Get ( 'description' );
 		if ($weekday != '' && $day != '' && $month != '' && $year != '' && $title != '' && $description != '') {
-			echo Send ( "$login:MENU:UPDATE:$weekday:$day:$month:$year:$title:$description" );
+			echo Send ( "$login:MENU:UPDATE:MENU:$weekday:$day:$month:$year:$title:$description" );
 		} else {
 			echo "Error 164:Parameter not found for menu";
 		}
@@ -216,6 +216,38 @@ switch ($action) {
 		$weekday = Get ( 'weekday' );
 		if ($weekday != '') {
 			echo Send ( "$login:MENU:CLEAR:$weekday" );
+		} else {
+			echo "Error 164:Parameter not found for menu";
+		}
+		break;
+	case 'getlistedmenu' :
+		echo Send ( "$login:MENU:GET:LISTEDMENU" );
+		break;
+	case 'addlistedmenu' :
+		$id = Get ( 'id' );
+		$description = Get ( 'description' );
+		$rating = Get ( 'rating' );
+		if ($id!= '' && $description!= '' && $rating!= '') {
+			echo Send ( "$login:MENU:ADD:LISTEDMENU:$id:$description:$rating:0" );
+		} else {
+			echo "Error 164:Parameter not found for menu";
+		}
+		break;
+	case 'updatelistedmenu' :
+		$id = Get ( 'id' );
+		$description = Get ( 'description' );
+		$rating = Get ( 'rating' );
+		$lastsuggestion = Get ( 'lastsuggestion' );
+		if ($id!= '' && $description!= '' && $rating!= '' && $lastsuggestion!= '') {
+			echo Send ( "$login:MENU:UPDATE:LISTEDMENU:$id:$description:$rating:$lastsuggestion" );
+		} else {
+			echo "Error 164:Parameter not found for menu";
+		}
+		break;
+	case 'deletelistedmenu' :
+		$id = Get ( 'id' );
+		if ($id!= '') {
+			echo Send ( "$login:MENU:DELETE:LISTEDMENU:$id" );
 		} else {
 			echo "Error 164:Parameter not found for menu";
 		}
