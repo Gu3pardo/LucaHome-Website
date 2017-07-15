@@ -1,5 +1,9 @@
 <?php
+include ('logger.php');
+
 define ( 'LUCAHOMEPORT', 6677 );
+define ( 'LOCAL_USER', 'Website' );
+define ( 'LOCAL_PASSWORD', 234524 );
 
 $user = Get ( 'user' );
 $password = Get ( 'password' );
@@ -276,19 +280,6 @@ switch ($action) {
 			echo $movies;
 		}
 		break;
-	case 'addmovie' :
-		$title = Get ( 'title' );
-		$genre = Get ( 'genre' );
-		$description = Get ( 'description' );
-		$rating = Get ( 'rating' );
-		$watched = Get ( 'watched' );
-		$sockets = Get ( 'sockets' );
-		if ($title != '') {
-			echo Send ( "$login:MOVIE:ADD:$title:$genre:$description:$rating:$watched:$sockets" );
-		} else {
-			echo "Error 400:Parameter not found for movie";
-		}
-		break;
 	case 'updatemovie' :
 		$title = Get ( 'title' );
 		$genre = Get ( 'genre' );
@@ -302,21 +293,8 @@ switch ($action) {
 			echo "Error 400:Parameter not found for movie";
 		}
 		break;
-	case 'deletemovie' :
-		$title = Get ( 'title' );
-		if ($title != '') {
-			echo Send ( "$login:MOVIE:DELETE:$title" );
-		} else {
-			echo "Error 400:Parameter not found for movie";
-		}
-		break;
-	case 'startmovie' :
-		$title = Get ( 'title' );
-		if ($title != '') {
-			echo Send ( "$login:MOVIE:START:$title" );
-		} else {
-			echo "Error 400:Parameter not found for movie";
-		}
+	case 'loadmovies' :
+			echo Send ( "$login:MOVIE:LOAD:ALL" );
 		break;
 	
 	/* --------------------- Remote -------------------- */
@@ -558,8 +536,9 @@ switch ($action) {
 
 /* ===================== Functions ===================== */
 function Get($val) {
-	if (isset ( $_GET [$val] ))
+	if (isset ( $_GET [$val] )){
 		return $_GET [$val];
+	}
 }
 function StartsWith($Haystack, $Needle) {
 	return strpos ( $Haystack, $Needle ) === 0;
@@ -590,113 +569,4 @@ function Send($data) {
 	return $out;
 }
 
-/* ================== Get Informations ================= */
-function GetInformations() {
-	return Send ( "Website:234524:INFORMATION:GET:WEBSITE" );
-}
-function ParseInformations($data) {
-	$values = GetValues ( $data, 'information:' );
-	$informations = array ();
-	for($i = 0; $i < count ( $values ); $i ++) {
-		$informations [] = array (
-				'key' => trim ( $values [$i] [1] ),
-				'value' => trim ( $values [$i] [2] ) 
-		);
-	}
-	return $informations;
-}
-
-/* ===================== Get Changes =================== */
-function GetChanges() {
-	return Send ( "Website:234524:CHANGE:GET:WEBSITE" );
-}
-function ParseChanges($data) {
-	$values = GetValues ( $data, 'change:' );
-	$changes = array ();
-	for($i = 0; $i < count ( $values ); $i ++) {
-		$changes [] = array (
-				'type' => trim ( $values [$i] [1] ),
-				'hour' => trim ( $values [$i] [2] ),
-				'minute' => trim ( $values [$i] [3] ),
-				'day' => trim ( $values [$i] [4] ),
-				'month' => trim ( $values [$i] [5] ),
-				'year' => trim ( $values [$i] [6] ),
-				'user' => trim ( $values [$i] [7] ) 
-		);
-	}
-	return $changes;
-}
-
-/* ======================= Get Area ==================== */
-function GetArea() {
-	return Send ( "Website:234524:REMOTE:GET:AREA" );
-}
-
-/* =================== Get Temperature ================= */
-function GetTemperature() {
-	return Send ( "Website:234524:TEMPERATURE:GET:WEBSITE" );
-}
-
-/* ============== Get Temperature Graph URL ============ */
-function GetTemperatureGraphUrl() {
-	return Send ( "Website:234524:REMOTE:GET:URL:TEMPERATURE" );
-}
-
-/* ============== Get Main URL ============ */
-function GetMainUrl() {
-	return Send ( "Website:234524:REMOTE:GET:URL:MAIN" );
-}
-
-/* ============== Get Camera URL ============ */
-function GetCameraUrl() {
-	return Send ( "Website:234524:REMOTE:GET:URL:CAMERA" );
-}
-
-/* ============== Get MOTION State ============ */
-function GetMotionState() {
-	$motionState = Send ( "Website:234524:CAMERA:GET:MOTION:STATE" );
-	if ($motionState == "STATE:ON") {
-		return true;
-	} else {
-		return false;
-	}
-}
-
-/* ================== Logger Functions ================= */
-function var2console($var, $name = '', $now = false) {
-	if ($var === null)
-		$type = 'NULL';
-	else if (is_bool ( $var ))
-		$type = 'BOOL';
-	else if (is_string ( $var ))
-		$type = 'STRING[' . strlen ( $var ) . ']';
-	else if (is_int ( $var ))
-		$type = 'INT';
-	else if (is_float ( $var ))
-		$type = 'FLOAT';
-	else if (is_array ( $var ))
-		$type = 'ARRAY[' . count ( $var ) . ']';
-	else if (is_object ( $var ))
-		$type = 'OBJECT';
-	else if (is_resource ( $var ))
-		$type = 'RESOURCE';
-	else
-		$type = '???';
-	if (strlen ( $name )) {
-		str2console ( "$type $name = " . var_export ( $var, true ) . ';', $now );
-	} else {
-		str2console ( "$type = " . var_export ( $var, true ) . ';', $now );
-	}
-}
-function str2console($str, $now = false) {
-	if ($now) {
-		echo "<script type='text/javascript'>\n";
-		echo "//<![CDATA[\n";
-		echo "console.log(", json_encode ( $str ), ");\n";
-		echo "//]]>\n";
-		echo "</script>";
-	} else {
-		register_shutdown_function ( 'str2console', $str, true );
-	}
-}
 ?>
