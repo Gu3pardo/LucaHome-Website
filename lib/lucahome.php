@@ -113,6 +113,44 @@ switch ($action) {
 		echo Send ( "$login:CHANGE:GET:REST" );
 		break;
 	
+	/* --------------------- Coins --------------------- */
+	case 'getcoinsall' :
+		echo Send ( "$login:COINS:GET:ALL" );
+		break;
+	case 'getcoinsuser' :
+		echo Send ( "$login:COINS:GET:USER" );
+		break;
+	case 'addcoin' :
+		$id = Get ( 'id' );
+		$username = Get ( 'username' );
+		$type = Get ( 'type' );
+		$amount = Get ( 'amount' );
+		if ($id != '' && $username != '' && $type != '' && $amount != '') {
+			echo Send ( "$login:COINS:ADD:$id:$username:$type:$amount" );
+		} else {
+			echo "Error 206:Parameter not found for coin";
+		}
+		break;
+	case 'updatecoin' :
+		$id = Get ( 'id' );
+		$username = Get ( 'username' );
+		$type = Get ( 'type' );
+		$amount = Get ( 'amount' );
+		if ($id != '' && $username != '' && $type != '' && $amount != '') {
+			echo Send ( "$login:COINS:UPDATE:$id:$username:$type:$amount" );
+		} else {
+			echo "Error 206:Parameter not found for coin";
+		}
+		break;
+	case 'deletecoin' :
+		$id = Get ( 'id' );
+		if ($id != '') {
+			echo Send ( "$login:COIN:DELETE:$id" );
+		} else {
+			echo "Error 206:Parameter not found for coin";
+		}
+		break;
+	
 	/* ---------------------- Gpio --------------------- */
 	case 'getgpios' :
 		echo Send ( "$login:REMOTE:GET:GPIO:ALL" );
