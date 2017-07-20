@@ -13,10 +13,10 @@ class Config {
 		// Navigation
 		$this->NAV_DEFAULT = _BASEDIR . '/index.php?page=home&action=information';
 		$this->NAV_PAGES = array (
-				'main' 
+				'home' 
 		);
 		// Meta
-		$this->META_TITLE = 'LucaHome 4.0.0.170716';
+		$this->META_TITLE = 'LucaHome 4.0.1.170720';
 		$this->META_DESCRIPTION = 'Control your tv, sound and more. Display temperature and show your movies via your android smartphone. Monitor your room with a camera';
 		$this->META_KEYWORDS_EN = 'SMART, HOME, RASPBERRY, MOVIE, SOCKET, BIRTHDAY, SECURITY SYSTEM';
 		$this->META_KEYWORDS_DE = 'SMART, HOME, RASPBERRY, FILM, STECKDOSE, GEBURTSTAG, SICHERHEITSSYSTEM';

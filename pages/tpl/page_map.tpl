@@ -3,7 +3,7 @@
 	
 	<div class="mapImage">
 
-      <img src="[BASEDIR]/assets/map.jpg" alt="Map image" />
+      <img style="position: absolute;" src="[BASEDIR]/assets/map.png" alt="Map image" />
       
       [MAPCONTENT]
 

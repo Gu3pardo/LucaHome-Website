@@ -1,9 +1,6 @@
 <?php
-include ('logger.php');
 
 define ( 'LUCAHOMEPORT', 6677 );
-define ( 'LOCAL_USER', 'Website' );
-define ( 'LOCAL_PASSWORD', 234524 );
 
 $user = Get ( 'user' );
 $password = Get ( 'password' );
@@ -118,7 +115,7 @@ switch ($action) {
 		echo Send ( "$login:COINS:GET:ALL" );
 		break;
 	case 'getcoinsuser' :
-		echo Send ( "$login:COINS:GET:USER" );
+		echo Send ( "$login:COINS:GET:FOR_USER" );
 		break;
 	case 'addcoin' :
 		$id = Get ( 'id' );
@@ -605,6 +602,219 @@ function Send($data) {
 		fclose ( $socket );
 	}
 	return $out;
+}
+
+/* ===================================================== */
+/* ====================== GETTER ======================= */
+/* ===================================================== */
+
+/* ================== Get Informations ================= */
+function GetInformations() {
+	return Send ( "Website:234524:INFORMATION:GET:WEBSITE" );
+}
+
+/* ===================== Get Changes =================== */
+function GetChanges() {
+	return Send ( "Website:234524:CHANGE:GET:WEBSITE" );
+}
+
+/* ======================= Get Area ==================== */
+function GetArea() {
+	return Send ( "Website:234524:REMOTE:GET:AREA" );
+}
+
+/* =================== Get Temperature ================= */
+function GetTemperature() {
+	return Send ( "Website:234524:TEMPERATURE:GET:WEBSITE" );
+}
+
+/* ============== Get Temperature Graph URL ============ */
+function GetTemperatureGraphUrl() {
+	return Send ( "Website:234524:REMOTE:GET:URL:TEMPERATURE" );
+}
+
+/* ============== Get Main URL ============ */
+function GetMainUrl() {
+	return Send ( "Website:234524:REMOTE:GET:URL:MAIN" );
+}
+
+/* ============== Get Camera URL ============ */
+function GetCameraUrl() {
+	return Send ( "Website:234524:REMOTE:GET:URL:CAMERA" );
+}
+
+/* ============== Get MOTION State ============ */
+function GetMotionState() {
+	$motionState = Send ( "Website:234524:CAMERA:GET:MOTION:STATE" );
+	if ($motionState == "STATE:ON") {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+/* ===================== Get MapContent =================== */
+function GetMapContent() {
+	return Send ( "Website:234524:MAPCONTENT:GET:ALL:WEBSITE" );
+}
+
+/* ===================== Get Menu =================== */
+function GetMenu() {
+	return Send ( "Website:234524:MENU:GET:MENU:WEBSITE" );
+}
+
+/* ===================== Get ShoppingList =================== */
+function GetShoppingList() {
+	return Send ( "Website:234524:SHOPPINGLIST:GET:ALL:WEBSITE" );
+}
+
+/* ===================== Get BirthdayList =================== */
+function GetBirthdayList() {
+	return Send ( "Website:234524:BIRTHDAY:GET:ALL:WEBSITE" );
+}
+
+/* ===================================================== */
+/* ====================== PARSER ======================= */
+/* ===================================================== */
+
+function ParseInformations($data) {
+	$values = GetValues ( $data, 'information:' );
+	$informations = array ();
+	for($i = 0; $i < count ( $values ); $i ++) {
+		$informations [] = array (
+				'key' => trim ( $values [$i] [1] ),
+				'value' => trim ( $values [$i] [2] ) 
+		);
+	}
+	return $informations;
+}
+
+function ParseChanges($data) {
+	$values = GetValues ( $data, 'change:' );
+	$changes = array ();
+	for($i = 0; $i < count ( $values ); $i ++) {
+		$changes [] = array (
+				'type' => trim ( $values [$i] [1] ),
+				'hour' => trim ( $values [$i] [2] ),
+				'minute' => trim ( $values [$i] [3] ),
+				'day' => trim ( $values [$i] [4] ),
+				'month' => trim ( $values [$i] [5] ),
+				'year' => trim ( $values [$i] [6] ),
+				'user' => trim ( $values [$i] [7] ) 
+		);
+	}
+	return $changes;
+}
+
+function ParseMapContent($data) {
+	$values = GetValues ( $data, 'mapcontent:' );
+	$mapContent = array ();
+	for($i = 0; $i < count ( $values ); $i ++) {
+		$positionString = trim ( $values [$i] [2] );
+		$position [] = explode ( '|', $positionString );
+
+		$scheduleString = trim ( $values [$i] [4] );
+		$schedules [] = explode ( '|', $scheduleString );
+
+		$socketString = trim ( $values [$i] [5] );
+		$sockets [] = explode ( '|', $socketString );
+
+		$mapContent [] = array (
+				'id' => trim ( $values [$i] [1] ),
+				'position' => $position,
+				'type' => trim ( $values [$i] [3] ),
+				'schedules' => $schedules,
+				'sockets' => $sockets,
+				'temperatureArea' => trim ( $values [$i] [6] ),
+				'visibility' => trim ( $values [$i] [7] )
+		);
+	}
+	return $mapContent;
+}
+
+function ParseMenu($data) {
+	$values = GetValues ( $data, 'menu:' );
+	$menus = array ();
+	for($i = 0; $i < count ( $values ); $i ++) {
+		$menus [] = array (
+				'weekday' => trim ( $values [$i] [1] ),
+				'day' => trim ( $values [$i] [2] ),
+				'month' => trim ( $values [$i] [3] ),
+				'year' => trim ( $values [$i] [4] ),
+				'title' => trim ( $values [$i] [5] ),
+				'description' => trim ( $values [$i] [6] )
+		);
+	}
+	return $menus;
+}
+
+function ParseShoppingList($data) {
+	$values = GetValues ( $data, 'shopping_entry:' );
+	$shoppingList = array ();
+	for($i = 0; $i < count ( $values ); $i ++) {
+		$shoppingList [] = array (
+				'name' => trim ( $values [$i] [1] ),
+				'group' => trim ( $values [$i] [2] ),
+				'quantity' => trim ( $values [$i] [3] )
+		);
+	}
+	return $shoppingList;
+}
+
+function ParseBirthdayList($data) {
+	$values = GetValues ( $data, 'birthday:' );
+	$birthdayList = array ();
+	for($i = 0; $i < count ( $values ); $i ++) {
+		$birthdayList [] = array (
+				'id' => trim ( $values [$i] [1] ),
+				'name' => trim ( $values [$i] [2] ),
+				'day' => trim ( $values [$i] [3] ),
+				'month' => trim ( $values [$i] [4] ),
+				'year' => trim ( $values [$i] [5] )
+		);
+	}
+	return $birthdayList;
+}
+
+/* ===================================================== */
+/* ====================== LOGGER ======================= */
+/* ===================================================== */
+
+function var2console($var, $name = '', $now = false) {
+	if ($var === null)
+		$type = 'NULL';
+	else if (is_bool ( $var ))
+		$type = 'BOOL';
+	else if (is_string ( $var ))
+		$type = 'STRING[' . strlen ( $var ) . ']';
+	else if (is_int ( $var ))
+		$type = 'INT';
+	else if (is_float ( $var ))
+		$type = 'FLOAT';
+	else if (is_array ( $var ))
+		$type = 'ARRAY[' . count ( $var ) . ']';
+	else if (is_object ( $var ))
+		$type = 'OBJECT';
+	else if (is_resource ( $var ))
+		$type = 'RESOURCE';
+	else
+		$type = '???';
+	if (strlen ( $name )) {
+		str2console ( "$type $name = " . var_export ( $var, true ) . ';', $now );
+	} else {
+		str2console ( "$type = " . var_export ( $var, true ) . ';', $now );
+	}
+}
+function str2console($str, $now = false) {
+	if ($now) {
+		echo "<script type='text/javascript'>\n";
+		echo "//<![CDATA[\n";
+		echo "console.log(", json_encode ( $str ), ");\n";
+		echo "//]]>\n";
+		echo "</script>";
+	} else {
+		register_shutdown_function ( 'str2console', $str, true );
+	}
 }
 
 ?>

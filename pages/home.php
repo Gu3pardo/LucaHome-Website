@@ -1,22 +1,22 @@
 <?php
 class Home {
+
 	var $app;
+
 	function Home(&$app) {
 		$this->app = $app;
-		$this->app->Nav->AddPage ( 'main' );
+		$this->app->Nav->AddPage ( 'home' );
 		$this->app->Nav->AddAction ( 'information', 'Information' );
 		$this->app->Nav->AddAction ( 'temperature', 'Temperature' );
 		$this->app->Nav->AddAction ( 'camera', 'Camera' );
 		$this->app->Nav->AddAction ( 'menu', 'Menu' );
-		$this->app->Nav->AddAction ( 'shoppingList', 'ShoppingList' );
+		$this->app->Nav->AddAction ( 'shoppinglist', 'ShoppingList' );
+		$this->app->Nav->AddAction ( 'birthdaylist', 'BirthdayList' );
 		$this->app->Nav->AddAction ( 'map', 'Map' );
 		$this->app->Nav->DefaultAction ( 'information' );
 	}
 	function Information() {
-		include ('./lib/logger.php');
 		include ('./lib/lucahome.php');
-		include ('./lib/getter.php');
-		include ('./lib/parser.php');
 		
 		// Informations
 		
@@ -27,8 +27,8 @@ class Home {
 		for($i = 0; $i < count ( $informations ); $i ++) {
 			$information_table .= "
 						<tr>
-							<td class=\"information_type\">{$informations[$i]['key']}</td>
-                        	<td class=\"information_value\">{$informations[$i]['value']}</td>
+							<td>{$informations[$i]['key']}</td>
+                        	<td>{$informations[$i]['value']}</td>
                         </tr>";
 		}
 		$this->app->Tpl->Set ( 'INFORMATIONTABLE', $information_table );
@@ -42,9 +42,9 @@ class Home {
 		for($i = 0; $i < count ( $changes ); $i ++) {
 			$change_table .= "
 						<tr>
-							<td class=\"change_type\">{$changes[$i]['type']}</td>
-                        	<td class=\"change_time\">{$changes[$i]['hour']}:{$changes[$i]['minute']} / {$changes[$i]['day']}.{$changes[$i]['month']}.{$changes[$i]['year']}</td>
-							<td class=\"change_user\">{$changes[$i]['user']}</td>
+							<td>{$changes[$i]['type']}</td>
+                        	<td>{$changes[$i]['hour']}:{$changes[$i]['minute']} / {$changes[$i]['day']}.{$changes[$i]['month']}.{$changes[$i]['year']}</td>
+							<td>{$changes[$i]['user']}</td>
                         </tr>";
 		}
 		$this->app->Tpl->Set ( 'CHANGETABLE', $change_table );
@@ -53,10 +53,7 @@ class Home {
 		$this->app->Tpl->Parse ( 'PAGE', 'page_information.tpl' );
 	}
 	function Temperature() {
-		include ('./lib/logger.php');
 		include ('./lib/lucahome.php');
-		include ('./lib/getter.php');
-		include ('./lib/parser.php');
 		
 		$area = GetArea ();
 		$temperature = GetTemperature ();
@@ -80,11 +77,8 @@ class Home {
 		$this->app->Tpl->Set ( 'MENUTEMPERATURE', 'class="active"' );
 		$this->app->Tpl->Parse ( 'PAGE', 'page_temperature.tpl' );
 	}
-	function Information() {
-		include ('./lib/logger.php');
+	function Camera() {
 		include ('./lib/lucahome.php');
-		include ('./lib/getter.php');
-		include ('./lib/parser.php');
 
 		$cameraUrl = GetCameraUrl ();
 		$motionState = GetMotionState ();
@@ -111,10 +105,7 @@ class Home {
 		$this->app->Tpl->Parse ( 'PAGE', 'page_camera.tpl' );
 	}
 	function Menu() {
-		include ('./lib/logger.php');
 		include ('./lib/lucahome.php');
-		include ('./lib/getter.php');
-		include ('./lib/parser.php');
 		
 		$dataMenu = GetMenu ();
 		$menu = ParseMenu ( $dataMenu );
@@ -135,12 +126,9 @@ class Home {
 		$this->app->Tpl->Parse ( 'PAGE', 'page_menu.tpl' );
 	}
 	function ShoppingList() {
-		include ('./lib/logger.php');
 		include ('./lib/lucahome.php');
-		include ('./lib/getter.php');
-		include ('./lib/parser.php');
 		
-		$dataShoppingList = GetShoppingList ();
+		$dataShoppingList = GetShoppingList();
 		$shoppingList = ParseShoppingList ( $dataShoppingList );
 		
 		$shoppingList_table = '';
@@ -157,11 +145,27 @@ class Home {
 		$this->app->Tpl->Set ( 'MENUSHOPPINGLIST', 'class="active"' );
 		$this->app->Tpl->Parse ( 'PAGE', 'page_shopping_list.tpl' );
 	}
-	function Map() {
-		include ('./lib/logger.php');
+	function BirthdayList() {
 		include ('./lib/lucahome.php');
-		include ('./lib/getter.php');
-		include ('./lib/parser.php');
+		
+		$dataBirthdayList = GetBirthdayList();
+		$birthdayList = ParseBirthdayList ( $dataBirthdayList );
+		
+		$birthdayList_table = '';
+		for($i = 0; $i < count ( $birthdayList ); $i ++) {
+			$birthdayList_table .= "
+						<tr>
+                        	<td>{$birthdayList[$i]['name']}</td>
+							<td>{$birthdayList[$i]['day']}.{$birthdayList[$i]['month']}.{$birthdayList[$i]['year']}</td>
+                        </tr>";
+		}
+		$this->app->Tpl->Set ( 'BIRTHDAYTABLE', $birthdayList_table );
+		
+		$this->app->Tpl->Set ( 'MENUBIRTHDAYLIST', 'class="active"' );
+		$this->app->Tpl->Parse ( 'PAGE', 'page_birthday_list.tpl' );
+	}
+	function Map() {
+		include ('./lib/lucahome.php');
 		
 		$dataMapContentList = GetMapContent ();
 		$mapContent = ParseMapContent ( $dataMapContentList );
@@ -170,10 +174,10 @@ class Home {
 		for($i = 0; $i < count ( $mapContent ); $i ++) {
 			if($mapContent[$i]['type'] == '1'){
 				$mapContent_HTML .= "
-						<h4 style='position: absolute; background-color:lightblue; margin: $mapContent[$i]['sockets'][0]% 0 0 $mapContent[$i]['sockets'][1]%'>$mapContent[$i]['sockets'][0]
+						<h6 style='position: absolute; background-color:lightblue; margin: $mapContent[$i]['position'][0]% 0 0 $mapContent[$i]['position'][1]%'>$mapContent[$i]['sockets'][0]
 							<br />$mapContent[$i]['temperatureArea']
 							<br />$mapContent[$i]['type']
-						</h4>";
+						</h6>";
 			}
 		}
 		$this->app->Tpl->Set ( 'MAPCONTENT', $mapContent_HTML );

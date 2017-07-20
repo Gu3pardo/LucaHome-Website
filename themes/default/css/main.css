@@ -40,10 +40,6 @@ ul.buttonlist {
     padding: 20px 10px;
 }
 
-.nav {
-    padding: 20px 10px;
-}
-
 .dk_options_inner {
 }
 
@@ -51,26 +47,62 @@ ul.buttonlist {
     color: red;
 }
 
-.information_type {
+
+.button {
+    font-size: 16.5px;
+    text-decoration: none;
+    text-shadow: none;
+    border-radius: 4px;
+    color: #fff;
+    transition: all 0.25s cubic-bezier(0.25, 0.1, 0.25, 1) 0;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: #16a085;
 }
 
-.information_value {
+.schedule {
+    cursor: pointer;
 }
 
-.change_type {
+    .schedule:hover {
+        background-color: #2FE2BF;
+    }
+
+.status {
+    display: inline-block;
+    padding-top: 13px;
+    padding-bottom: 12px;
+    float: right;
+    font-weight: 700;
+    font-size: 20px;
 }
 
-.change_time {
+.button_text, .button_on, .button_off {
+    display: inline-block;
+    padding-top: 13px;
+    padding-bottom: 12px;
 }
 
-.distance {
-    margin: 10px;
+.button_on, .button_off {
+    float: right;
+    min-width: 55px;
+    max-width: 100px;
+    cursor: pointer;
+    color: #1abc9c;
+    font-weight: 700;
+    font-size: 20px;
+    text-align: center;
+    background-color: #34495e;
 }
 
-.mapImage {
-    position: relative;
-    width: 100%; /* for IE 6 */
+.button_off {
+    margin-left: 10px;
 }
+
+    .button_off:hover, .button_on:hover {
+        background-color: #1abc9c;
+        color: #34495E;
+    }
 
 select {
     cursor: pointer;
