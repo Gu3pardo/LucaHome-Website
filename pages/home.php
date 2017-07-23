@@ -12,6 +12,7 @@ class Home {
 		$this->app->Nav->AddAction ( 'menu', 'Menu' );
 		$this->app->Nav->AddAction ( 'shoppinglist', 'ShoppingList' );
 		$this->app->Nav->AddAction ( 'birthdaylist', 'BirthdayList' );
+		$this->app->Nav->AddAction ( 'movielist', 'MovieList' );
 		$this->app->Nav->AddAction ( 'map', 'Map' );
 		$this->app->Nav->DefaultAction ( 'information' );
 	}
@@ -164,6 +165,33 @@ class Home {
 		$this->app->Tpl->Set ( 'MENUBIRTHDAYLIST', 'class="active"' );
 		$this->app->Tpl->Parse ( 'PAGE', 'page_birthday_list.tpl' );
 	}
+	function MovieList() {
+		include ('./lib/lucahome.php');
+		
+		$dataMovieList = GetMovieList();
+		$movieList = ParseMovieList ( $dataMovieList );
+
+		$moviePath = 'F:\Filme';
+		
+		$movieList_table = '';
+		for($i = 0; $i < count ( $movieList ); $i ++) {
+			$currentMoviePath = $moviePath + '\\' + $movieList[$i]['title'] + '\\' + $movieList[$i]['title'] + '.mkv';
+
+			$movieList_table .= "
+						<tr>
+                        	<td>{$movieList[$i]['title']}</td>
+                        	<td>{$movieList[$i]['genre']}</td>
+                        	<td>{$movieList[$i]['description']}</td>
+                        	<td>{$movieList[$i]['rating']}/5</td>
+                        	<td>{$movieList[$i]['watched']}x</td>
+							<td><a href="{$currentMoviePath}">Link</td>
+                        </tr>";
+		}
+		$this->app->Tpl->Set ( 'MOVIETABLE', $movieList_table );
+		
+		$this->app->Tpl->Set ( 'MENUMOVIELIST', 'class="active"' );
+		$this->app->Tpl->Parse ( 'PAGE', 'page_movie_list.tpl' );
+	}
 	function Map() {
 		include ('./lib/lucahome.php');
 		
@@ -172,11 +200,14 @@ class Home {
 		
 		$mapContent_HTML = '';
 		for($i = 0; $i < count ( $mapContent ); $i ++) {
-			if($mapContent[$i]['type'] == '1'){
+			if($mapContent[$i]['visibility'] == '1'){
+				$postionX = $mapContent[$i]['position'][0];
+				$postionY = $mapContent[$i]['position'][1];
+				$socket = $mapContent[$i]['sockets'][0];
+
 				$mapContent_HTML .= "
-						<h6 style='position: absolute; background-color:lightblue; margin: $mapContent[$i]['position'][0]% 0 0 $mapContent[$i]['position'][1]%'>$mapContent[$i]['sockets'][0]
-							<br />$mapContent[$i]['temperatureArea']
-							<br />$mapContent[$i]['type']
+						<h6 style='position: absolute; background-color:lightblue; margin: $postionX% 0 0 $postionY%'>
+							$socket<br/>$mapContent[$i]['temperatureArea']<br/>$mapContent[$i]['type']
 						</h6>";
 			}
 		}

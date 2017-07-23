@@ -10,6 +10,11 @@ $action = Get ( 'action' );
 
 switch ($action) {
 	
+	/* ----------------------- All --------------------- */
+	case 'reloadall':
+		echo Send ( "$login:ALL:RELOAD" );
+		break;
+	
 	/* ----------------- Access Control ---------------- */
 	case 'activatealarm' :
 		echo Send ( "$login:ACCESS:ACTIVATE:ALARM" );
@@ -556,15 +561,10 @@ switch ($action) {
 		break;
 		echo Send ( "$login:WATCHDOG:AVAILABILITY:CHECK" );
 		break;
-	
-	/* ---------------------- Pages -------------------- */
-	case 'main' :
-		var2console ( "Navigated to $action page!" );
-		break;
-	
+
 	/* --------------------- Default ------------------- */
 	default :
-		var2console ( "ERROR: " );
+		var2console ( "Warning: " );
 		var2console ( $action );
 		break;
 }
@@ -673,6 +673,31 @@ function GetBirthdayList() {
 	return Send ( "Website:234524:BIRTHDAY:GET:ALL:WEBSITE" );
 }
 
+/* ============== Get MovieList ============ */
+function GetMovieList() {
+	$movieCount = Send ( "Website:234524:MOVIE:GET:COUNT" );
+	$movies = "";
+
+	if (strpos ( $movieCount, 'Error' ) !== false) {
+		return $movies;
+	} else {
+		$startIndex = 0;
+		$endIndex = 25;
+		while ( $startIndex < $movieCount - 1 ) {
+			$response = Send ( "Website:234524:MOVIE:GET:INDEX:REDUCED:$startIndex:$endIndex" );
+			if (strpos ( $response, 'Error' ) !== false) {
+				return "";
+			} else {
+				$movies .= $response;
+				$startIndex += 25;
+				$endIndex += 25;
+			}
+		}
+	}
+
+	return $movies;
+}
+
 /* ===================================================== */
 /* ====================== PARSER ======================= */
 /* ===================================================== */
@@ -774,6 +799,21 @@ function ParseBirthdayList($data) {
 		);
 	}
 	return $birthdayList;
+}
+
+function ParseMovieList($data) {
+	$values = GetValues ( $data, 'movie:' );
+	$movieList = array ();
+	for($i = 0; $i < count ( $values ); $i ++) {
+		$movieList [] = array (
+				'title' => trim ( $values [$i] [1] ),
+				'genre' => trim ( $values [$i] [2] ),
+				'description' => trim ( $values [$i] [3] ),
+				'rating' => trim ( $values [$i] [4] ),
+				'watched' => trim ( $values [$i] [5] )
+		);
+	}
+	return $movieList;
 }
 
 /* ===================================================== */
