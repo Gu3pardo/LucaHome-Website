@@ -74,7 +74,7 @@ class Home {
 		
 		$temp_out = '';
 		$temp_out .= "<div class=\"button socket\">
-		<div class=\"button_text temperature_value\">{$temperature[0]['area']}:   {$temperature[0]['value']} &#176;C</div>
+		<div class=\"button_text temperature_value\">{$temperatures[0]['area']}:   {$temperatures[0]['value']} &#176;C</div>
 		</div>";
 		
 		$this->app->Tpl->Set ( 'LINK_TEXT', $link_text );

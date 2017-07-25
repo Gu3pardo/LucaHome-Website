@@ -117,10 +117,10 @@ switch ($action) {
 	
 	/* --------------------- Coins --------------------- */
 	case 'getcoinsall' :
-		echo Send ( "$login:COINS:GET:ALL" );
+		echo Send ( "$login:COINS:GET:ALL:ALL" );
 		break;
 	case 'getcoinsuser' :
-		echo Send ( "$login:COINS:GET:FOR_USER" );
+		echo Send ( "$login:COINS:GET:FOR_USER:ALL" );
 		break;
 	case 'addcoin' :
 		$id = Get ( 'id' );
@@ -701,8 +701,8 @@ function ParseTemperature($data) {
 		$temperatures [] = array (
 				'value' => trim ( $values [$i] [1] ),
 				'area' => trim ( $values [$i] [2] ) ,
-				'sensorpath' => trim ( $values [$i] [2] ) ,
-				'graphpath' => trim ( $values [$i] [2] ) 
+				'sensorpath' => trim ( $values [$i] [3] ) ,
+				'graphpath' => trim ( $values [$i] [4] ) 
 		);
 	}
 	return $temperatures;
