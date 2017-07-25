@@ -24,6 +24,4 @@ https://github.com/GuepardoApps/LucaHome-RaspberryTemperatureLogger
 
 ![alt tag](https://github.com/GuepardoApps/LucaHome-Website/blob/master/screenshots/img002.png)
 
-![alt tag](https://github.com/GuepardoApps/LucaHome-Website/blob/master/screenshots/img003.png)
-
 ---
