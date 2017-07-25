@@ -300,21 +300,25 @@ switch ($action) {
 	/* --------------------- Movie --------------------- */
 	case 'getmovies' :
 		$movieCount = Send ( "$login:MOVIE:GET:COUNT" );
+		$requestSize = 20;
+
 		if (strpos ( $movieCount, 'Error' ) !== false) {
 			echo $movieCount;
 		} else {
 			$movies = "";
 			$startIndex = 0;
-			$endIndex = 25;
+			$endIndex = $requestSize;
+
 			while ( $startIndex < $movieCount - 1 ) {
 				$response = Send ( "$login:MOVIE:GET:INDEX:$startIndex:$endIndex" );
 				if (strpos ( $response, 'Error' ) !== false) {
 					echo $response;
+					$startIndex = $movieCount;
 					break;
 				} else {
 					$movies .= $response;
-					$startIndex += 25;
-					$endIndex += 25;
+					$startIndex += $requestSize;
+					$endIndex += $requestSize;
 				}
 			}
 			echo $movies;
@@ -584,9 +588,10 @@ function GetValues($data, $type) {
 	$values = array ();
 	for($i = 0; $i < count ( $lines ); $i ++) {
 		if (StartsWith ( $lines [$i], $type )) {
-			$values [] = explode ( ':', $lines [$i] );
+			$values [] = explode ( '::', $lines [$i] );
 		}
 	}
+	
 	return $values;
 }
 function Send($data) {
@@ -610,12 +615,12 @@ function Send($data) {
 
 /* ================== Get Informations ================= */
 function GetInformations() {
-	return Send ( "Website:234524:INFORMATION:GET:WEBSITE" );
+	return Send ( "Website:234524:INFORMATION:GET:REDUCED" );
 }
 
 /* ===================== Get Changes =================== */
 function GetChanges() {
-	return Send ( "Website:234524:CHANGE:GET:WEBSITE" );
+	return Send ( "Website:234524:CHANGE:GET:REDUCED" );
 }
 
 /* ======================= Get Area ==================== */
@@ -625,7 +630,7 @@ function GetArea() {
 
 /* =================== Get Temperature ================= */
 function GetTemperature() {
-	return Send ( "Website:234524:TEMPERATURE:GET:WEBSITE" );
+	return Send ( "Website:234524:TEMPERATURE:GET:REDUCED" );
 }
 
 /* ============== Get Temperature Graph URL ============ */
@@ -655,47 +660,22 @@ function GetMotionState() {
 
 /* ===================== Get MapContent =================== */
 function GetMapContent() {
-	return Send ( "Website:234524:MAPCONTENT:GET:ALL:WEBSITE" );
+	return Send ( "Website:234524:MAPCONTENT:GET:ALL:REDUCED" );
 }
 
 /* ===================== Get Menu =================== */
 function GetMenu() {
-	return Send ( "Website:234524:MENU:GET:MENU:WEBSITE" );
+	return Send ( "Website:234524:MENU:GET:MENU:REDUCED" );
 }
 
 /* ===================== Get ShoppingList =================== */
 function GetShoppingList() {
-	return Send ( "Website:234524:SHOPPINGLIST:GET:ALL:WEBSITE" );
+	return Send ( "Website:234524:SHOPPINGLIST:GET:ALL:REDUCED" );
 }
 
 /* ===================== Get BirthdayList =================== */
 function GetBirthdayList() {
-	return Send ( "Website:234524:BIRTHDAY:GET:ALL:WEBSITE" );
-}
-
-/* ============== Get MovieList ============ */
-function GetMovieList() {
-	$movieCount = Send ( "Website:234524:MOVIE:GET:COUNT" );
-	$movies = "";
-
-	if (strpos ( $movieCount, 'Error' ) !== false) {
-		return $movies;
-	} else {
-		$startIndex = 0;
-		$endIndex = 25;
-		while ( $startIndex < $movieCount - 1 ) {
-			$response = Send ( "Website:234524:MOVIE:GET:INDEX:REDUCED:$startIndex:$endIndex" );
-			if (strpos ( $response, 'Error' ) !== false) {
-				return "";
-			} else {
-				$movies .= $response;
-				$startIndex += 25;
-				$endIndex += 25;
-			}
-		}
-	}
-
-	return $movies;
+	return Send ( "Website:234524:BIRTHDAY:GET:ALL:REDUCED" );
 }
 
 /* ===================================================== */
@@ -712,6 +692,20 @@ function ParseInformations($data) {
 		);
 	}
 	return $informations;
+}
+
+function ParseTemperature($data) {
+	$values = GetValues ( $data, 'temperature:' );
+	$temperatures = array ();
+	for($i = 0; $i < count ( $values ); $i ++) {
+		$temperatures [] = array (
+				'value' => trim ( $values [$i] [1] ),
+				'area' => trim ( $values [$i] [2] ) ,
+				'sensorpath' => trim ( $values [$i] [2] ) ,
+				'graphpath' => trim ( $values [$i] [2] ) 
+		);
+	}
+	return $temperatures;
 }
 
 function ParseChanges($data) {
@@ -799,21 +793,6 @@ function ParseBirthdayList($data) {
 		);
 	}
 	return $birthdayList;
-}
-
-function ParseMovieList($data) {
-	$values = GetValues ( $data, 'movie:' );
-	$movieList = array ();
-	for($i = 0; $i < count ( $values ); $i ++) {
-		$movieList [] = array (
-				'title' => trim ( $values [$i] [1] ),
-				'genre' => trim ( $values [$i] [2] ),
-				'description' => trim ( $values [$i] [3] ),
-				'rating' => trim ( $values [$i] [4] ),
-				'watched' => trim ( $values [$i] [5] )
-		);
-	}
-	return $movieList;
 }
 
 /* ===================================================== */

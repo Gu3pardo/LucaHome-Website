@@ -1,21 +1,26 @@
 <?php
+
 class Home {
 
 	var $app;
 
 	function Home(&$app) {
 		$this->app = $app;
+
 		$this->app->Nav->AddPage ( 'home' );
+
 		$this->app->Nav->AddAction ( 'information', 'Information' );
 		$this->app->Nav->AddAction ( 'temperature', 'Temperature' );
 		$this->app->Nav->AddAction ( 'camera', 'Camera' );
 		$this->app->Nav->AddAction ( 'menu', 'Menu' );
 		$this->app->Nav->AddAction ( 'shoppinglist', 'ShoppingList' );
 		$this->app->Nav->AddAction ( 'birthdaylist', 'BirthdayList' );
-		$this->app->Nav->AddAction ( 'movielist', 'MovieList' );
 		$this->app->Nav->AddAction ( 'map', 'Map' );
+    	$this->app->Nav->AddAction ( 'help', 'Help');
+
 		$this->app->Nav->DefaultAction ( 'information' );
 	}
+
 	function Information() {
 		include ('./lib/lucahome.php');
 		
@@ -53,11 +58,12 @@ class Home {
 		$this->app->Tpl->Set ( 'MENUINFORMATION', 'class="active"' );
 		$this->app->Tpl->Parse ( 'PAGE', 'page_information.tpl' );
 	}
+
 	function Temperature() {
 		include ('./lib/lucahome.php');
 		
-		$area = GetArea ();
-		$temperature = GetTemperature ();
+		$dataTemperature = GetTemperature ();
+		$temperatures = ParseTemperature ( $dataTemperature );
 		$temperatureGraphUrl = GetTemperatureGraphUrl ();
 		
 		$link_text = "Temperature Log ";
@@ -68,7 +74,7 @@ class Home {
 		
 		$temp_out = '';
 		$temp_out .= "<div class=\"button socket\">
-		<div class=\"button_text temperature_value\">{$area}:   {$temperature} &#176;C</div>
+		<div class=\"button_text temperature_value\">{$temperature[0]['area']}:   {$temperature[0]['value']} &#176;C</div>
 		</div>";
 		
 		$this->app->Tpl->Set ( 'LINK_TEXT', $link_text );
@@ -78,6 +84,7 @@ class Home {
 		$this->app->Tpl->Set ( 'MENUTEMPERATURE', 'class="active"' );
 		$this->app->Tpl->Parse ( 'PAGE', 'page_temperature.tpl' );
 	}
+
 	function Camera() {
 		include ('./lib/lucahome.php');
 
@@ -90,7 +97,7 @@ class Home {
 		$camera_link_text = "";
 		if ($motionState) {
 			$camera_link_text .= "Camera";
-			$camera_frame_style = "width: 90%; height: 90%; visibility: visible;";
+			$camera_frame_style = "width: 100%; height: 100%; visibility: visible;";
 		} else {
 			$camera_link_text .= "Camera not active";
 			$camera_link_value = "";
@@ -105,6 +112,7 @@ class Home {
 		$this->app->Tpl->Set ( 'MENUCAMERA', 'class="active"' );
 		$this->app->Tpl->Parse ( 'PAGE', 'page_camera.tpl' );
 	}
+
 	function Menu() {
 		include ('./lib/lucahome.php');
 		
@@ -126,6 +134,7 @@ class Home {
 		$this->app->Tpl->Set ( 'MENUMENU', 'class="active"' );
 		$this->app->Tpl->Parse ( 'PAGE', 'page_menu.tpl' );
 	}
+
 	function ShoppingList() {
 		include ('./lib/lucahome.php');
 		
@@ -146,6 +155,7 @@ class Home {
 		$this->app->Tpl->Set ( 'MENUSHOPPINGLIST', 'class="active"' );
 		$this->app->Tpl->Parse ( 'PAGE', 'page_shopping_list.tpl' );
 	}
+
 	function BirthdayList() {
 		include ('./lib/lucahome.php');
 		
@@ -165,33 +175,7 @@ class Home {
 		$this->app->Tpl->Set ( 'MENUBIRTHDAYLIST', 'class="active"' );
 		$this->app->Tpl->Parse ( 'PAGE', 'page_birthday_list.tpl' );
 	}
-	function MovieList() {
-		include ('./lib/lucahome.php');
-		
-		$dataMovieList = GetMovieList();
-		$movieList = ParseMovieList ( $dataMovieList );
 
-		$moviePath = 'F:\Filme';
-		
-		$movieList_table = '';
-		for($i = 0; $i < count ( $movieList ); $i ++) {
-			$currentMoviePath = $moviePath + '\\' + $movieList[$i]['title'] + '\\' + $movieList[$i]['title'] + '.mkv';
-
-			$movieList_table .= "
-						<tr>
-                        	<td>{$movieList[$i]['title']}</td>
-                        	<td>{$movieList[$i]['genre']}</td>
-                        	<td>{$movieList[$i]['description']}</td>
-                        	<td>{$movieList[$i]['rating']}/5</td>
-                        	<td>{$movieList[$i]['watched']}x</td>
-							<td><a href="{$currentMoviePath}">Link</td>
-                        </tr>";
-		}
-		$this->app->Tpl->Set ( 'MOVIETABLE', $movieList_table );
-		
-		$this->app->Tpl->Set ( 'MENUMOVIELIST', 'class="active"' );
-		$this->app->Tpl->Parse ( 'PAGE', 'page_movie_list.tpl' );
-	}
 	function Map() {
 		include ('./lib/lucahome.php');
 		
@@ -216,5 +200,10 @@ class Home {
 		$this->app->Tpl->Set ( 'MENUMAP', 'class="active"' );
 		$this->app->Tpl->Parse ( 'PAGE', 'page_map.tpl' );
 	}
+  
+  function Help() {
+    $this->app->Tpl->Set('MENUHELP', 'class="active"');
+    $this->app->Tpl->Parse('PAGE', 'page_help.tpl');
+  }
 }
 ?>
