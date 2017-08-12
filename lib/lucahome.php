@@ -324,6 +324,32 @@ switch ($action) {
 			echo $movies;
 		}
 		break;
+	case 'getmoviesreduced' :
+		$movieCount = Send ( "$login:MOVIE:GET:COUNT:REDUCED" );
+		$requestSize = 20;
+
+		if (strpos ( $movieCount, 'Error' ) !== false) {
+			echo $movieCount;
+		} else {
+			$movies = "";
+			$startIndex = 0;
+			$endIndex = $requestSize;
+
+			while ( $startIndex < $movieCount - 1 ) {
+				$response = Send ( "$login:MOVIE:GET:INDEX:REDUCED:$startIndex:$endIndex" );
+				if (strpos ( $response, 'Error' ) !== false) {
+					echo $response;
+					$startIndex = $movieCount;
+					break;
+				} else {
+					$movies .= $response;
+					$startIndex += $requestSize;
+					$endIndex += $requestSize;
+				}
+			}
+			echo $movies;
+		}
+		break;
 	case 'updatemovie' :
 		$title = Get ( 'title' );
 		$genre = Get ( 'genre' );
