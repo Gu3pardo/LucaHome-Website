@@ -10,7 +10,7 @@ Part of the LucaHome-Project
 
 Website based on PHP to view some basic data about the LucaHome-Project.
 
-#Installation
+# Installation
 Copy the code of this project to /var/www
 
 # IMPORTANT
