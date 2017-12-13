@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 <a target="_blank" href="https://www.paypal.me/GuepardoApps" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-blue.svg" /></a>
 
-[![Version](https://img.shields.io/badge/version-v4.0.6.170812-blue.svg)](https://github.com/GuepardoApps/LucaHome-Website)
+[![Version](https://img.shields.io/badge/version-v5.0.0.171213-blue.svg)](https://github.com/GuepardoApps/LucaHome-Website)
 
 Part of the LucaHome-Project
 

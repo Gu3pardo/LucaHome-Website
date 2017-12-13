@@ -2,6 +2,18 @@
 
 define ( 'LUCAHOMEPORT', 6677 );
 
+/*Definition for error answers*/
+define ( 'AUTHENTIFICATION_ERROR_NR_16', "Error 16:Parameter not found for authentification");
+define ( 'BIRTHDAY_ERROR_NR_35', "Error 35:Parameter not found for birthday");
+define ( 'REMOTE_ERROR_NR_121', "Error 121:Parameter not found for remote");
+define ( 'TEMPERATURE_ERROR_NR_135', "Error 135:Parameter not found for temperature");
+define ( 'MAPCONTENT_ERROR_NR_145', "Error 145:Parameter not found for mapcontent");
+define ( 'SHOPPING_ERROR_NR_155', "Error 155:Parameter not found for shopping entry");
+define ( 'MENU_ERROR_NR_164', "Error 164:Parameter not found for menu");
+define ( 'CAMERA_ERROR_NR_173', "Error 173:Parameter not found for camera");
+define ( 'COIN_ERROR_NR_206', "Error 206:Parameter not found for coin");
+define ( 'MOVIE_ERROR_NR_400', "Error 400:Parameter not found for movie");
+
 $user = Get ( 'user' );
 $password = Get ( 'password' );
 $login = "$user:$password";
@@ -9,31 +21,12 @@ $login = "$user:$password";
 $action = Get ( 'action' );
 
 switch ($action) {
-	
+
 	/* ----------------------- All --------------------- */
 	case 'reloadall':
-		echo Send ( "$login:ALL:RELOAD" );
+		echo Send ( "$login:ALL:RELOAD:ALL" );
 		break;
-	
-	/* ----------------- Access Control ---------------- */
-	case 'activatealarm' :
-		echo Send ( "$login:ACCESS:ACTIVATE:ALARM" );
-		break;
-	case 'checkcode' :
-		$code = Get ( 'code' );
-		if ($code != '') {
-			echo Send ( "$login:ACCESS:CHECK:CODE:$code" );
-		} else {
-			echo "Error 200:Parameter not found for access control";
-		}
-		break;
-	case 'playalarm' :
-		echo Send ( "$login:ACCESS:PLAY:ALARM" );
-		break;
-	case 'stopalarm' :
-		echo Send ( "$login:ACCESS:STOP:ALARM" );
-		break;
-	
+
 	/* ------------------- Birthday -------------------- */
 	case 'getbirthdays' :
 		echo Send ( "$login:BIRTHDAY:GET:ALL" );
@@ -44,10 +37,11 @@ switch ($action) {
 		$day = Get ( 'day' );
 		$month = Get ( 'month' );
 		$year = Get ( 'year' );
-		if ($id != '' && $name != '' && $day != '' && $month != '' && $year != '') {
-			echo Send ( "$login:BIRTHDAY:ADD:$id:$name:$day:$month:$year" );
+		$remindme = Get ( 'remindme' );
+		if ($id != '' && $name != '' && $day != '' && $month != '' && $year != '' && $remindme != '') {
+			echo Send ( "$login:BIRTHDAY:ADD:$id:$name:$day:$month:$year:$remindme" );
 		} else {
-			echo "Error 35:Parameter not found for birthday";
+			echo BIRTHDAY_ERROR_NR_35;
 		}
 		break;
 	case 'updatebirthday' :
@@ -56,10 +50,11 @@ switch ($action) {
 		$day = Get ( 'day' );
 		$month = Get ( 'month' );
 		$year = Get ( 'year' );
-		if ($id != '' && $name != '' && $day != '' && $month != '' && $year != '') {
-			echo Send ( "$login:BIRTHDAY:UPDATE:$id:$name:$day:$month:$year" );
+		$remindme = Get ( 'remindme' );
+		if ($id != '' && $name != '' && $day != '' && $month != '' && $year != '' && $remindme != '') {
+			echo Send ( "$login:BIRTHDAY:UPDATE:$id:$name:$day:$month:$year:$remindme" );
 		} else {
-			echo "Error 35:Parameter not found for birthday";
+			echo BIRTHDAY_ERROR_NR_35;
 		}
 		break;
 	case 'deletebirthday' :
@@ -67,7 +62,7 @@ switch ($action) {
 		if ($id != '') {
 			echo Send ( "$login:BIRTHDAY:DELETE:$id" );
 		} else {
-			echo "Error 35:Parameter not found for birthday";
+			echo BIRTHDAY_ERROR_NR_35;
 		}
 		break;
 	case 'setcontroltaskbirthday' :
@@ -75,10 +70,10 @@ switch ($action) {
 		if ($state != '') {
 			echo Send ( "$login:BIRTHDAY:SETCONTROLTASK:$state" );
 		} else {
-			echo "Error 35:Parameter not found for birthday";
+			echo BIRTHDAY_ERROR_NR_35;
 		}
 		break;
-	
+
 	/* -------------------- Camera -------------------- */
 	case 'startmotion' :
 		echo Send ( "$login:CAMERA:START:MOTION" );
@@ -86,14 +81,14 @@ switch ($action) {
 	case 'stopmotion' :
 		echo Send ( "$login:CAMERA:STOP:MOTION" );
 		break;
-	case 'getmotiondata' :
-		echo Send ( "$login:CAMERA:GET:MOTION:DATA" );
-		break;
 	case 'getmotionstate' :
 		echo Send ( "$login:CAMERA:GET:MOTION:STATE" );
 		break;
 	case 'getmotioncontrol' :
 		echo Send ( "$login:CAMERA:GET:MOTION:CONTROL" );
+		break;
+	case 'getmotiondata' :
+		echo Send ( "$login:CAMERA:GET:MOTION:DATA" );
 		break;
 	case 'getcameraurl' :
 		echo Send ( "$login:REMOTE:GET:URL:CAMERA" );
@@ -103,24 +98,21 @@ switch ($action) {
 		if ($state != '') {
 			echo Send ( "$login:CAMERA:SETCONTROLTASK:$state" );
 		} else {
-			echo "Error 173:Parameter not found for camera";
+			echo CAMERA_ERROR_NR_173;
 		}
 		break;
-	
+
 	/* -------------------- Changes -------------------- */
 	case 'getchanges' :
-		echo Send ( "$login:CHANGE:GET:WEBSITE" );
+		echo Send ( "$login:CHANGE:GET:ALL" );
 		break;
-	case 'getchangesrest' :
-		echo Send ( "$login:CHANGE:GET:REST" );
-		break;
-	
+
 	/* --------------------- Coins --------------------- */
 	case 'getcoinsall' :
-		echo Send ( "$login:COINS:GET:ALL:ALL" );
+		echo Send ( "$login:COINS:GET:ALL" );
 		break;
 	case 'getcoinsuser' :
-		echo Send ( "$login:COINS:GET:FOR_USER:ALL" );
+		echo Send ( "$login:COINS:GET:FOR_USER" );
 		break;
 	case 'addcoin' :
 		$id = Get ( 'id' );
@@ -130,7 +122,7 @@ switch ($action) {
 		if ($id != '' && $username != '' && $type != '' && $amount != '') {
 			echo Send ( "$login:COINS:ADD:$id:$username:$type:$amount" );
 		} else {
-			echo "Error 206:Parameter not found for coin";
+			echo COIN_ERROR_NR_206;
 		}
 		break;
 	case 'updatecoin' :
@@ -141,7 +133,7 @@ switch ($action) {
 		if ($id != '' && $username != '' && $type != '' && $amount != '') {
 			echo Send ( "$login:COINS:UPDATE:$id:$username:$type:$amount" );
 		} else {
-			echo "Error 206:Parameter not found for coin";
+			echo COIN_ERROR_NR_206;
 		}
 		break;
 	case 'deletecoin' :
@@ -149,13 +141,13 @@ switch ($action) {
 		if ($id != '') {
 			echo Send ( "$login:COIN:DELETE:$id" );
 		} else {
-			echo "Error 206:Parameter not found for coin";
+			echo COIN_ERROR_NR_206;
 		}
 		break;
-	
+
 	/* ---------------------- Gpio --------------------- */
 	case 'getgpios' :
-		echo Send ( "$login:REMOTE:GET:GPIO:ALL" );
+		echo Send ( "$login:REMOTE:GET:GPIO" );
 		break;
 	case 'addgpio' :
 		$name = Get ( 'name' );
@@ -163,7 +155,16 @@ switch ($action) {
 		if ($name != '' && $gpio != '') {
 			echo Send ( "$login:REMOTE:ADD:GPIO:$name:$gpio:0" );
 		} else {
-			echo "Error 121:Parameter not found for remote";
+			echo REMOTE_ERROR_NR_121;
+		}
+		break;
+	case 'updategpio' :
+		$name = Get ( 'name' );
+		$gpio = Get ( 'gpio' );
+		if ($name != '' && $gpio != '') {
+			echo Send ( "$login:REMOTE:UPDATE:GPIO:$name:$gpio:0" );
+		} else {
+			echo REMOTE_ERROR_NR_121;
 		}
 		break;
 	case 'deletegpio' :
@@ -171,7 +172,7 @@ switch ($action) {
 		if ($name != '') {
 			echo Send ( "$login:REMOTE:DELETE:GPIO:$name" );
 		} else {
-			echo "Error 121:Parameter not found for remote";
+			echo REMOTE_ERROR_NR_121;
 		}
 		break;
 	case 'setgpio' :
@@ -180,54 +181,53 @@ switch ($action) {
 		if ($gpio != '' && $state != '') {
 			echo Send ( "$login:REMOTE:SET:GPIO:$gpio:$state" );
 		} else {
-			echo "Error 121:Parameter not found for remote";
+			echo REMOTE_ERROR_NR_121;
 		}
 		break;
-	case 'activateAllGpios' :
+	case 'activateallgpios' :
 		echo Send ( "$login:REMOTE:SET:GPIO:ALL:1" );
 		break;
-	case 'deactivateAllGpios' :
+	case 'deactivateallgpios' :
 		echo Send ( "$login:REMOTE:SET:GPIO:ALL:0" );
 		break;
-	
+
 	/* ------------------ Informations ------------------ */
 	case 'getinformations' :
-		echo Send ( "$login:INFORMATION:GET:WEBSITE" );
+		echo Send ( "$login:INFORMATION:GET:ALL" );
 		break;
-	case 'getinformationsrest' :
-		echo Send ( "$login:INFORMATION:GET:REST" );
-		break;
-	
+
 	/* ------------------- MapContent ------------------- */
 	case 'getmapcontents' :
 		echo Send ( "$login:MAPCONTENT:GET:ALL" );
 		break;
 	case 'addmapcontent' :
 		$id = Get ( 'id' );
-		$position = Get ( 'position' );
 		$type = Get ( 'type' );
-		$schedules = Get ( 'schedules' );
-		$sockets = Get ( 'sockets' );
-		$temperatureArea = Get ( 'temperatureArea' );
+		$typeId = Get ( 'typeid' );
+		$position = Get ( 'position' );
+		$name = Get ( 'name' );
+		$shortName = Get ( 'shortname' );
+		$area = Get ( 'area' );
 		$visibility = Get ( 'visibility' );
-		if ($id != '' && $position != '' && $type != '' && $schedules != '' && $sockets != '' && $temperatureArea != '' && $visibility != '') {
-			echo Send ( "$login:MAPCONTENT:ADD:$id:$position:$type:$schedules:$sockets:$temperatureArea:$visibility" );
+		if ($id != '' && $type != ''&& $typeId != '' && $position != '' && $name != '' && $shortName != '' && $area != '' && $visibility != '') {
+			echo Send ( "$login:MAPCONTENT:ADD:$id:$type:$typeId:$position:$name:$shortName:$area:$visibility" );
 		} else {
-			echo "Error 145:Parameter not found for mapcontent";
+			echo MAPCONTENT_ERROR_NR_145;
 		}
 		break;
 	case 'updatemapcontent' :
 		$id = Get ( 'id' );
-		$position = Get ( 'position' );
 		$type = Get ( 'type' );
-		$schedules = Get ( 'schedules' );
-		$sockets = Get ( 'sockets' );
-		$temperatureArea = Get ( 'temperatureArea' );
+		$typeId = Get ( 'typeid' );
+		$position = Get ( 'position' );
+		$name = Get ( 'name' );
+		$shortName = Get ( 'shortname' );
+		$area = Get ( 'area' );
 		$visibility = Get ( 'visibility' );
-		if ($id != '' && $position != '' && $type != '' && $schedules != '' && $sockets != '' && $temperatureArea != '' && $visibility != '') {
-			echo Send ( "$login:MAPCONTENT:UPDATE:$id:$position:$type:$schedules:$sockets:$temperatureArea:$visibility" );
+		if ($id != '' && $type != ''&& $typeId != '' && $position != '' && $name != '' && $shortName != '' && $area != '' && $visibility != '') {
+			echo Send ( "$login:MAPCONTENT:UPDATE:$id:$type:$typeId:$position:$name:$shortName:$area:$visibility" );
 		} else {
-			echo "Error 145:Parameter not found for mapcontent";
+			echo MAPCONTENT_ERROR_NR_145;
 		}
 		break;
 	case 'deletemapcontent' :
@@ -235,10 +235,10 @@ switch ($action) {
 		if ($id != '') {
 			echo Send ( "$login:MAPCONTENT:DELETE:$id" );
 		} else {
-			echo "Error 145:Parameter not found for mapcontent";
+			echo MAPCONTENT_ERROR_NR_145;
 		}
 		break;
-	
+
 	/* ------------------- Menu ------------------- */
 	case 'getmenu' :
 		echo Send ( "$login:MENU:GET:MENU" );
@@ -253,7 +253,7 @@ switch ($action) {
 		if ($weekday != '' && $day != '' && $month != '' && $year != '' && $title != '' && $description != '') {
 			echo Send ( "$login:MENU:UPDATE:MENU:$weekday:$day:$month:$year:$title:$description" );
 		} else {
-			echo "Error 164:Parameter not found for menu";
+			echo MENU_ERROR_NR_164;
 		}
 		break;
 	case 'clearmenu' :
@@ -261,7 +261,7 @@ switch ($action) {
 		if ($weekday != '') {
 			echo Send ( "$login:MENU:CLEAR:$weekday" );
 		} else {
-			echo "Error 164:Parameter not found for menu";
+			echo MENU_ERROR_NR_164;
 		}
 		break;
 	case 'getlistedmenu' :
@@ -269,23 +269,25 @@ switch ($action) {
 		break;
 	case 'addlistedmenu' :
 		$id = Get ( 'id' );
+		$title = Get ( 'title' );
 		$description = Get ( 'description' );
 		$rating = Get ( 'rating' );
-		if ($id!= '' && $description!= '' && $rating!= '') {
-			echo Send ( "$login:MENU:ADD:LISTEDMENU:$id:$description:$rating:0" );
+		if ($id!= '' && $title!= '' && $description!= '' && $rating!= '') {
+			echo Send ( "$login:MENU:ADD:LISTEDMENU:$id:$title:$description:$rating:0" );
 		} else {
-			echo "Error 164:Parameter not found for menu";
+			echo MENU_ERROR_NR_164;
 		}
 		break;
 	case 'updatelistedmenu' :
 		$id = Get ( 'id' );
+		$title = Get ( 'title' );
 		$description = Get ( 'description' );
 		$rating = Get ( 'rating' );
-		$lastsuggestion = Get ( 'lastsuggestion' );
-		if ($id!= '' && $description!= '' && $rating!= '' && $lastsuggestion!= '') {
-			echo Send ( "$login:MENU:UPDATE:LISTEDMENU:$id:$description:$rating:$lastsuggestion" );
+		$useCounter = Get ( 'usecounter' );
+		if ($id!= '' && $title!= '' && $description!= '' && $rating!= '' && $useCounter!= '') {
+			echo Send ( "$login:MENU:UPDATE:LISTEDMENU:$id:$title:$description:$rating:$useCounter" );
 		} else {
-			echo "Error 164:Parameter not found for menu";
+			echo MENU_ERROR_NR_164;
 		}
 		break;
 	case 'deletelistedmenu' :
@@ -293,14 +295,14 @@ switch ($action) {
 		if ($id!= '') {
 			echo Send ( "$login:MENU:DELETE:LISTEDMENU:$id" );
 		} else {
-			echo "Error 164:Parameter not found for menu";
+			echo MENU_ERROR_NR_164;
 		}
 		break;
-	
+
 	/* --------------------- Movie --------------------- */
 	case 'getmovies' :
 		$movieCount = Send ( "$login:MOVIE:GET:COUNT" );
-		$requestSize = 20;
+		$requestSize = 25;
 
 		if (strpos ( $movieCount, 'Error' ) !== false) {
 			echo $movieCount;
@@ -324,32 +326,6 @@ switch ($action) {
 			echo $movies;
 		}
 		break;
-	case 'getmoviesreduced' :
-		$movieCount = Send ( "$login:MOVIE:GET:COUNT:REDUCED" );
-		$requestSize = 20;
-
-		if (strpos ( $movieCount, 'Error' ) !== false) {
-			echo $movieCount;
-		} else {
-			$movies = "";
-			$startIndex = 0;
-			$endIndex = $requestSize;
-
-			while ( $startIndex < $movieCount - 1 ) {
-				$response = Send ( "$login:MOVIE:GET:INDEX:REDUCED:$startIndex:$endIndex" );
-				if (strpos ( $response, 'Error' ) !== false) {
-					echo $response;
-					$startIndex = $movieCount;
-					break;
-				} else {
-					$movies .= $response;
-					$startIndex += $requestSize;
-					$endIndex += $requestSize;
-				}
-			}
-			echo $movies;
-		}
-		break;
 	case 'updatemovie' :
 		$title = Get ( 'title' );
 		$genre = Get ( 'genre' );
@@ -358,15 +334,15 @@ switch ($action) {
 		$watched = Get ( 'watched' );
 		$sockets = Get ( 'sockets' );
 		if ($title != '') {
-			echo Send ( "$login:MOVIE:UPDATE:$title:$genre:$description:$rating:$watched:$sockets" );
+			echo Send ( "$login:MOVIE:UPDATE:$title:$description:$genre:$rating:$watched" );
 		} else {
-			echo "Error 400:Parameter not found for movie";
+			echo MOVIE_ERROR_NR_400;
 		}
 		break;
 	case 'loadmovies' :
 			echo Send ( "$login:MOVIE:LOAD:ALL" );
 		break;
-	
+
 	/* --------------------- Remote -------------------- */
 	case 'getraspberry' :
 		echo Send ( "$login:REMOTE:GET:RASPBERRY" );
@@ -374,52 +350,50 @@ switch ($action) {
 	case 'getarea' :
 		echo Send ( "$login:REMOTE:GET:AREA" );
 		break;
-	
+
 	/* -------------------- Schedule ------------------- */
 	case 'getschedules' :
-		echo Send ( "$login:REMOTE:GET:SCHEDULE:ALL" );
+		echo Send ( "$login:REMOTE:GET:SCHEDULE" );
 		break;
 	case 'addschedule' :
 		$name = Get ( 'name' );
 		$socket = Get ( 'socket' );
 		$gpio = Get ( 'gpio' );
+		$switch = Get ( 'switch' );
 		$weekday = Get ( 'weekday' );
 		$hour = Get ( 'hour' );
 		$minute = Get ( 'minute' );
 		$onoff = Get ( 'onoff' );
 		$isTimer = Get ( 'isTimer' );
-		$playSound = Get ( 'playSound' );
-		$playRaspberry = Get ( 'playRaspberry' );
-		if ($name != '' && ($socket != '' || $gpio != '') && $weekday != '' && $hour != '' && $minute != '' && $onoff != '' && $isTimer != '' && $playSound != '' && $playRaspberry != '') {
-			echo Send ( "$login:REMOTE:ADD:SCHEDULE:$name:$socket:$gpio:$weekday:$hour:$minute:$onoff:$isTimer:$playSound:$playRaspberry:1" );
+		if ($name != '' && ($socket != '' || $gpio != '' || $switch != '') && $weekday != '' && $hour != '' && $minute != '' && $onoff != '' && $isTimer != '') {
+			echo Send ( "$login:REMOTE:ADD:SCHEDULE:$name:$socket:$gpio:$switch:$weekday:$hour:$minute:$onoff:$isTimer:1" );
 		} else {
-			echo "Error 121:Parameter not found for remote";
+			echo REMOTE_ERROR_NR_121;
 		}
 		break;
 	case 'updateschedule' :
 		$name = Get ( 'name' );
 		$socket = Get ( 'socket' );
 		$gpio = Get ( 'gpio' );
+		$switch = Get ( 'switch' );
 		$weekday = Get ( 'weekday' );
 		$hour = Get ( 'hour' );
 		$minute = Get ( 'minute' );
 		$onoff = Get ( 'onoff' );
 		$isTimer = Get ( 'isTimer' );
-		$playSound = Get ( 'playSound' );
-		$playRaspberry = Get ( 'playRaspberry' );
 		$isActive = Get ( 'isactive' );
-		if ($name != '' && ($socket != '' || $gpio != '') && $weekday != '' && $hour != '' && $minute != '' && $onoff != '' && $isTimer != '' && $playSound != '' && $playRaspberry != '' && $isActive != '') {
-			echo Send ( "$login:REMOTE:UPDATE:SCHEDULE:$name:$socket:$gpio:$weekday:$hour:$minute:$onoff:$isTimer:$playSound:$playRaspberry:$isActive" );
+		if ($name != '' && ($socket != '' || $gpio != '' || $switch != '') && $weekday != '' && $hour != '' && $minute != '' && $onoff != '' && $isTimer != '' && $isActive != '') {
+			echo Send ( "$login:REMOTE:UPDATE:SCHEDULE:$name:$socket:$gpio:$switch:$weekday:$hour:$minute:$onoff:$isTimer:$isActive" );
 		} else {
-			echo "Error 121:Parameter not found for remote";
+			echo REMOTE_ERROR_NR_121;
 		}
 		break;
 	case 'deleteschedule' :
-		$schedule = Get ( 'schedule' );
-		if ($schedule != '') {
-			echo Send ( "$login:REMOTE:DELETE:SCHEDULE:$schedule" );
+		$name = Get ( 'name' );
+		if ($name != '') {
+			echo Send ( "$login:REMOTE:DELETE:SCHEDULE:$name" );
 		} else {
-			echo "Error 121:Parameter not found for remote";
+			echo REMOTE_ERROR_NR_121;
 		}
 		break;
 	case 'setschedule' :
@@ -428,16 +402,16 @@ switch ($action) {
 		if ($schedule != '' && $state != '') {
 			echo Send ( "$login:REMOTE:SET:SCHEDULE:$schedule:$state" );
 		} else {
-			echo "Error 121:Parameter not found for remote";
+			echo REMOTE_ERROR_NR_121;
 		}
 		break;
-	case 'activateAllSchedules' :
+	case 'activateallschedules' :
 		echo Send ( "$login:REMOTE:SET:SCHEDULE:ALL:1" );
 		break;
-	case 'deactivateAllSchedules' :
+	case 'deactivateallschedules' :
 		echo Send ( "$login:REMOTE:SET:SCHEDULE:ALL:0" );
 		break;
-	
+
 	/* ----------------- ShoppingList ------------------ */
 	case 'getshoppinglist' :
 		echo Send ( "$login:SHOPPINGLIST:GET:ALL" );
@@ -450,7 +424,7 @@ switch ($action) {
 		if ($id != '' && $name != '' && $group != '' && $quantity != '') {
 			echo Send ( "$login:SHOPPINGLIST:ADD:$id:$name:$group:$quantity" );
 		} else {
-			echo "Error 155:Parameter not found for shopping entry";
+			echo SHOPPING_ERROR_NR_155;
 		}
 		break;
 	case 'updateshoppingentry' :
@@ -461,7 +435,7 @@ switch ($action) {
 		if ($id != '' && $name != '' && $group != '' && $quantity != '') {
 			echo Send ( "$login:SHOPPINGLIST:UPDATE:$id:$name:$group:$quantity" );
 		} else {
-			echo "Error 155:Parameter not found for shopping entry";
+			echo SHOPPING_ERROR_NR_155;
 		}
 		break;
 	case 'deleteshoppingentry' :
@@ -469,10 +443,10 @@ switch ($action) {
 		if ($id != '') {
 			echo Send ( "$login:SHOPPINGLIST:DELETE:$id" );
 		} else {
-			echo "Error 155:Parameter not found for shopping entry";
+			echo SHOPPING_ERROR_NR_155;
 		}
 		break;
-	
+
 	/* ---------------- Socket ---------------- */
 	case 'getsockets' :
 		echo Send ( "$login:REMOTE:GET:SOCKET:ALL" );
@@ -484,7 +458,7 @@ switch ($action) {
 		if ($name != '' && $area != '' && $code != '') {
 			echo Send ( "$login:REMOTE:ADD:SOCKET:$name:$area:$code:0" );
 		} else {
-			echo "Error 121:Parameter not found for remote";
+			echo REMOTE_ERROR_NR_121;
 		}
 		break;
 	case 'updatesocket' :
@@ -495,15 +469,15 @@ switch ($action) {
 		if ($name != '' && $area != '' && $code != '' && $isactivated != '') {
 			echo Send ( "$login:REMOTE:UPDATE:SOCKET:$name:$area:$code:$isactivated" );
 		} else {
-			echo "Error 121:Parameter not found for remote";
+			echo REMOTE_ERROR_NR_121;
 		}
 		break;
 	case 'deletesocket' :
-		$socket = Get ( 'socket' );
-		if ($socket != '') {
-			echo Send ( "$login:REMOTE:DELETE:SOCKET:$socket" );
+		$name = Get ( 'name' );
+		if ($name != '') {
+			echo Send ( "$login:REMOTE:DELETE:SOCKET:$name" );
 		} else {
-			echo "Error 121:Parameter not found for remote";
+			echo REMOTE_ERROR_NR_121;
 		}
 		break;
 	case 'setsocket' :
@@ -512,47 +486,62 @@ switch ($action) {
 		if ($socket != '' && $state != '') {
 			echo Send ( "$login:REMOTE:SET:SOCKET:$socket:$state" );
 		} else {
-			echo "Error 121:Parameter not found for remote";
+			echo REMOTE_ERROR_NR_121;
 		}
 		break;
-	case 'activateAllSockets' :
+	case 'activateallsockets' :
 		echo Send ( "$login:REMOTE:SET:SOCKET:ALL:1" );
 		break;
-	case 'deactivateAllSockets' :
+	case 'deactivateallsockets' :
 		echo Send ( "$login:REMOTE:SET:SOCKET:ALL:0" );
 		break;
-	
-	/* --------------------- Sound --------------------- */
-	case 'startplaying' :
-		$song = Get ( 'song' );
-		if ($song != '') {
-			echo Send ( "$login:SOUND:PLAY:$song" );
+
+	/* ---------------- Switch ---------------- */
+	case 'getswitches' :
+		echo Send ( "$login:REMOTE:GET:SWITCH:ALL" );
+		break;
+	case 'addswitch' :
+		$name = Get ( 'name' );
+		$area = Get ( 'area' );
+		$remoteid = Get ( 'remoteid' );
+		$keycode = Get ( 'keycode' );
+		if ($name != '' && $area != '' && $remoteid != '' && $keycode != '') {
+			echo Send ( "$login:REMOTE:ADD:SWITCH:$name:$area:$keycode:$remoteid" );
 		} else {
-			echo "Error 94:Parameter not found for sound";
+			echo REMOTE_ERROR_NR_121;
 		}
 		break;
-	case 'stopplaying' :
-		echo Send ( "$login:SOUND:STOP:ALL" );
+	case 'updateswitch' :
+		$name = Get ( 'name' );
+		$area = Get ( 'area' );
+		$remoteid = Get ( 'remoteid' );
+		$keycode = Get ( 'keycode' );
+		if ($name != '' && $area != '' && $code != '' && $isactivated != '') {
+			echo Send ( "$login:REMOTE:UPDATE:SWITCH:$name:$area:$keycode:$remoteid" );
+		} else {
+			echo REMOTE_ERROR_NR_121;
+		}
 		break;
-	case 'increasevolume' :
-		echo Send ( "$login:SOUND:SET:VOLUME:INCREASE" );
+	case 'deleteswitch' :
+		$name = Get ( 'name' );
+		if ($name != '') {
+			echo Send ( "$login:REMOTE:DELETE:SWITCH:$name" );
+		} else {
+			echo REMOTE_ERROR_NR_121;
+		}
 		break;
-	case 'decreasevolume' :
-		echo Send ( "$login:SOUND:SET:VOLUME:DECREASE" );
+	case 'toggleswitch' :
+		$name = Get ( 'name' );
+		if ($name != '') {
+			echo Send ( "$login:REMOTE:TOGGLE:SWITCH:$name" );
+		} else {
+			echo REMOTE_ERROR_NR_121;
+		}
 		break;
-	case 'getvolume' :
-		echo Send ( "$login:SOUND:GET:VOLUME" );
+	case 'toggleallswitches' :
+		echo Send ( "$login:REMOTE:TOGGLE:SWITCH:ALL" );
 		break;
-	case 'getsounds' :
-		echo Send ( "$login:SOUND:GET:FILES" );
-		break;
-	case 'issoundplaying' :
-		echo Send ( "$login:SOUND:GET:PLAYING" );
-		break;
-	case 'getplayingfile' :
-		echo Send ( "$login:SOUND:GET:PLAYINGFILE" );
-		break;
-	
+
 	/* ------------------ System ------------------ */
 	case 'systemreboot' :
 		echo Send ( "$login:SYSTEM:SYSTEM:REBOOT" );
@@ -560,36 +549,34 @@ switch ($action) {
 	case 'systemshutdown' :
 		echo Send ( "$login:SYSTEM:SYSTEM:SHUTDOWN" );
 		break;
-	
+
 	/* ------------------ Temperature ------------------ */
 	case 'getcurrenttemperature' :
-		echo Send ( "$login:TEMPERATURE:GET:WEBSITE" );
-		break;
-	case 'getcurrenttemperaturerest' :
-		echo Send ( "$login:TEMPERATURE:GET:REST" );
+		echo Send ( "$login:TEMPERATURE:GET:ALL" );
 		break;
 	case 'gettemperaturegraphurl' :
 		echo Send ( "$login:REMOTE:GET:URL:TEMPERATURE" );
 		break;
-	
+	case 'setcontroltasktemperature' :
+		$state = Get ( 'state' );
+		if ($state != '') {
+			echo Send ( "$login:TEMPERATURE:SETCONTROLTASK:$state" );
+		} else {
+			echo TEMPERATURE_ERROR_NR_135;
+		}
+		break;
+
 	/* ---------------------- User --------------------- */
 	case 'validateuser' :
 		echo Send ( "$login:USER:VALIDATE:NOW" );
 		break;
-	
-	/* ---------------------- Watchdog -------------------- */
-	case 'ping' :
-		echo Send ( "$login:WATCHDOG:AVAILABILITY:CHECK" );
-		break;
-	case 'watchdogcount' :
-		$count = Get ( 'count' );
-		if ($count != '') {
-			echo Send ( "$login:WATCHDOG:COUNT:CHECK:$count" );
+	case 'resetfailedlogin' :
+		$userToReset = Get ( 'usertoreset' );
+		if ($userToReset != '') {
+			echo Send ( "$login:USER:RESETFAILEDLOGIN:$userToReset" );
 		} else {
-			echo "Error 192:Parameter not found for watchdog";
+			echo AUTHENTIFICATION_ERROR_NR_16;
 		}
-		break;
-		echo Send ( "$login:WATCHDOG:AVAILABILITY:CHECK" );
 		break;
 
 	/* --------------------- Default ------------------- */
@@ -610,14 +597,14 @@ function StartsWith($Haystack, $Needle) {
 }
 function GetValues($data, $type) {
 	$lines = explode ( ';', $data );
-	
+
 	$values = array ();
 	for($i = 0; $i < count ( $lines ); $i ++) {
 		if (StartsWith ( $lines [$i], $type )) {
 			$values [] = explode ( '::', $lines [$i] );
 		}
 	}
-	
+
 	return $values;
 }
 function Send($data) {
@@ -641,12 +628,12 @@ function Send($data) {
 
 /* ================== Get Informations ================= */
 function GetInformations() {
-	return Send ( "Website:234524:INFORMATION:GET:REDUCED" );
+	return Send ( "Website:234524:INFORMATION:GET:PHP" );
 }
 
 /* ===================== Get Changes =================== */
 function GetChanges() {
-	return Send ( "Website:234524:CHANGE:GET:REDUCED" );
+	return Send ( "Website:234524:CHANGE:GET:PHP" );
 }
 
 /* ======================= Get Area ==================== */
@@ -656,7 +643,7 @@ function GetArea() {
 
 /* =================== Get Temperature ================= */
 function GetTemperature() {
-	return Send ( "Website:234524:TEMPERATURE:GET:REDUCED" );
+	return Send ( "Website:234524:TEMPERATURE:GET:PHP" );
 }
 
 /* ============== Get Temperature Graph URL ============ */
@@ -686,22 +673,27 @@ function GetMotionState() {
 
 /* ===================== Get MapContent =================== */
 function GetMapContent() {
-	return Send ( "Website:234524:MAPCONTENT:GET:ALL:REDUCED" );
+	return Send ( "Website:234524:MAPCONTENT:GET:PHP" );
 }
 
 /* ===================== Get Menu =================== */
 function GetMenu() {
-	return Send ( "Website:234524:MENU:GET:MENU:REDUCED" );
+	return Send ( "Website:234524:MENU:GET:MENU_PHP" );
+}
+
+/* ===================== Get Listed Menu =================== */
+function GetListedMenu() {
+	return Send ( "Website:234524:MENU:GET:LISTEDMENU_PHP" );
 }
 
 /* ===================== Get ShoppingList =================== */
 function GetShoppingList() {
-	return Send ( "Website:234524:SHOPPINGLIST:GET:ALL:REDUCED" );
+	return Send ( "Website:234524:SHOPPINGLIST:GET:PHP" );
 }
 
 /* ===================== Get BirthdayList =================== */
 function GetBirthdayList() {
-	return Send ( "Website:234524:BIRTHDAY:GET:ALL:REDUCED" );
+	return Send ( "Website:234524:BIRTHDAY:GET:PHP" );
 }
 
 /* ===================================================== */
@@ -709,33 +701,19 @@ function GetBirthdayList() {
 /* ===================================================== */
 
 function ParseInformations($data) {
-	$values = GetValues ( $data, 'information:' );
-	$informations = array ();
+	$values = GetValues ( $data, 'information::' );
+	$information = array ();
 	for($i = 0; $i < count ( $values ); $i ++) {
-		$informations [] = array (
+		$information [] = array (
 				'key' => trim ( $values [$i] [1] ),
-				'value' => trim ( $values [$i] [2] ) 
+				'value' => trim ( $values [$i] [2] )
 		);
 	}
-	return $informations;
-}
-
-function ParseTemperature($data) {
-	$values = GetValues ( $data, 'temperature:' );
-	$temperatures = array ();
-	for($i = 0; $i < count ( $values ); $i ++) {
-		$temperatures [] = array (
-				'value' => trim ( $values [$i] [1] ),
-				'area' => trim ( $values [$i] [2] ) ,
-				'sensorpath' => trim ( $values [$i] [3] ) ,
-				'graphpath' => trim ( $values [$i] [4] ) 
-		);
-	}
-	return $temperatures;
+	return $information;
 }
 
 function ParseChanges($data) {
-	$values = GetValues ( $data, 'change:' );
+	$values = GetValues ( $data, 'change::' );
 	$changes = array ();
 	for($i = 0; $i < count ( $values ); $i ++) {
 		$changes [] = array (
@@ -745,40 +723,64 @@ function ParseChanges($data) {
 				'day' => trim ( $values [$i] [4] ),
 				'month' => trim ( $values [$i] [5] ),
 				'year' => trim ( $values [$i] [6] ),
-				'user' => trim ( $values [$i] [7] ) 
+				'user' => trim ( $values [$i] [7] )
 		);
 	}
 	return $changes;
 }
 
+function ParseTemperature($data) {
+	$values = GetValues ( $data, 'temperature::' );
+	$temperatures = array ();
+	for($i = 0; $i < count ( $values ); $i ++) {
+		$temperatures [] = array (
+				'value' => trim ( $values [$i] [1] ),
+				'area' => trim ( $values [$i] [2] ) ,
+				'sensorpath' => trim ( $values [$i] [3] ) ,
+				'graphpath' => trim ( $values [$i] [4] )
+		);
+	}
+	return $temperatures;
+}
+
 function ParseMapContent($data) {
-	$values = GetValues ( $data, 'mapcontent:' );
+	$values = GetValues ( $data, 'mapcontent::' );
 	$mapContent = array ();
 	for($i = 0; $i < count ( $values ); $i ++) {
-		$positionString = trim ( $values [$i] [2] );
+		$positionString = trim ( $values [$i] [4] );
 		$position [] = explode ( '|', $positionString );
-
-		$scheduleString = trim ( $values [$i] [4] );
-		$schedules [] = explode ( '|', $scheduleString );
-
-		$socketString = trim ( $values [$i] [5] );
-		$sockets [] = explode ( '|', $socketString );
 
 		$mapContent [] = array (
 				'id' => trim ( $values [$i] [1] ),
+				'type' => trim ( $values [$i] [2] ),
+				'typeid' => trim ( $values [$i] [3] ),
 				'position' => $position,
-				'type' => trim ( $values [$i] [3] ),
-				'schedules' => $schedules,
-				'sockets' => $sockets,
-				'temperatureArea' => trim ( $values [$i] [6] ),
-				'visibility' => trim ( $values [$i] [7] )
+				'name' => trim ( $values [$i] [5] ),
+				'shortname' => trim ( $values [$i] [6] ),
+				'area' => trim ( $values [$i] [7] ),
+				'visibility' => trim ( $values [$i] [8] )
 		);
 	}
 	return $mapContent;
 }
 
+function ParseListedMenu($data) {
+	$values = GetValues ( $data, 'listedmenu::' );
+	$listedmenus = array ();
+	for($i = 0; $i < count ( $values ); $i ++) {
+		$listedmenus [] = array (
+				'id' => trim ( $values [$i] [1] ),
+				'title' => trim ( $values [$i] [2] ),
+				'description' => trim ( $values [$i] [3] ),
+				'rating' => trim ( $values [$i] [4] ),
+				'usecounter' => trim ( $values [$i] [5] )
+		);
+	}
+	return $listedmenus;
+}
+
 function ParseMenu($data) {
-	$values = GetValues ( $data, 'menu:' );
+	$values = GetValues ( $data, 'menu::' );
 	$menus = array ();
 	for($i = 0; $i < count ( $values ); $i ++) {
 		$menus [] = array (
@@ -794,7 +796,7 @@ function ParseMenu($data) {
 }
 
 function ParseShoppingList($data) {
-	$values = GetValues ( $data, 'shopping_entry:' );
+	$values = GetValues ( $data, 'shopping_entry::' );
 	$shoppingList = array ();
 	for($i = 0; $i < count ( $values ); $i ++) {
 		$shoppingList [] = array (
@@ -807,7 +809,7 @@ function ParseShoppingList($data) {
 }
 
 function ParseBirthdayList($data) {
-	$values = GetValues ( $data, 'birthday:' );
+	$values = GetValues ( $data, 'birthday::' );
 	$birthdayList = array ();
 	for($i = 0; $i < count ( $values ); $i ++) {
 		$birthdayList [] = array (
@@ -815,7 +817,8 @@ function ParseBirthdayList($data) {
 				'name' => trim ( $values [$i] [2] ),
 				'day' => trim ( $values [$i] [3] ),
 				'month' => trim ( $values [$i] [4] ),
-				'year' => trim ( $values [$i] [5] )
+				'year' => trim ( $values [$i] [5] ),
+				'remindme' => trim ( $values [$i] [6] )
 		);
 	}
 	return $birthdayList;

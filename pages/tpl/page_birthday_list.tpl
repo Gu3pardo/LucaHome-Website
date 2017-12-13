@@ -6,6 +6,7 @@
 			<tr>
 				<th>Name</th>
 				<th>Date</th>
+  			<th>Remind Me</th>
 			</tr>
 		</thead>
 		<tbody>
