@@ -180,22 +180,33 @@ class Home {
 
 	function Map() {
 		include ('./lib/lucahome.php');
+		include ('./lib/mapcontentcreator.php');
 
 		$dataMapContentList = GetMapContent ();
 		$mapContent = ParseMapContent ( $dataMapContentList );
 
+		$imageWidth = 744;
+		$imageHeight = 549;
+
 		$mapContent_HTML = '';
 		for($i = 0; $i < count ( $mapContent ); $i ++) {
 			if($mapContent[$i]['visibility'] == '1'){
-				$postionX = $mapContent[$i]['position'][0];
-				$postionY = $mapContent[$i]['position'][1];
+				$postionX = intval($mapContent[$i]['position'][$i][0]) * 1.00 * 0.9;
+				$postionY = intval($mapContent[$i]['position'][$i][1]) * 0.95 * 0.9;
 
-				$mapContent_HTML .= "
-						<h6 style='position: absolute; background-color:lightblue; margin: $postionX% 0 0 $postionY%'>
-							$mapContent[$i]['shortname']<br/>$mapContent[$i]['area']<br/>$mapContent[$i]['type']
-						</h6>";
+				$shortname = $mapContent[$i]['shortname'];
+				$area = $mapContent[$i]['area'];
+				$type = $mapContent[$i]['type'];
+
+				$backgroundcolor = GetMapTypeBackgroundColor($type);
+
+				$mapContent_HTML .= "<p style='position: absolute; background-color:$backgroundcolor; left: $postionX%; bottom:$postionY%; border-radius:5px; padding 5px;'>$shortname<br/>$area<br/>$type</p>";
 			}
 		}
+
+		var2console ( "Map: mapContent_HTML" );
+		var2console ( $mapContent_HTML );
+
 		$this->app->Tpl->Set ( 'MAPCONTENT', $mapContent_HTML );
 
 		$this->app->Tpl->Set ( 'MENUMAP', 'class="active"' );

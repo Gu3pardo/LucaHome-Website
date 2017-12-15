@@ -312,7 +312,7 @@ switch ($action) {
 			$endIndex = $requestSize;
 
 			while ( $startIndex < $movieCount - 1 ) {
-				$response = Send ( "$login:MOVIE:GET:INDEX:$startIndex:$endIndex" );
+				$response = Send ( "$login:MOVIE:GET:INDEX:$startIndex:$endIndex:ALL" );
 				if (strpos ( $response, 'Error' ) !== false) {
 					echo $response;
 					$startIndex = $movieCount;
@@ -772,8 +772,8 @@ function ParseListedMenu($data) {
 				'id' => trim ( $values [$i] [1] ),
 				'title' => trim ( $values [$i] [2] ),
 				'description' => trim ( $values [$i] [3] ),
-				'rating' => trim ( $values [$i] [4] ),
-				'usecounter' => trim ( $values [$i] [5] )
+				'usecounter' => trim ( $values [$i] [4] ),
+				'rating' => trim ( $values [$i] [5] )
 		);
 	}
 	return $listedmenus;
