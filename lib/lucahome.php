@@ -11,7 +11,9 @@ define ( 'MAPCONTENT_ERROR_NR_145', "Error 145:Parameter not found for mapconten
 define ( 'SHOPPING_ERROR_NR_155', "Error 155:Parameter not found for shopping entry");
 define ( 'MENU_ERROR_NR_164', "Error 164:Parameter not found for menu");
 define ( 'CAMERA_ERROR_NR_173', "Error 173:Parameter not found for camera");
+define ( 'METER_DATA_ERROR_NR_197', "Error 197:Parameter not found for meterdata");
 define ( 'COIN_ERROR_NR_206', "Error 206:Parameter not found for coin");
+define ( 'MONEY_METER_DATA_ERROR_NR_217', "Error 217:Parameter not found for moneymeterdata");
 define ( 'MOVIE_ERROR_NR_400', "Error 400:Parameter not found for movie");
 
 $user = Get ( 'user' );
@@ -37,9 +39,10 @@ switch ($action) {
 		$day = Get ( 'day' );
 		$month = Get ( 'month' );
 		$year = Get ( 'year' );
+		$group = Get ( 'group' );
 		$remindme = Get ( 'remindme' );
-		if ($id != '' && $name != '' && $day != '' && $month != '' && $year != '' && $remindme != '') {
-			echo Send ( "$login:BIRTHDAY:ADD:$id:$name:$day:$month:$year:$remindme" );
+		if ($id != '' && $name != '' && $day != '' && $month != '' && $year != '' && $group != '' && $remindme != '') {
+			echo Send ( "$login:BIRTHDAY:ADD:$id:$name:$day:$month:$year:$group:$remindme" );
 		} else {
 			echo BIRTHDAY_ERROR_NR_35;
 		}
@@ -50,9 +53,10 @@ switch ($action) {
 		$day = Get ( 'day' );
 		$month = Get ( 'month' );
 		$year = Get ( 'year' );
+		$group = Get ( 'group' );
 		$remindme = Get ( 'remindme' );
-		if ($id != '' && $name != '' && $day != '' && $month != '' && $year != '' && $remindme != '') {
-			echo Send ( "$login:BIRTHDAY:UPDATE:$id:$name:$day:$month:$year:$remindme" );
+		if ($id != '' && $name != '' && $day != '' && $month != '' && $year != '' && $group != '' && $remindme != '') {
+			echo Send ( "$login:BIRTHDAY:UPDATE:$id:$name:$day:$month:$year:$group:$remindme" );
 		} else {
 			echo BIRTHDAY_ERROR_NR_35;
 		}
@@ -150,27 +154,29 @@ switch ($action) {
 		echo Send ( "$login:REMOTE:GET:GPIO" );
 		break;
 	case 'addgpio' :
+		$typeid = Get ( 'typeid' );
 		$name = Get ( 'name' );
 		$gpio = Get ( 'gpio' );
-		if ($name != '' && $gpio != '') {
-			echo Send ( "$login:REMOTE:ADD:GPIO:$name:$gpio:0" );
+		if ($typeid != '' && $name != '' && $gpio != '') {
+			echo Send ( "$login:REMOTE:ADD:GPIO:$typeid:$name:$gpio:0" );
 		} else {
 			echo REMOTE_ERROR_NR_121;
 		}
 		break;
 	case 'updategpio' :
+		$typeid = Get ( 'typeid' );
 		$name = Get ( 'name' );
 		$gpio = Get ( 'gpio' );
-		if ($name != '' && $gpio != '') {
-			echo Send ( "$login:REMOTE:UPDATE:GPIO:$name:$gpio:0" );
+		if ($typeid != '' && $name != '' && $gpio != '') {
+			echo Send ( "$login:REMOTE:UPDATE:GPIO:$typeid:$name:$gpio:0" );
 		} else {
 			echo REMOTE_ERROR_NR_121;
 		}
 		break;
 	case 'deletegpio' :
-		$name = Get ( 'name' );
-		if ($name != '') {
-			echo Send ( "$login:REMOTE:DELETE:GPIO:$name" );
+		$typeid = Get ( 'typeid' );
+		if ($typeid != '') {
+			echo Send ( "$login:REMOTE:DELETE:GPIO:$typeid" );
 		} else {
 			echo REMOTE_ERROR_NR_121;
 		}
@@ -283,9 +289,9 @@ switch ($action) {
 		$title = Get ( 'title' );
 		$description = Get ( 'description' );
 		$rating = Get ( 'rating' );
-		$useCounter = Get ( 'usecounter' );
-		if ($id!= '' && $title!= '' && $description!= '' && $rating!= '' && $useCounter!= '') {
-			echo Send ( "$login:MENU:UPDATE:LISTEDMENU:$id:$title:$description:$rating:$useCounter" );
+		$usecounter = Get ( 'usecounter' );
+		if ($id!= '' && $title!= '' && $description!= '' && $rating!= '' && $usecounter!= '') {
+			echo Send ( "$login:MENU:UPDATE:LISTEDMENU:$id:$title:$description:$rating:$usecounter" );
 		} else {
 			echo MENU_ERROR_NR_164;
 		}
@@ -296,6 +302,105 @@ switch ($action) {
 			echo Send ( "$login:MENU:DELETE:LISTEDMENU:$id" );
 		} else {
 			echo MENU_ERROR_NR_164;
+		}
+		break;
+		
+	/* ------------------- MeterData ------------------- */
+	case 'getmeterdata' :
+		echo Send ( "$login:METERDATA:GET:ALL" );
+		break;
+	case 'addmeterdata' :
+		$id = Get ( 'id' );
+		$type = Get ( 'type' );
+		$typeid = Get ( 'typeid' );
+		$day = Get ( 'day' );
+		$month = Get ( 'month' );
+		$year = Get ( 'year' );
+		$hour = Get ( 'hour' );
+		$minute = Get ( 'minute' );
+		$meterid = Get ( 'meterid' );
+		$area = Get ( 'area' );
+		$value = Get ( 'value' );
+		$imagename = Get ( 'imagename' );
+		if ($id!= '' && $type!= '' && $typeid!= '' && $day!= '' && $month!= '' && $year!= '' && $hour!= '' && $minute!= '' && $meterid!= '' && $area!= '' && $value!= '' && $imagename!= '') {
+			echo Send ( "$login:METERDATA:ADD:$id:$type:$typeid:$day:$month:$year:$hour:$minute:$meterid:$area:$value:$imagename" );
+		} else {
+			echo METER_DATA_ERROR_NR_197;
+		}
+		break;
+	case 'updatemeterdata' :
+		$id = Get ( 'id' );
+		$type = Get ( 'type' );
+		$typeid = Get ( 'typeid' );
+		$day = Get ( 'day' );
+		$month = Get ( 'month' );
+		$year = Get ( 'year' );
+		$hour = Get ( 'hour' );
+		$minute = Get ( 'minute' );
+		$meterid = Get ( 'meterid' );
+		$area = Get ( 'area' );
+		$value = Get ( 'value' );
+		$imagename = Get ( 'imagename' );
+		if ($id!= '' && $type!= '' && $typeid!= '' && $day!= '' && $month!= '' && $year!= '' && $hour!= '' && $minute!= '' && $meterid!= '' && $area!= '' && $value!= '' && $imagename!= '') {
+			echo Send ( "$login:METERDATA:UPDATE:$id:$type:$typeid:$day:$month:$year:$hour:$minute:$meterid:$area:$value:$imagename" );
+		} else {
+			echo METER_DATA_ERROR_NR_197;
+		}
+		break;
+	case 'deletemeterdata' :
+		$id = Get ( 'id' );
+		if ($id!= '') {
+			echo Send ( "$login:METERDATA:DELETE:$id" );
+		} else {
+			echo METER_DATA_ERROR_NR_197;
+		}
+		break;
+
+	/* ------------------- MoneyMeterData ------------------- */
+	case 'getmoneymeterdataall' :
+		echo Send ( "$login:MONEYMETERDATA:GET:ALL" );
+		break;
+	case 'getmoneymeterdatauser' :
+		echo Send ( "$login:MONEYMETERDATA:GET:USER" );
+		break;
+	case 'addmoneymeterdata' :
+		$id = Get ( 'id' );
+		$bank = Get ( 'bank' );
+		$plan = Get ( 'plan' );
+		$amount = Get ( 'amount' );
+		$unit = Get ( 'unit' );
+		$day = Get ( 'day' );
+		$month = Get ( 'month' );
+		$year = Get ( 'year' );
+		$username = Get ( 'username' );
+		if ($id != '' && $bank != ''&& $plan != '' && $amount != '' && $unit != '' && $day != '' && $month != '' && $year != '' && $username != '') {
+			echo Send ( "$login:MONEYMETERDATA:ADD:$id:$type:$typeid:$day:$month:$year:$hour:$minute:$meterid" );
+		} else {
+			echo MONEY_METER_DATA_ERROR_NR_217;
+		}
+		break;
+	case 'updatemoneymeterdata' :
+		$id = Get ( 'id' );
+		$bank = Get ( 'bank' );
+		$plan = Get ( 'plan' );
+		$amount = Get ( 'amount' );
+		$unit = Get ( 'unit' );
+		$day = Get ( 'day' );
+		$month = Get ( 'month' );
+		$year = Get ( 'year' );
+		$username = Get ( 'username' );
+		if ($id != '' && $bank != ''&& $plan != '' && $amount != '' && $unit != '' && $day != '' && $month != '' && $year != '' && $username != '') {
+			echo Send ( "$login:MONEYMETERDATA:UPDATE:$id:$type:$typeid:$day:$month:$year:$hour:$minute:$meterid" );
+		} else {
+			echo MONEY_METER_DATA_ERROR_NR_217;
+		}
+		break;
+	case 'deletemoneymeterdata' :
+		$id = Get ( 'id' );
+		if ($id!= '') {
+			echo Send ( "$login:MONEYMETERDATA:DELETE:$id" );
+		} else {
+			echo MONEY_METER_DATA_ERROR_NR_217;
 		}
 		break;
 
@@ -327,14 +432,14 @@ switch ($action) {
 		}
 		break;
 	case 'updatemovie' :
+		$id = Get ( 'id' );
 		$title = Get ( 'title' );
 		$genre = Get ( 'genre' );
 		$description = Get ( 'description' );
 		$rating = Get ( 'rating' );
 		$watched = Get ( 'watched' );
-		$sockets = Get ( 'sockets' );
-		if ($title != '') {
-			echo Send ( "$login:MOVIE:UPDATE:$title:$description:$genre:$rating:$watched" );
+		if ($id != '' && $title != '' && $genre != '' && $description != '' && $rating != '' && $watched != '') {
+			echo Send ( "$login:MOVIE:UPDATE:$id:$title:$description:$genre:$rating:$watched" );
 		} else {
 			echo MOVIE_ERROR_NR_400;
 		}
@@ -356,6 +461,7 @@ switch ($action) {
 		echo Send ( "$login:REMOTE:GET:SCHEDULE" );
 		break;
 	case 'addschedule' :
+		$id = Get ( 'id' );
 		$name = Get ( 'name' );
 		$socket = Get ( 'socket' );
 		$gpio = Get ( 'gpio' );
@@ -363,15 +469,16 @@ switch ($action) {
 		$weekday = Get ( 'weekday' );
 		$hour = Get ( 'hour' );
 		$minute = Get ( 'minute' );
-		$onoff = Get ( 'onoff' );
+		$action = Get ( 'action' );
 		$isTimer = Get ( 'isTimer' );
-		if ($name != '' && ($socket != '' || $gpio != '' || $switch != '') && $weekday != '' && $hour != '' && $minute != '' && $onoff != '' && $isTimer != '') {
-			echo Send ( "$login:REMOTE:ADD:SCHEDULE:$name:$socket:$gpio:$switch:$weekday:$hour:$minute:$onoff:$isTimer:1" );
+		if ($id != '' && $name != '' && ($socket != '' || $gpio != '' || $switch != '') && $weekday != '' && $hour != '' && $minute != '' && $action != '' && $isTimer != '') {
+			echo Send ( "$login:REMOTE:ADD:SCHEDULE:$id:$name:$socket:$gpio:$switch:$weekday:$hour:$minute:$action:$isTimer:1" );
 		} else {
 			echo REMOTE_ERROR_NR_121;
 		}
 		break;
 	case 'updateschedule' :
+		$id = Get ( 'id' );
 		$name = Get ( 'name' );
 		$socket = Get ( 'socket' );
 		$gpio = Get ( 'gpio' );
@@ -379,28 +486,28 @@ switch ($action) {
 		$weekday = Get ( 'weekday' );
 		$hour = Get ( 'hour' );
 		$minute = Get ( 'minute' );
-		$onoff = Get ( 'onoff' );
+		$action = Get ( 'action' );
 		$isTimer = Get ( 'isTimer' );
 		$isActive = Get ( 'isactive' );
-		if ($name != '' && ($socket != '' || $gpio != '' || $switch != '') && $weekday != '' && $hour != '' && $minute != '' && $onoff != '' && $isTimer != '' && $isActive != '') {
-			echo Send ( "$login:REMOTE:UPDATE:SCHEDULE:$name:$socket:$gpio:$switch:$weekday:$hour:$minute:$onoff:$isTimer:$isActive" );
+		if ($id != '' && $name != '' && ($socket != '' || $gpio != '' || $switch != '') && $weekday != '' && $hour != '' && $minute != '' && $action != '' && $isTimer != '' && $isActive != '') {
+			echo Send ( "$login:REMOTE:UPDATE:SCHEDULE:$id:$name:$socket:$gpio:$switch:$weekday:$hour:$minute:$action:$isTimer:$isActive" );
 		} else {
 			echo REMOTE_ERROR_NR_121;
 		}
 		break;
 	case 'deleteschedule' :
-		$name = Get ( 'name' );
+		$id = Get ( 'id' );
 		if ($name != '') {
-			echo Send ( "$login:REMOTE:DELETE:SCHEDULE:$name" );
+			echo Send ( "$login:REMOTE:DELETE:SCHEDULE:$id" );
 		} else {
 			echo REMOTE_ERROR_NR_121;
 		}
 		break;
 	case 'setschedule' :
-		$schedule = Get ( 'schedule' );
-		$state = Get ( 'state' );
-		if ($schedule != '' && $state != '') {
-			echo Send ( "$login:REMOTE:SET:SCHEDULE:$schedule:$state" );
+		$id = Get ( 'id' );
+		$isActive = Get ( 'isactive' );
+		if ($id != '' && $isActive != '') {
+			echo Send ( "$login:REMOTE:SET:SCHEDULE:$id:$isActive" );
 		} else {
 			echo REMOTE_ERROR_NR_121;
 		}
@@ -421,8 +528,9 @@ switch ($action) {
 		$name = Get ( 'name' );
 		$group = Get ( 'group' );
 		$quantity = Get ( 'quantity' );
-		if ($id != '' && $name != '' && $group != '' && $quantity != '') {
-			echo Send ( "$login:SHOPPINGLIST:ADD:$id:$name:$group:$quantity" );
+		$unit = Get ( 'unit' );
+		if ($id != '' && $name != '' && $group != '' && $quantity != '' && $unit != '') {
+			echo Send ( "$login:SHOPPINGLIST:ADD:$id:$name:$group:$quantity:$unit" );
 		} else {
 			echo SHOPPING_ERROR_NR_155;
 		}
@@ -432,8 +540,9 @@ switch ($action) {
 		$name = Get ( 'name' );
 		$group = Get ( 'group' );
 		$quantity = Get ( 'quantity' );
-		if ($id != '' && $name != '' && $group != '' && $quantity != '') {
-			echo Send ( "$login:SHOPPINGLIST:UPDATE:$id:$name:$group:$quantity" );
+		$unit = Get ( 'unit' );
+		if ($id != '' && $name != '' && $group != '' && $quantity != '' && $unit != '') {
+			echo Send ( "$login:SHOPPINGLIST:UPDATE:$id:$name:$group:$quantity:$unit" );
 		} else {
 			echo SHOPPING_ERROR_NR_155;
 		}
@@ -452,30 +561,32 @@ switch ($action) {
 		echo Send ( "$login:REMOTE:GET:SOCKET:ALL" );
 		break;
 	case 'addsocket' :
+		$typeid = Get ( 'typeid' );
 		$name = Get ( 'name' );
 		$area = Get ( 'area' );
 		$code = Get ( 'code' );
-		if ($name != '' && $area != '' && $code != '') {
-			echo Send ( "$login:REMOTE:ADD:SOCKET:$name:$area:$code:0" );
+		if ($typeid != '' && $name != '' && $area != '' && $code != '') {
+			echo Send ( "$login:REMOTE:ADD:SOCKET:$typeid:$name:$area:$code:0" );
 		} else {
 			echo REMOTE_ERROR_NR_121;
 		}
 		break;
 	case 'updatesocket' :
+		$typeid = Get ( 'typeid' );
 		$name = Get ( 'name' );
 		$area = Get ( 'area' );
 		$code = Get ( 'code' );
 		$isactivated = Get ( 'isactivated' );
-		if ($name != '' && $area != '' && $code != '' && $isactivated != '') {
-			echo Send ( "$login:REMOTE:UPDATE:SOCKET:$name:$area:$code:$isactivated" );
+		if ($typeid != '' && $name != '' && $area != '' && $code != '' && $isactivated != '') {
+			echo Send ( "$login:REMOTE:UPDATE:SOCKET:$typeid:$name:$area:$code:$isactivated" );
 		} else {
 			echo REMOTE_ERROR_NR_121;
 		}
 		break;
 	case 'deletesocket' :
-		$name = Get ( 'name' );
-		if ($name != '') {
-			echo Send ( "$login:REMOTE:DELETE:SOCKET:$name" );
+		$typeid = Get ( 'typeid' );
+		if ($typeid != '') {
+			echo Send ( "$login:REMOTE:DELETE:SOCKET:$typeid" );
 		} else {
 			echo REMOTE_ERROR_NR_121;
 		}
@@ -501,31 +612,33 @@ switch ($action) {
 		echo Send ( "$login:REMOTE:GET:SWITCH:ALL" );
 		break;
 	case 'addswitch' :
+		$typeid = Get ( 'typeid' );
 		$name = Get ( 'name' );
 		$area = Get ( 'area' );
 		$remoteid = Get ( 'remoteid' );
 		$keycode = Get ( 'keycode' );
-		if ($name != '' && $area != '' && $remoteid != '' && $keycode != '') {
-			echo Send ( "$login:REMOTE:ADD:SWITCH:$name:$area:$keycode:$remoteid" );
+		if ($typeid != '' && $name != '' && $area != '' && $remoteid != '' && $keycode != '') {
+			echo Send ( "$login:REMOTE:ADD:SWITCH:$typeid:$name:$area:$keycode:$remoteid" );
 		} else {
 			echo REMOTE_ERROR_NR_121;
 		}
 		break;
 	case 'updateswitch' :
+		$typeid = Get ( 'typeid' );
 		$name = Get ( 'name' );
 		$area = Get ( 'area' );
 		$remoteid = Get ( 'remoteid' );
 		$keycode = Get ( 'keycode' );
-		if ($name != '' && $area != '' && $code != '' && $isactivated != '') {
-			echo Send ( "$login:REMOTE:UPDATE:SWITCH:$name:$area:$keycode:$remoteid" );
+		if ($typeid != '' && $name != '' && $area != '' && $remoteid != '' && $keycode != '') {
+			echo Send ( "$login:REMOTE:UPDATE:SWITCH:$typeid:$name:$area:$keycode:$remoteid" );
 		} else {
 			echo REMOTE_ERROR_NR_121;
 		}
 		break;
 	case 'deleteswitch' :
-		$name = Get ( 'name' );
-		if ($name != '') {
-			echo Send ( "$login:REMOTE:DELETE:SWITCH:$name" );
+		$typeid = Get ( 'typeid' );
+		if ($typeid != '') {
+			echo Send ( "$login:REMOTE:DELETE:SWITCH:$typeid" );
 		} else {
 			echo REMOTE_ERROR_NR_121;
 		}
@@ -676,6 +789,11 @@ function GetMapContent() {
 	return Send ( "Website:234524:MAPCONTENT:GET:PHP" );
 }
 
+/* ===================== Get Meter Data =================== */
+function GetMeterData() {
+	return Send ( "Website:234524:METERDATA:GET:PHP" );
+}
+
 /* ===================== Get Menu =================== */
 function GetMenu() {
 	return Send ( "Website:234524:MENU:GET:MENU_PHP" );
@@ -795,14 +913,38 @@ function ParseMenu($data) {
 	return $menus;
 }
 
+function ParseMeterData($data) {
+	$values = GetValues ( $data, 'meterdata::' );
+	$meterdata = array ();
+	for($i = 0; $i < count ( $values ); $i ++) {
+		$meterdata [] = array (
+				'id' => trim ( $values [$i] [1] ),
+				'type' => trim ( $values [$i] [2] ),
+				'typeid' => trim ( $values [$i] [3] ),
+				'day' => trim ( $values [$i] [4] ),
+				'month' => trim ( $values [$i] [5] ),
+				'year' => trim ( $values [$i] [6] ),
+				'hour' => trim ( $values [$i] [7] ),
+				'minute' => trim ( $values [$i] [8] ),
+				'meterid' => trim ( $values [$i] [9] ),
+				'area' => trim ( $values [$i] [10] ),
+				'value' => trim ( $values [$i] [11] ),
+				'imagename' => trim ( $values [$i] [12] )
+		);
+	}
+	return $meterdata;
+}
+
 function ParseShoppingList($data) {
 	$values = GetValues ( $data, 'shopping_entry::' );
 	$shoppingList = array ();
 	for($i = 0; $i < count ( $values ); $i ++) {
 		$shoppingList [] = array (
-				'name' => trim ( $values [$i] [1] ),
-				'group' => trim ( $values [$i] [2] ),
-				'quantity' => trim ( $values [$i] [3] )
+				'id' => trim ( $values [$i] [1] ),
+				'name' => trim ( $values [$i] [2] ),
+				'group' => trim ( $values [$i] [3] ),
+				'quantity' => trim ( $values [$i] [4] ),
+				'unit' => trim ( $values [$i] [5] )
 		);
 	}
 	return $shoppingList;
@@ -818,7 +960,8 @@ function ParseBirthdayList($data) {
 				'day' => trim ( $values [$i] [3] ),
 				'month' => trim ( $values [$i] [4] ),
 				'year' => trim ( $values [$i] [5] ),
-				'remindme' => trim ( $values [$i] [6] )
+				'group' => trim ( $values [$i] [6] ),
+				'remindme' => trim ( $values [$i] [7] )
 		);
 	}
 	return $birthdayList;

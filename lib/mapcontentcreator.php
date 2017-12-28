@@ -1,31 +1,64 @@
 <?php
 
+function GetMapTypeTextColor($type) {
+	switch ($type) {
+	    case "WirelessSocket":
+	        return "white";
+	    case "LAN":
+	        return "black";
+	    case "MediaServer":
+	        return "black";
+	    case "RaspberryPi":
+	        return "black";
+	    case "NAS":
+	        return "white";
+	    case "LightSwitch":
+	        return "black";
+	    case "Temperature":
+	        return "black";
+	    case "PuckJS":
+	        return "white";
+	    case "Menu":
+	        return "black";
+	    case "ShoppingList":
+	        return "white";
+	    case "Camera":
+	        return "white";
+	    case "Meter":
+	        return "white";
+    	default:
+			return "black";
+	}
+}
+
 function GetMapTypeBackgroundColor($type) {
 	switch ($type) {
 	    case "WirelessSocket":
-	        return "blue";
+	        return "red";
 	    case "LAN":
 	        return "orange";
 	    case "MediaServer":
-	        return "lightgreen";
+	        return "darkslateblue";
 	    case "RaspberryPi":
 	        return "darkyellow";
 	    case "NAS":
 	        return "grey";
 	    case "LightSwitch":
-	        return "red";
+	        return "lightblue";
 	    case "Temperature":
-	        return "brown";
+	        return "lightgreen";
 	    case "PuckJS":
 	        return "darkgreen";
 	    case "Menu":
-	        return "lightyellow";
+	        return "yellow";
 	    case "ShoppingList":
 	        return "purple";
 	    case "Camera":
 	        return "black";
+	    case "Meter":
+	        return "darkblue";
     	default:
-					return "white";
+			return "lightseagreen";
 	}
 }
 

@@ -1,16 +1,17 @@
 <div class="container-fluid">
-    <h3 class="demo-panel-title">Birthdays</h3>
+    <h3 class="demo-panel-title">Current shopping list</h3>
 	<table class="table table-bordered table-striped font-big"
 		id="no-more-tables">
 		<thead>
 			<tr>
+				<th>Group</th>
 				<th>Name</th>
-				<th>Date</th>
-  			<th>Remind Me</th>
+				<th>Quantity</th>
+				<th>Unit</th>
 			</tr>
 		</thead>
 		<tbody>
-  			[BIRTHDAYTABLE]
+  			[SHOPPINGLISTTABLE]
 		</tbody>
 	</table>
 </div>

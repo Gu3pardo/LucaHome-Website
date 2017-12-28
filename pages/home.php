@@ -15,8 +15,9 @@ class Home {
 		$this->app->Nav->AddAction ( 'menu', 'Menu' );
 		$this->app->Nav->AddAction ( 'shoppinglist', 'ShoppingList' );
 		$this->app->Nav->AddAction ( 'birthdaylist', 'BirthdayList' );
+		$this->app->Nav->AddAction ( 'meterdatalist', 'MeterDataList' );
 		$this->app->Nav->AddAction ( 'map', 'Map' );
-    $this->app->Nav->AddAction ( 'help', 'Help');
+		$this->app->Nav->AddAction ( 'help', 'Help');
 
 		$this->app->Nav->DefaultAction ( 'information' );
 	}
@@ -31,11 +32,7 @@ class Home {
 
 		$information_table = '';
 		for($i = 0; $i < count ( $informations ); $i ++) {
-			$information_table .= "
-						<tr>
-							<td>{$informations[$i]['key']}</td>
-              <td>{$informations[$i]['value']}</td>
-            </tr>";
+			$information_table .= "<tr><td>{$informations[$i]['key']}</td><td>{$informations[$i]['value']}</td></tr>";
 		}
 		$this->app->Tpl->Set ( 'INFORMATIONTABLE', $information_table );
 
@@ -46,12 +43,7 @@ class Home {
 
 		$change_table = '';
 		for($i = 0; $i < count ( $changes ); $i ++) {
-			$change_table .= "
-						<tr>
-							<td>{$changes[$i]['type']}</td>
-              <td>{$changes[$i]['hour']}:{$changes[$i]['minute']} / {$changes[$i]['day']}.{$changes[$i]['month']}.{$changes[$i]['year']}</td>
-							<td>{$changes[$i]['user']}</td>
-            </tr>";
+			$change_table .= "<tr><td>{$changes[$i]['type']}</td><td>{$changes[$i]['hour']}:{$changes[$i]['minute']} / {$changes[$i]['day']}.{$changes[$i]['month']}.{$changes[$i]['year']}</td><td>{$changes[$i]['user']}</td></tr>";
 		}
 		$this->app->Tpl->Set ( 'CHANGETABLE', $change_table );
 
@@ -74,9 +66,7 @@ class Home {
 
 		$temp_out = '';
 		$temp_out .= "
-		<div class=\"button socket\">
-			<div class=\"button_text temperature_value\">{$temperatures[0]['area']}:   {$temperatures[0]['value']} &#176;C</div>
-		</div>";
+		<div class=\"button socket\"><div class=\"button_text temperature_value\">{$temperatures[0]['area']}:   {$temperatures[0]['value']} &#176;C</div></div>";
 
 		$this->app->Tpl->Set ( 'LINK_TEXT', $link_text );
 		$this->app->Tpl->Set ( 'TEMPERATURE', $temp_out );
@@ -122,13 +112,7 @@ class Home {
 
 		$menu_table = '';
 		for($i = 0; $i < count ( $menu ); $i ++) {
-			$menu_table .= "
-						<tr>
-							<td>{$menu[$i]['weekday']}</td>
-              <td>{$menu[$i]['day']}.{$menu[$i]['month']}.{$menu[$i]['year']}</td>
-              <td>{$menu[$i]['title']}</td>
-              <td>{$menu[$i]['description']}</td>
-            </tr>";
+			$menu_table .= "<tr><td>{$menu[$i]['weekday']}</td><td>{$menu[$i]['day']}.{$menu[$i]['month']}.{$menu[$i]['year']}</td><td>{$menu[$i]['title']}</td><td>{$menu[$i]['description']}</td></tr>";
 		}
 		$this->app->Tpl->Set ( 'MENUTABLE', $menu_table );
 
@@ -144,17 +128,12 @@ class Home {
 
 		$shoppingList_table = '';
 		for($i = 0; $i < count ( $shoppingList ); $i ++) {
-			$shoppingList_table .= "
-						<tr>
-            	<td>{$shoppingList[$i]['group']}</td>
-							<td>{$shoppingList[$i]['name']}</td>
-              <td>{$shoppingList[$i]['quantity']}</td>
-            </tr>";
+			$shoppingList_table .= "<tr><td>{$shoppingList[$i]['group']}</td><td>{$shoppingList[$i]['name']}</td><td>{$shoppingList[$i]['quantity']}</td><td>{$shoppingList[$i]['unit']}</td></tr>";
 		}
 		$this->app->Tpl->Set ( 'SHOPPINGLISTTABLE', $shoppingList_table );
 
 		$this->app->Tpl->Set ( 'MENUSHOPPINGLIST', 'class="active"' );
-		$this->app->Tpl->Parse ( 'PAGE', 'page_shopping_list.tpl' );
+		$this->app->Tpl->Parse ( 'PAGE', 'page_shopping.tpl' );
 	}
 
 	function BirthdayList() {
@@ -165,17 +144,12 @@ class Home {
 
 		$birthdayList_table = '';
 		for($i = 0; $i < count ( $birthdayList ); $i ++) {
-			$birthdayList_table .= "
-						<tr>
-							<td>{$birthdayList[$i]['name']}</td>
-							<td>{$birthdayList[$i]['day']}.{$birthdayList[$i]['month']}.{$birthdayList[$i]['year']}</td>
-							<td>{$birthdayList[$i]['remindme']}</td>
-            </tr>";
+			$birthdayList_table .= "<tr><td>{$birthdayList[$i]['name']}</td><td>{$birthdayList[$i]['day']}.{$birthdayList[$i]['month']}.{$birthdayList[$i]['year']}</td><td>{$birthdayList[$i]['group']}</td><td>{$birthdayList[$i]['remindme']}</td></tr>";
 		}
 		$this->app->Tpl->Set ( 'BIRTHDAYTABLE', $birthdayList_table );
 
 		$this->app->Tpl->Set ( 'MENUBIRTHDAYLIST', 'class="active"' );
-		$this->app->Tpl->Parse ( 'PAGE', 'page_birthday_list.tpl' );
+		$this->app->Tpl->Parse ( 'PAGE', 'page_birthday.tpl' );
 	}
 
 	function Map() {
@@ -198,9 +172,10 @@ class Home {
 				$area = $mapContent[$i]['area'];
 				$type = $mapContent[$i]['type'];
 
+				$textcolor = GetMapTypeTextColor($type);
 				$backgroundcolor = GetMapTypeBackgroundColor($type);
 
-				$mapContent_HTML .= "<p style='position: absolute; background-color:$backgroundcolor; left: $postionX%; bottom:$postionY%; border-radius:5px; padding 5px;'>$shortname<br/>$area<br/>$type</p>";
+				$mapContent_HTML .= "<p style='position: absolute; background-color:$backgroundcolor; color:$textcolor; left: $postionX%; bottom:$postionY%; border-radius:10px; padding 5px;'>$shortname<br/>$area<br/>$type</p>";
 			}
 		}
 
@@ -212,10 +187,26 @@ class Home {
 		$this->app->Tpl->Set ( 'MENUMAP', 'class="active"' );
 		$this->app->Tpl->Parse ( 'PAGE', 'page_map.tpl' );
 	}
+	
+	function MeterDataList() {
+		include ('./lib/lucahome.php');
 
-  function Help() {
-    $this->app->Tpl->Set('MENUHELP', 'class="active"');
-    $this->app->Tpl->Parse('PAGE', 'page_help.tpl');
-  }
+		$dataMeterDataList = GetMeterData();
+		$meterDataList = ParseMeterData ( $dataMeterDataList );
+
+		$meterDataList_table = '';
+		for($i = 0; $i < count ( $meterDataList ); $i ++) {
+			$meterDataList_table .= "<tr><td>{$meterDataList[$i]['id']}</td><td>{$meterDataList[$i]['type']}</td><td>{$meterDataList[$i]['typeid']}</td><td>{$meterDataList[$i]['day']}.{$meterDataList[$i]['month']}.{$meterDataList[$i]['year']}/{$meterDataList[$i]['hour']}:{$meterDataList[$i]['minute']}</td><td>{$meterDataList[$i]['meterid']}</td><td>{$meterDataList[$i]['area']}</td><td>{$meterDataList[$i]['value']}</td><td>{$meterDataList[$i]['imagename']}</td></tr>";
+		}
+		$this->app->Tpl->Set ( 'METERDATATABLE', $meterDataList_table );
+
+		$this->app->Tpl->Set ( 'MENUMETERDATALIST', 'class="active"' );
+		$this->app->Tpl->Parse ( 'PAGE', 'page_meterdata.tpl' );
+	}
+
+	function Help() {
+		$this->app->Tpl->Set('MENUHELP', 'class="active"');
+		$this->app->Tpl->Parse('PAGE', 'page_help.tpl');
+	}
 }
 ?>
