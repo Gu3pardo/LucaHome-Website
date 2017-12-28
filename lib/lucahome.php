@@ -365,6 +365,7 @@ switch ($action) {
 		break;
 	case 'addmoneymeterdata' :
 		$id = Get ( 'id' );
+		$typeid = Get ( 'typeid' );
 		$bank = Get ( 'bank' );
 		$plan = Get ( 'plan' );
 		$amount = Get ( 'amount' );
@@ -373,14 +374,15 @@ switch ($action) {
 		$month = Get ( 'month' );
 		$year = Get ( 'year' );
 		$username = Get ( 'username' );
-		if ($id != '' && $bank != ''&& $plan != '' && $amount != '' && $unit != '' && $day != '' && $month != '' && $year != '' && $username != '') {
-			echo Send ( "$login:MONEYMETERDATA:ADD:$id:$type:$typeid:$day:$month:$year:$hour:$minute:$meterid" );
+		if ($id != '' && $typeid != '' && $bank != '' && $plan != '' && $amount != '' && $unit != '' && $day != '' && $month != '' && $year != '' && $username != '') {
+			echo Send ( "$login:MONEYMETERDATA:ADD:$id:$typeid:$bank:$plan:$amount:$unit:$day:$month:$year:$username" );
 		} else {
 			echo MONEY_METER_DATA_ERROR_NR_217;
 		}
 		break;
 	case 'updatemoneymeterdata' :
 		$id = Get ( 'id' );
+		$typeid = Get ( 'typeid' );
 		$bank = Get ( 'bank' );
 		$plan = Get ( 'plan' );
 		$amount = Get ( 'amount' );
@@ -389,8 +391,8 @@ switch ($action) {
 		$month = Get ( 'month' );
 		$year = Get ( 'year' );
 		$username = Get ( 'username' );
-		if ($id != '' && $bank != ''&& $plan != '' && $amount != '' && $unit != '' && $day != '' && $month != '' && $year != '' && $username != '') {
-			echo Send ( "$login:MONEYMETERDATA:UPDATE:$id:$type:$typeid:$day:$month:$year:$hour:$minute:$meterid" );
+		if ($id != '' && $typeid != '' && $bank != '' && $plan != '' && $amount != '' && $unit != '' && $day != '' && $month != '' && $year != '' && $username != '') {
+			echo Send ( "$login:MONEYMETERDATA:UPDATE:$id:$typeid:$bank:$plan:$amount:$unit:$day:$month:$year:$username" );
 		} else {
 			echo MONEY_METER_DATA_ERROR_NR_217;
 		}
