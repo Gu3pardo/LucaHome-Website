@@ -449,6 +449,43 @@ switch ($action) {
 	case 'loadmovies' :
 			echo Send ( "$login:MOVIE:LOAD:ALL" );
 		break;
+		
+	/* ---------------------- Gpio --------------------- */
+	case 'getpuckjs' :
+		echo Send ( "$login:REMOTE:GET:PUCKJS" );
+		break;
+	case 'addpuckjs' :
+		$id = Get ( 'id' );
+		$name = Get ( 'name' );
+		$area = Get ( 'area' );
+		$mac = Get ( 'mac' );
+		$mac = str_replace(":", "_", $mac);
+		if ($id != '' && $name != '' && $area != '' && $mac != '') {
+			echo Send ( "$login:REMOTE:ADD:PUCKJS:$id:$name:$area:$mac" );
+		} else {
+			echo REMOTE_ERROR_NR_121;
+		}
+		break;
+	case 'updatepuckjs' :
+		$id = Get ( 'id' );
+		$name = Get ( 'name' );
+		$area = Get ( 'area' );
+		$mac = Get ( 'mac' );
+		$mac = str_replace(":", "_", $mac);
+		if ($id != '' && $name != '' && $area != '' && $mac != '') {
+			echo Send ( "$login:REMOTE:UPDATE:PUCKJS:$id:$name:$area:$mac" );
+		} else {
+			echo REMOTE_ERROR_NR_121;
+		}
+		break;
+	case 'deletepuckjs' :
+		$id = Get ( 'id' );
+		if ($id != '') {
+			echo Send ( "$login:REMOTE:DELETE:PUCKJS:$id" );
+		} else {
+			echo REMOTE_ERROR_NR_121;
+		}
+		break;
 
 	/* --------------------- Remote -------------------- */
 	case 'getraspberry' :

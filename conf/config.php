@@ -20,7 +20,7 @@ class Config
 		$this->NAV_PAGES = array ('home');
 
 		// Meta
-		$this->META_TITLE = 'LucaHome 5.1.1.171228';
+		$this->META_TITLE = 'LucaHome 5.2.0.180103';
 		$this->META_DESCRIPTION = 'Control your sockets and light. Display temperature and show your movies via your android smartphone. Monitor your room with a camera';
 		$this->META_KEYWORDS_EN = 'SMART, HOME, RASPBERRY, MOVIE, SOCKET, BIRTHDAY, SECURITY SYSTEM';
 		$this->META_KEYWORDS_DE = 'SMART, HOME, RASPBERRY, FILM, STECKDOSE, GEBURTSTAG, SICHERHEITSSYSTEM';
