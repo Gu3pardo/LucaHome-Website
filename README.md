@@ -4,24 +4,16 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 <a target="_blank" href="https://www.paypal.me/GuepardoApps" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-blue.svg" /></a>
 
-[![Version](https://img.shields.io/badge/version-v5.2.0.180103-blue.svg)](https://github.com/GuepardoApps/LucaHome-Website)
+[![Version](https://img.shields.io/badge/version-v6.0.0.180301alpha1-blue.svg)](https://github.com/GuepardoApps/LucaHome-Website)
 
 Part of the LucaHome-Project
 
-Website based on PHP to view some basic data about the LucaHome-Project.
+Website based on Angular to view some basic data about the LucaHome-Project.
 
 # Installation
-Copy the code of this project to /var/www
+TBD
 
 # IMPORTANT
 following project is also needed to work with the website
 https://github.com/GuepardoApps/LucaHome-RaspberryServer
 https://github.com/GuepardoApps/LucaHome-RaspberryTemperatureLogger
-
----
-
-![alt tag](https://github.com/GuepardoApps/LucaHome-Website/blob/master/screenshots/img001.png)
-
-![alt tag](https://github.com/GuepardoApps/LucaHome-Website/blob/master/screenshots/img002.png)
-
----
