@@ -1,0 +1,9 @@
+<div class="temperature">
+  <iframe [src]=domSanitizer.bypassSecurityTrustResourceUrl(link)
+          class="temperature-frame"
+          frameborder="0"></iframe>
+  <div class="row lucahome-row">
+    <div class="circle-25-px-{{circleColor}}"></div>
+    <span class="col {{circleColor}}">Current temperature is {{temperature}}°C</span>
+  </div>
+</div>

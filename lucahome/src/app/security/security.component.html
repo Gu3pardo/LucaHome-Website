@@ -1,0 +1,10 @@
+<div class="security">
+  <iframe [src]=domSanitizer.bypassSecurityTrustResourceUrl(link)
+          class="security-frame"
+          frameborder="0"></iframe>
+  <div class="row lucahome-row">
+    <div class="circle-25-px-{{circleColor}}"></div>
+    <span class="col {{circleColor}}">Camera is {{cameraState}}</span>
+    <button type="button" class="btn btn-outline-light btn-sm" (click)="toggleCameraState()">{{buttonText}}</button>
+  </div>
+</div>

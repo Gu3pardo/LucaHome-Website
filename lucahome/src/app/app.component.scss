@@ -1,0 +1,19 @@
+.lucahome-container {
+  max-width: unset;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+
+.lucahome-content {
+  min-height: 875px;
+  margin-top: 20px;
+}
+
+.lucahome-bottom {
+  position: absolute;
+  bottom: 0;
+  height: 30px;
+  background-color: lightgray;
+}

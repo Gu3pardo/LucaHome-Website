@@ -1,0 +1,27 @@
+@import "../../styles/fontawesome.scss";
+@import "../../styles/fa-solid.scss";
+@import "../../constants.scss";
+
+.user-div {
+  text-align: end;
+  padding: 2px;
+}
+
+.user-button {
+  @include fa-icon;
+  @extend .fas;
+  color: $footer-font-link-default-color;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: $footer-font-size;
+  font-weight: bolder;
+
+  &:before {
+    content: fa-content($fa-var-user-circle);
+    margin-right: 3px;
+  }
+
+  &:hover {
+    color: $footer-font-link-hover-color;
+  }
+}

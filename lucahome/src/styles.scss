@@ -1,0 +1,63 @@
+@import "~bootstrap/dist/css/bootstrap.min.css";
+@import "./styles/fontawesome.scss";
+@import "./styles/fa-solid.scss";
+@import "./constants.scss";
+
+body {
+  background-color: $body-color;
+}
+
+.lucahome-row {
+  margin-left: 0px;
+  margin-right: 0px;
+  width: 100%;
+}
+
+.edit-button {
+  @include fa-icon;
+  @extend .fas;
+  color: #FFFFFF;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bolder;
+
+  &:after {
+    content: fa-content($fa-var-wrench);
+    margin-right: 3px;
+  }
+
+  &:hover {
+    color: #B0B0B0;
+  }
+}
+
+
+$height-list: ( 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100 );
+
+@each $value in $height-list {
+  .height-#{nth($value,1)}-percent {
+    height: nth($value,1)#{%};
+  }
+}
+
+$color-list: ( red, orange, yellow, gree, blue, white );
+
+@each $value in $color-list {
+  .#{nth($value,1)} {
+    color: nth($value,1);
+  }
+}
+
+$circle-list: ( 10 red, 15 red, 20 red, 25 red, 30 red, 35 red, 40 red, 45 red, 50 red, 10 orange, 15 orange, 20 orange, 25 orange, 30 orange, 35 orange, 40 orange, 45 orange, 50 orange, 10 yellow, 15 yellow, 20 yellow, 25 yellow, 30 yellow, 35 yellow, 40 yellow, 45 yellow, 50 yellow, 10 green, 15 green, 20 green, 25 green, 30 green, 35 green, 40 green, 45 green, 50 green, 10 blue, 15 blue, 20 blue, 25 blue, 30 blue, 35 blue, 40 blue, 45 blue, 50 blue, 10 white, 15 white, 20 white, 25 white, 30 white, 35 white, 40 white, 45 white, 50 white, 10 grey, 15 grey, 20 grey, 25 grey, 30 grey, 35 grey, 40 grey, 45 grey, 50 grey );
+
+@each $value in $circle-list {
+  .circle-#{nth($value,1)}-px-#{nth($value,2)} {
+    height: nth($value,1)#{px};
+    width: nth($value,1)#{px};
+    -webkit-border-radius: nth($value,1)/2#{px};
+    -moz-border-radius: nth($value,1)/2#{px};
+    border-radius: nth($value,1)/2#{px};
+    background: nth($value,2);
+  }
+}
