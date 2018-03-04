@@ -2,10 +2,12 @@ import { TestBed, inject } from '@angular/core/testing';
 
 import { DialogService } from './dialog.service';
 
-describe('DialogService', () => {
+xdescribe('DialogService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [DialogService]
+      providers: [
+        DialogService
+      ]
     });
   });
 

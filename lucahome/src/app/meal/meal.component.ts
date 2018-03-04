@@ -1,25 +1,44 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { DialogService } from "../shared/dialog.service";
+import { MealService } from "./meal.service";
+import { Meal } from "./meal";
 
 @Component({
   selector: 'app-meal',
   templateUrl: './meal.component.html',
   styleUrls: ['./meal.component.scss']
 })
-export class MealComponent implements OnInit {
+export class MealComponent implements OnInit, OnDestroy {
 
-  weekdayArray: string[] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  weekdayArray: string[] = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  selectedMeal: Meal = { uuid: "", title: "", description: "", weekday: this.weekdayArray[0] };
+  mealList: Meal[];
 
-  selectedWeekday: string = "Monday";
-  title: string = "Vegan lasagne";
-  description: string = "Cook like the instructions show you to cook!";
-
-  constructor() { }
+  constructor(
+    private dialogService: DialogService,
+    private mealService: MealService) {
+  }
 
   ngOnInit() {
+    this.mealService.mealList.subscribe(mealList => {
+      if (mealList) {
+        this.mealList = mealList;
+        this.setSelectedMeal();
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.mealService.mealList) {
+      this.mealService.mealList.unsubscribe();
+    }
   }
 
   public selectWeekday(weekday: string): void {
-    console.log(`Pressed on weekday ${weekday}`);
+    let selectedMeal = this.mealList.find(meal => meal.weekday === weekday);
+    if (selectedMeal) {
+      this.selectedMeal = selectedMeal;
+    }
   }
 
   public editTitle(): void {
@@ -28,5 +47,17 @@ export class MealComponent implements OnInit {
 
   public editDescription(): void {
     console.log("Pressed editDescription");
+  }
+
+  private setSelectedMeal(): void {
+    if (this.mealList.length > 0) {
+      let today = new Date();
+      let weekday = this.weekdayArray[today.getDay()];
+
+      let todayMeal = this.mealList.find(meal => meal.weekday === weekday);
+      if (todayMeal) {
+        this.selectedMeal = todayMeal;
+      }
+    }
   }
 }

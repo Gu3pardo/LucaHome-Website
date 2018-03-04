@@ -4,15 +4,15 @@
       <button type="button"
               [ngClass]="{
               'btn btn-sm meal-button ' : true,
-              'btn-outline-light' : weekdayEntry !== selectedWeekday,
-              'btn-light' : weekdayEntry === selectedWeekday}"
+              'btn-outline-light' : weekdayEntry !== selectedMeal.weekday,
+              'btn-light' : weekdayEntry === selectedMeal.weekday}"
               (click)="selectWeekday(weekdayEntry)">
         {{weekdayEntry}}
       </button>
     </div>
   </div>
   <div class="col-7 meal-weekday-data-row">
-    <i class="edit-button" (click)="editTitle()"></i><label>Title</label><br /><span>{{title}}</span><br />
-    <i class="edit-button" (click)="editDescription()"></i><label>Description</label><br /><span>{{description}}</span>
+    <i class="edit-button" (click)="editTitle()"></i><label>Title</label><br /><span>{{selectedMeal.title}}</span><br />
+    <i class="edit-button" (click)="editDescription()"></i><label>Description</label><br /><span>{{selectedMeal.description}}</span>
   </div>
 </div>

@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-// import { IToastService } from "angular-material";
 import { ILucaToastService } from "./toast.service.i";
 
 @Injectable()
@@ -7,13 +6,12 @@ export class ToastService implements ILucaToastService {
   public toastPosition: string = "bottom right";
 
   public content: string;
-  public static $inject = ["$mdToast"];
+  // public static $inject = ["$mdToast"];
 
-  // TODO: Injection not working!
-  constructor(/*private $mdToast: IToastService*/) { }
+  constructor() { }
 
   DisplayError(text: string): void {
-    /*this.$mdToast.show({
+    /*this.toast.show({
       position: this.toastPosition,
       controller: () => {
         this.content = text;
@@ -25,7 +23,7 @@ export class ToastService implements ILucaToastService {
   }
 
   DisplaySuccess(text: string): void {
-    /*this.$mdToast.show({
+    /*this.toast.show({
       position: this.toastPosition,
       controller: () => {
         this.content = text;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SecurityService } from "./security.service";
 
@@ -7,7 +7,7 @@ import { SecurityService } from "./security.service";
   templateUrl: './security.component.html',
   styleUrls: ['./security.component.scss']
 })
-export class SecurityComponent implements OnInit {
+export class SecurityComponent implements OnInit, OnDestroy {
 
   link: string = "http://192.168.178.25:8081";
   circleColor: string = "red";
@@ -19,6 +19,9 @@ export class SecurityComponent implements OnInit {
     private securityService: SecurityService) { }
 
   ngOnInit() {
+  }
+
+  ngOnDestroy() {
   }
 
   public toggleCameraState(): void {

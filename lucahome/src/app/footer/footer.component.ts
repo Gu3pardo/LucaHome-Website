@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FooterLink } from "./footer-link";
 
 @Component({
@@ -6,7 +6,7 @@ import { FooterLink } from "./footer-link";
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.scss']
 })
-export class FooterComponent implements OnInit {
+export class FooterComponent implements OnInit, OnDestroy {
 
   footerLinks: FooterLink[] = [{
     name: "GuepardoApps",
@@ -22,6 +22,9 @@ export class FooterComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+  ngOnDestroy() {
   }
 
 }

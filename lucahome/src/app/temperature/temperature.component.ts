@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
@@ -6,7 +6,7 @@ import { DomSanitizer } from '@angular/platform-browser';
   templateUrl: './temperature.component.html',
   styleUrls: ['./temperature.component.scss']
 })
-export class TemperatureComponent implements OnInit {
+export class TemperatureComponent implements OnInit, OnDestroy {
 
   link: string = "http://192.168.178.25/cgi-bin/webgui.py";
   circleColor: string = "white";
@@ -15,5 +15,8 @@ export class TemperatureComponent implements OnInit {
   constructor(private domSanitizer: DomSanitizer) { }
 
   ngOnInit() {
+  }
+
+  ngOnDestroy() {
   }
 }

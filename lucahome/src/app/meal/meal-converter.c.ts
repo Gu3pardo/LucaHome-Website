@@ -7,6 +7,25 @@ export abstract class MealConverter {
     }
 
     // TODO implement conversion
-    return [];
+    return [
+      {
+        uuid: "UUID1",
+        title: "Title1",
+        description: "Description1",
+        weekday: "Monday"
+      },
+      {
+        uuid: "UUID2",
+        title: "Title2",
+        description: "Description2",
+        weekday: "Tuesday"
+      },
+      {
+        uuid: "UUID3",
+        title: "Title3",
+        description: "Description3",
+        weekday: "Sunday"
+      }
+    ];
   }
 }
