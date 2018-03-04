@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FooterLink } from "./footer-link";
 
 @Component({
   selector: 'app-footer',
@@ -7,14 +8,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FooterComponent implements OnInit {
 
-  version: string = "";
-  copyright: string = "";
+  footerLinks: FooterLink[] = [{
+    name: "GuepardoApps",
+    url: "https://guepardoapps.github.io"
+  }, {
+    name: "GitHub",
+    url: "https://www.github.com/guepardoapps"
+  }];
+
+  version: string = "2018.03.03.01";
+  copyright: string = "2018";
 
   constructor() { }
 
   ngOnInit() {
-    this.version = "2018.03.02.01";
-    this.copyright = "2018";
   }
 
 }

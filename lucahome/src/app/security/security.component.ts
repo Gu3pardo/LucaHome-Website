@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { SecurityService } from "./security.service";
 
 @Component({
   selector: 'app-security',
@@ -13,7 +14,9 @@ export class SecurityComponent implements OnInit {
   cameraState: string = "inactive";
   buttonText: string = "Activate camera";
 
-  constructor(private domSanitizer: DomSanitizer) { }
+  constructor(
+    private domSanitizer: DomSanitizer,
+    private securityService: SecurityService) { }
 
   ngOnInit() {
   }
