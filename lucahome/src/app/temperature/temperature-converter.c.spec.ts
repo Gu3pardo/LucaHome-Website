@@ -16,4 +16,9 @@ describe('TemperatureConverter', () => {
   it('null json should throw error', () => {
     expect(() => TemperatureConverter.ConvertJson(null)).toThrow("NoJsonProvided");
   });
+
+  it('json with should throw errorJson', () => {
+    const errorJson = "Error: UnitTest";
+    expect(() => TemperatureConverter.ConvertJson(errorJson)).toThrow(errorJson);
+  });
 });

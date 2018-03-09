@@ -1,18 +1,17 @@
+import { OnInit, OnDestroy } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-export interface ILucaApiService {
-  LoadMealListData(): BehaviorSubject<string>;
-  UpdateMeal(data: string): BehaviorSubject<string>;
+export interface ILucaApiService extends OnInit, OnDestroy {
+  LoadMealListData(): void;
+  EditMeal(data: string): void;
 
-  LoadSecurityData(): BehaviorSubject<string>;
-  SetCameraState(data: string): BehaviorSubject<string>;
+  LoadSecurityData(): void;
+  SetCameraState(data: string): void;
 
-  LoadShoppingListData(): BehaviorSubject<string>;
-  AddShoppingItem(data: string): BehaviorSubject<string>;
-  UpdateShoppingItem(data: string): BehaviorSubject<string>;
-  DeleteShoppingItem(data: string): BehaviorSubject<string>;
+  LoadShoppingListData(): void;
+  EditShoppingItem(data: string): void;
 
-  LoadTemperatureData(): BehaviorSubject<string>;
+  LoadTemperatureData(): void;
 
-  AuthentificateUser(data: string): BehaviorSubject<string>;
+  AuthentificateUser(data: string): void;
 }

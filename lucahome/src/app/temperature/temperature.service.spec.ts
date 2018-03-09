@@ -23,4 +23,10 @@ describe('TemperatureService', () => {
   it('should be created', inject([TemperatureService], (service: TemperatureService) => {
     expect(service).toBeTruthy();
   }));
+
+  it('LoadTemperature should call apiService.LoadTemperatureData', inject([TemperatureService], (service: TemperatureService) => {
+    service.LoadTemperature();
+
+    expect(apiServiceMock.LoadTemperatureData).toHaveBeenCalled();
+  }));
 });

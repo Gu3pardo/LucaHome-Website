@@ -1,3 +1,5 @@
 export enum TemperatureType {
-  RaspberryPi, PuckJs, Outdoor
+  RaspberryPi,
+  PuckJs,
+  Outdoor
 }

@@ -16,4 +16,9 @@ describe('UserConverter', () => {
   it('null json should throw error', () => {
     expect(() => UserConverter.ConvertJson(null)).toThrow("NoJsonProvided");
   });
+
+  it('json with should throw errorJson', () => {
+    const errorJson = "Error: UnitTest";
+    expect(() => UserConverter.ConvertJson(errorJson)).toThrow(errorJson);
+  });
 });

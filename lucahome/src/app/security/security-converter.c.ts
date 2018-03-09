@@ -6,11 +6,14 @@ export abstract class SecurityConverter {
       throw "NoJsonProvided";
     }
 
+    if (json.indexOf("Error") >= 0) {
+      throw json;
+    }
+
     // TODO implement conversion
     return {
       active: true,
-      taskActive: true,
-      url: ""
+      taskActive: true
     };
   }
 }

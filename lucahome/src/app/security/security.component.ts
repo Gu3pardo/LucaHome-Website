@@ -1,30 +1,35 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Security } from "./security";
 import { SecurityService } from "./security.service";
+import { environment } from "../../environments/environment";
 
 @Component({
   selector: 'app-security',
   templateUrl: './security.component.html',
   styleUrls: ['./security.component.scss']
 })
-export class SecurityComponent implements OnInit, OnDestroy {
+export class SecurityComponent implements OnInit {
 
-  link: string = "http://192.168.178.25:8081";
-  circleColor: string = "red";
-  cameraState: string = "inactive";
-  buttonText: string = "Activate camera";
+  link: string = environment.securityUrl;
+  security: Security = { taskActive: false, active: false };
 
   constructor(
-    private domSanitizer: DomSanitizer,
-    private securityService: SecurityService) { }
+    private readonly domSanitizer: DomSanitizer,
+    private readonly securityService: SecurityService) {
+  }
 
   ngOnInit() {
-  }
+    this.securityService.security.subscribe(security => {
+      if (security) {
+        this.security = security;
+      }
+    });
 
-  ngOnDestroy() {
+    this.securityService.LoadSecurity();
   }
-
+  
   public toggleCameraState(): void {
-    console.log("toggleCameraState");
+    this.securityService.SetCameraState(!this.security.active);
   }
 }

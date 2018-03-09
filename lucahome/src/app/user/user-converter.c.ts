@@ -6,7 +6,11 @@ export abstract class UserConverter {
       throw "NoJsonProvided";
     }
 
+    if (json.indexOf("Error") >= 0) {
+      throw json;
+    }
+
     // TODO implement conversion
-    return { name: "", passphrase: "", isValid: false };
+    return { name: "Jonas Schubert", passphrase: "Secret", isValid: true };
   }
 }

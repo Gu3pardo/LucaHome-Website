@@ -23,4 +23,28 @@ describe('ShoppingService', () => {
   it('should be created', inject([ShoppingService], (service: ShoppingService) => {
     expect(service).toBeTruthy();
   }));
+
+  it('LoadShoppingItemList should call apiService.LoadShoppingListData', inject([ShoppingService], (service: ShoppingService) => {
+    service.LoadShoppingItemList();
+
+    expect(apiServiceMock.LoadShoppingListData).toHaveBeenCalled();
+  }));
+
+  it('AddShoppingItem should call apiService.EditShoppingItem', inject([ShoppingService], (service: ShoppingService) => {
+    service.AddShoppingItem({ uuid: "", name: "", type: 0, quantity: 0, unit: "" });
+
+    expect(apiServiceMock.EditShoppingItem).toHaveBeenCalled();
+  }));
+
+  it('UpdateShoppingItem should call apiService.EditShoppingItem', inject([ShoppingService], (service: ShoppingService) => {
+    service.UpdateShoppingItem({ uuid: "", name: "", type: 0, quantity: 0, unit: "" });
+
+    expect(apiServiceMock.EditShoppingItem).toHaveBeenCalled();
+  }));
+
+  it('DeleteShoppingItem should call apiService.EditShoppingItem', inject([ShoppingService], (service: ShoppingService) => {
+    service.DeleteShoppingItem({ uuid: "", name: "", type: 0, quantity: 0, unit: "" });
+
+    expect(apiServiceMock.EditShoppingItem).toHaveBeenCalled();
+  }));
 });

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DialogService } from "../shared/dialog.service";
 import { MealService } from "./meal.service";
 import { Meal } from "./meal";
@@ -8,15 +8,15 @@ import { Meal } from "./meal";
   templateUrl: './meal.component.html',
   styleUrls: ['./meal.component.scss']
 })
-export class MealComponent implements OnInit, OnDestroy {
+export class MealComponent implements OnInit {
 
   weekdayArray: string[] = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   selectedMeal: Meal = { uuid: "", title: "", description: "", weekday: this.weekdayArray[0] };
   mealList: Meal[];
 
   constructor(
-    private dialogService: DialogService,
-    private mealService: MealService) {
+    private readonly dialogService: DialogService,
+    private readonly mealService: MealService) {
   }
 
   ngOnInit() {
@@ -26,14 +26,10 @@ export class MealComponent implements OnInit, OnDestroy {
         this.setSelectedMeal();
       }
     });
-  }
 
-  ngOnDestroy() {
-    if (this.mealService.mealList) {
-      this.mealService.mealList.unsubscribe();
-    }
+    this.mealService.LoadMealList();
   }
-
+  
   public selectWeekday(weekday: string): void {
     let selectedMeal = this.mealList.find(meal => meal.weekday === weekday);
     if (selectedMeal) {
@@ -43,10 +39,12 @@ export class MealComponent implements OnInit, OnDestroy {
 
   public editTitle(): void {
     console.log("Pressed editTitle");
+    this.dialogService.openDialog();
   }
 
   public editDescription(): void {
     console.log("Pressed editDescription");
+    this.dialogService.openDialog();
   }
 
   private setSelectedMeal(): void {

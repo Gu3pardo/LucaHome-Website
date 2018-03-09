@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FooterLink } from "./footer-link";
+import { environment } from "../../environments/environment";
 
 @Component({
   selector: 'app-footer',
@@ -16,8 +17,8 @@ export class FooterComponent implements OnInit, OnDestroy {
     url: "https://www.github.com/guepardoapps"
   }];
 
-  version: string = "2018.03.03.01";
-  copyright: string = "2018";
+  version: string = environment.version;
+  copyright: string = environment.copyright;
 
   constructor() { }
 

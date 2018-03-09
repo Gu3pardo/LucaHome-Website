@@ -4,6 +4,6 @@
           frameborder="0"></iframe>
   <div class="row lucahome-row">
     <div class="circle-25-px-{{circleColor}}"></div>
-    <span class="col {{circleColor}}">Current temperature is {{temperature}}°C</span>
+    <span class="col {{circleColor}}">Current temperature is {{temperature ? temperature.value : "n.a."}}°C</span>
   </div>
 </div>

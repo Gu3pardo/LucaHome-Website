@@ -23,4 +23,16 @@ describe('MealService', () => {
   it('should be created', inject([MealService], (service: MealService) => {
     expect(service).toBeTruthy();
   }));
+
+  it('LoadMealList should call apiService.LoadMealListData', inject([MealService], (service: MealService) => {
+    service.LoadMealList();
+
+    expect(apiServiceMock.LoadMealListData).toHaveBeenCalled();
+  }));
+
+  it('UpdateMeal should call apiService.EditMeal', inject([MealService], (service: MealService) => {
+    service.UpdateMeal({ uuid: "", title: "", description: "", weekday: "" });
+
+    expect(apiServiceMock.EditMeal).toHaveBeenCalled();
+  }));
 });

@@ -23,4 +23,16 @@ describe('SecurityService', () => {
   it('should be created', inject([SecurityService], (service: SecurityService) => {
     expect(service).toBeTruthy();
   }));
+
+  it('LoadSecurity should call apiService.LoadSecurityData', inject([SecurityService], (service: SecurityService) => {
+    service.LoadSecurity();
+
+    expect(apiServiceMock.LoadSecurityData).toHaveBeenCalled();
+  }));
+
+  it('SetCameraState should call apiService.LoadSecurityData', inject([SecurityService], (service: SecurityService) => {
+    service.SetCameraState(true);
+
+    expect(apiServiceMock.SetCameraState).toHaveBeenCalled();
+  }));
 });

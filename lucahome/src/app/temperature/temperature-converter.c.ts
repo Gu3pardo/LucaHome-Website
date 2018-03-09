@@ -7,15 +7,19 @@ export abstract class TemperatureConverter {
       throw "NoJsonProvided";
     }
 
+    if (json.indexOf("Error") >= 0) {
+      throw json;
+    }
+
     // TODO implement conversion
     return {
-      uuid: "",
-      roomUuid: "",
-      value: 0,
+      uuid: "Uuid1",
+      roomUuid: "RoomUuid1",
+      value: 11.5,
       date: new Date(),
       temperatureType: TemperatureType.RaspberryPi,
-      sensorPath: "",
-      graphPath: ""
+      sensorPath: "SensorPath",
+      graphPath: "GraphPath"
     };
   }
 }

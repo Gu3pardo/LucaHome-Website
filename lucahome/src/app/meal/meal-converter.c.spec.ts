@@ -16,4 +16,9 @@ describe('MealConverter', () => {
   it('null json should throw error', () => {
     expect(() => MealConverter.ConvertJson(null)).toThrow("NoJsonProvided");
   });
+
+  it('json with should throw errorJson', () => {
+    const errorJson = "Error: UnitTest";
+    expect(() => MealConverter.ConvertJson(errorJson)).toThrow(errorJson);
+  });
 });

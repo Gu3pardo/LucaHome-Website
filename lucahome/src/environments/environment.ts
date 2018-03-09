@@ -4,5 +4,9 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  securityUrl: "http://lucahome.fritz.box:8081",
+  temperatureUrl: "http://lucahome.fritz.box/cgi-bin/webgui.py",
+  version: "2018.03.09",
+  copyright: "2018"
 };

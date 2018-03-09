@@ -16,4 +16,9 @@ describe('ShoppingConverter', () => {
   it('null json should throw error', () => {
     expect(() => ShoppingConverter.ConvertJson(null)).toThrow("NoJsonProvided");
   });
+
+  it('json with should throw errorJson', () => {
+    const errorJson = "Error: UnitTest";
+    expect(() => ShoppingConverter.ConvertJson(errorJson)).toThrow(errorJson);
+  });
 });

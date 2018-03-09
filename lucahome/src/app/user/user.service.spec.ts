@@ -26,4 +26,10 @@ describe('UserService', () => {
   it('should be created', inject([UserService], (service: UserService) => {
     expect(service).toBeTruthy();
   }));
+
+  it('AuthentificateUser should call apiService.AuthentificateUser', inject([UserService], (service: UserService) => {
+    service.AuthentificateUser();
+
+    expect(apiServiceMock.AuthentificateUser).toHaveBeenCalled();
+  }));
 });

@@ -1,10 +1,27 @@
 <div class="security">
-  <iframe [src]=domSanitizer.bypassSecurityTrustResourceUrl(link)
+  <iframe *ngIf="security.active"
+          [src]=domSanitizer.bypassSecurityTrustResourceUrl(link)
           class="security-frame"
           frameborder="0"></iframe>
+  <div *ngIf="!security.active"
+       class="dummy-frame">
+  </div>
+
   <div class="row lucahome-row">
-    <div class="circle-25-px-{{circleColor}}"></div>
-    <span class="col {{circleColor}}">Camera is {{cameraState}}</span>
-    <button type="button" class="btn btn-outline-light btn-sm" (click)="toggleCameraState()">{{buttonText}}</button>
+    <div [ngClass]="
+         {'circle-25-px-red': !security.active,
+         'circle-25-px-green': security.active}">
+    </div>
+    <span class="col"
+          [ngClass]="
+          {'red': !security.active,
+          'white': security.active}">
+      Camera is {{security?.active ? "active" : "inactive"}}
+    </span>
+    <button type="button"
+            class="btn btn-outline-light btn-sm"
+            (click)="toggleCameraState()">
+      {{security?.active ? "Disable" : "Enable"}}
+    </button>
   </div>
 </div>

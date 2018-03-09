@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { OnInit, OnDestroy, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ShoppingItem } from './shopping-item';
 import { ShoppingConverter } from "./shopping-converter.c";
@@ -6,45 +6,66 @@ import { ApiService } from "../shared/api.service";
 import { ToastService } from "../shared/toast.service";
 
 @Injectable()
-export class ShoppingService {
+export class ShoppingService implements OnInit, OnDestroy {
 
-  public shoppingItemList$ = new BehaviorSubject<ShoppingItem[]>(null);
+  private shoppingItemList$ = new BehaviorSubject<ShoppingItem[]>(null);
 
   constructor(
-    private apiService: ApiService,
-    private toastService: ToastService) {
+    private readonly apiService: ApiService,
+    private readonly toastService: ToastService) {
+  }
+
+  ngOnInit(): void {
+    this.apiService.shoppingListData.subscribe(data => {
+      if (data) {
+        let conversionResult;
+        try {
+          conversionResult = ShoppingConverter.ConvertJson(JSON.parse(data));
+        } catch (error) {
+          this.toastService.DisplayError(error.toString());
+        }
+        if (conversionResult) {
+          this.shoppingItemList$.next(conversionResult);
+        }
+      }
+    });
+
+    this.apiService.editShoppingItemData.subscribe(editData => {
+      if (editData) {
+        if (editData.indexOf("SUCCESS") >= 0) {
+          this.LoadShoppingItemList();
+        } else {
+          this.toastService.DisplayError("Edit of ShoppingItem failed with error: " + editData);
+        }
+      }
+    });
+
     this.LoadShoppingItemList();
+  }
+
+  ngOnDestroy(): void {
+    this.apiService.shoppingListData.unsubscribe();
+    this.apiService.editShoppingItemData.unsubscribe();
   }
 
   get shoppingItemList() { return this.shoppingItemList$; }
 
   public LoadShoppingItemList(): void {
-    let jsonResponse = this.apiService.LoadShoppingListData();
-    if (jsonResponse) {
-      let conversionResult;
-      try {
-        conversionResult = ShoppingConverter.ConvertJson(jsonResponse.getValue());
-      } catch (error) {
-        console.log(error);
-      }
-      if (conversionResult) {
-        this.shoppingItemList$.next(conversionResult);
-      }
-    }
+    this.apiService.LoadShoppingListData();
   }
 
   public AddShoppingItem(shoppingItem: ShoppingItem): void {
-    let response = this.apiService.AddShoppingItem(`AddShoppingItem: ${shoppingItem.toString()}`);
-    // TODO add proper response
+    // TODO add proper command
+    this.apiService.EditShoppingItem(`AddShoppingItem: ${shoppingItem.toString()}`);
   }
 
   public UpdateShoppingItem(shoppingItem: ShoppingItem): void {
-    let response = this.apiService.UpdateShoppingItem(`UpdateShoppingItem: ${shoppingItem.toString()}`);
-    // TODO add proper response
+    // TODO add proper command
+    this.apiService.EditShoppingItem(`UpdateShoppingItem: ${shoppingItem.toString()}`);
   }
 
   public DeleteShoppingItem(shoppingItem: ShoppingItem): void {
-    let response = this.apiService.DeleteShoppingItem(`DeleteShoppingItem: ${shoppingItem.toString()}`);
-    // TODO add proper response
+    // TODO add proper command
+    this.apiService.EditShoppingItem(`DeleteShoppingItem: ${shoppingItem.toString()}`);
   }
 }

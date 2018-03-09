@@ -1,22 +1,51 @@
 export abstract class Mock {
   static apiServiceMock = [
-    "LoadMealListData", "UpdateMeal",
-    "LoadSecurityData", "SetCameraState",
-    "LoadShoppingListData", "AddShoppingItem", "UpdateShoppingItem", "DeleteShoppingItem",
+    "LoadMealListData",
+    "EditMeal",
+    "LoadSecurityData",
+    "SetCameraState",
+    "LoadShoppingListData",
+    "EditShoppingItem",
     "LoadTemperatureData",
-    "AuthentificateUser"];
+    "AuthentificateUser"
+  ];
 
-  static dialogServiceMock = ["ShowDialog"];
+  static dialogServiceMock = [
+    "openDialog"
+  ];
 
-  static toastServiceMock = ["DisplayError", "DisplaySuccess"];
+  static toastServiceMock = [
+    "DisplayError",
+    "DisplaySuccess"
+  ];
 
-  static mealServiceMock = ["LoadMealList", "UpdateMeal"];
+  static mealServiceMock = [
+    "LoadMealList",
+    "UpdateMeal"
+  ];
 
-  static securityServiceMock = ["GetSecurity", "SetCameraState"];
+  static securityServiceMock = [
+    "security",
+    "GetSecurity",
+    "SetCameraState"
+  ];
 
-  static temperatureServiceMock = ["LoadTemperature"];
+  static shoppingServiceMock = [
+    "LoadShoppingItemList",
+    "AddShoppingItem",
+    "UpdateShoppingItem",
+    "DeleteShoppingItem"
+  ];
 
-  static userProviderServiceMock = ["SetUser"];
+  static temperatureServiceMock = [
+    "LoadTemperature"
+  ];
 
-  static userServiceMock = ["AuthentificateUser"];
+  static userProviderServiceMock = [
+    "SetUser"
+  ];
+
+  static userServiceMock = [
+    "AuthentificateUser"
+  ];
 }

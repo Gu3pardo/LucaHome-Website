@@ -16,4 +16,9 @@ describe('SecurityConverter', () => {
   it('null json should throw error', () => {
     expect(() => SecurityConverter.ConvertJson(null)).toThrow("NoJsonProvided");
   });
+
+  it('json with should throw errorJson', () => {
+    const errorJson = "Error: UnitTest";
+    expect(() => SecurityConverter.ConvertJson(errorJson)).toThrow(errorJson);
+  });
 });
