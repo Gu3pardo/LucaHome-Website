@@ -1,0 +1,34 @@
+@import "../../../constants.scss";
+
+.all-unselect {
+  user-select: none;
+}
+
+.list-none {
+  list-style: none;
+}
+
+.fill-width {
+  width: 100%;
+}
+
+.btn-dark {
+  background-color: $btn-dark-color;
+  width: 20%;
+
+  &:hover {
+    background-color: $btn-dark-hover-color;
+  }
+}
+
+.btn-disabled {
+  background-color: $btn-disabled-color;
+
+  &:hover {
+    background-color: $btn-disabled-color;
+  }
+}
+
+.justify-end {
+  justify-content: flex-end;
+}

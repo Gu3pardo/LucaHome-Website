@@ -1,0 +1,32 @@
+<div class="all-unselect">
+  <h2 mat-dialog-title>Login</h2>
+
+  <mat-dialog-content>Please enter your username and passphrase</mat-dialog-content>
+
+  <ul class="list-none">
+    <li>
+      <mat-form-field class="fill-width">
+        <input matInput
+               [(ngModel)]="username"
+               placeholder="Username">
+      </mat-form-field>
+    </li>
+    <li>
+      <mat-form-field class="fill-width">
+        <input matInput type="password"
+               [(ngModel)]="passphrase"
+               placeholder="Passphrase">
+      </mat-form-field>
+    </li>
+  </ul>
+
+  <mat-dialog-actions class="fill-width justify-end">
+    <button type="button"
+            class="btn btn-sm btn-primary btn-dark"
+            (click)="login()"
+            [disabled]="!username || !passphrase"
+            [ngClass]="{'btn-disabled': !username || !passphrase}">
+      Login
+    </button>
+  </mat-dialog-actions>
+</div>

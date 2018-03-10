@@ -1,0 +1,23 @@
+@import "../../../constants.scss";
+
+.security {
+  background-color: $body-color;
+  height: 100%;
+  width: 100%;
+  margin: $unit-margin;
+  border: $unit-border;
+}
+
+.dummy-frame {
+  height: 101%;
+  width: 100%;
+}
+
+.security-frame {
+  height: 100%;
+  width: 100%;
+}
+
+.security-button {
+  float: right;
+}

@@ -5,20 +5,20 @@ import "rxjs/add/observable/of";
 import { Mock } from "./mock";
 
 import { AppComponent } from './app.component';
-import { FooterComponent } from "./footer/footer.component";
-import { MapComponent } from "./map/map.component";
-import { MealComponent } from "./meal/meal.component";
-import { SecurityComponent } from "./security/security.component";
-import { ShoppingComponent } from "./shopping/shopping.component";
-import { TemperatureComponent } from "./temperature/temperature.component";
-import { UserComponent } from "./user/user.component";
+import { FooterComponent } from "./footer/component/footer.component";
+import { MapComponent } from "./map/component/map.component";
+import { MealComponent } from "./meal/component/meal.component";
+import { SecurityComponent } from "./security/component/security.component";
+import { ShoppingComponent } from "./shopping/component/shopping.component";
+import { TemperatureComponent } from "./temperature/component/temperature.component";
+import { UserComponent } from "./user/component/user.component";
 
-import { DialogService } from "./shared/dialog.service";
-import { MealService } from "./meal/meal.service";
-import { SecurityService } from "./security/security.service";
-import { ShoppingService } from "./shopping/shopping.service";
-import { TemperatureService } from "./temperature/temperature.service";
-import { UserProviderService } from "./user/user-provider.service";
+import { DialogService } from "./shared/dialog/dialog.service";
+import { MealService } from "./meal/services/meal.service";
+import { SecurityService } from "./security/services/security.service";
+import { ShoppingService } from "./shopping/services/shopping.service";
+import { TemperatureService } from "./temperature/services/temperature.service";
+import { UserProviderService } from "./user/services/user-provider.service";
 
 describe('AppComponent', () => {
   let dialogServiceMock = jasmine.createSpyObj<DialogService>("DialogService", Mock.dialogServiceMock);

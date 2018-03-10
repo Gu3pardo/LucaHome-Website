@@ -19,4 +19,4 @@ following project is also needed to work with the website
 https://github.com/GuepardoApps/LucaHome-RaspberryServer
 https://github.com/GuepardoApps/LucaHome-RaspberryTemperatureLogger
 
-![alt tag](https://github.com/GuepardoApps/LucaHome-Website/blob/develop/pictures/screenshot_001.png)
+![alt tag](https://github.com/GuepardoApps/LucaHome-Website/blob/develop/pictures/screenshot_002.png)
