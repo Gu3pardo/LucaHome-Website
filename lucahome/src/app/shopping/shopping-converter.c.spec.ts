@@ -17,8 +17,13 @@ describe('ShoppingConverter', () => {
     expect(() => ShoppingConverter.ConvertJson(null)).toThrow("NoJsonProvided");
   });
 
-  it('json with should throw errorJson', () => {
-    const errorJson = "Error: UnitTest";
-    expect(() => ShoppingConverter.ConvertJson(errorJson)).toThrow(errorJson);
+  it('json with error should throw errorJson', () => {
+    const errorJson = "{\"Error\":\"UnitTest\"}";
+    expect(() => ShoppingConverter.ConvertJson(JSON.parse(errorJson))).toThrow("UnitTest");
+  });
+
+  it('json with invalid data should throw NoValidJson', () => {
+    const errorJson = "{\"Invalid\":\"\"}";
+    expect(() => ShoppingConverter.ConvertJson(JSON.parse(errorJson))).toThrow("NoValidJson");
   });
 });

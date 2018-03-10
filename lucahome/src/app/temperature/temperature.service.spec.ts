@@ -1,4 +1,7 @@
 import { TestBed, inject } from '@angular/core/testing';
+import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import "rxjs/add/observable/of";
 
 import { Mock } from "../mock";
 import { ApiService } from "../shared/api.service";
@@ -7,10 +10,16 @@ import { ToastService } from "../shared/toast.service";
 import { TemperatureService } from './temperature.service';
 
 describe('TemperatureService', () => {
-  let apiServiceMock = jasmine.createSpyObj<ApiService>("ApiService", Mock.apiServiceMock);
   let toastServiceMock = jasmine.createSpyObj<ToastService>("ToastService", Mock.toastServiceMock);
 
+  let apiServiceMock = {
+    temperatureData: new BehaviorSubject(""),
+    LoadTemperatureData: () => { }
+  };
+
   beforeEach(() => {
+    spyOn(apiServiceMock, "LoadTemperatureData");
+
     TestBed.configureTestingModule({
       providers: [
         TemperatureService,
@@ -26,7 +35,6 @@ describe('TemperatureService', () => {
 
   it('LoadTemperature should call apiService.LoadTemperatureData', inject([TemperatureService], (service: TemperatureService) => {
     service.LoadTemperature();
-
     expect(apiServiceMock.LoadTemperatureData).toHaveBeenCalled();
   }));
 });

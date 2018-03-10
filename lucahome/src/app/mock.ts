@@ -1,5 +1,13 @@
 export abstract class Mock {
   static apiServiceMock = [
+    "mealListData",
+    "editMealData",
+    "securityData",
+    "setCameraStateData",
+    "shoppingListData",
+    "editShoppingItemData",
+    "temperatureData",
+    "authentificateUserData",
     "LoadMealListData",
     "EditMeal",
     "LoadSecurityData",
@@ -11,7 +19,8 @@ export abstract class Mock {
   ];
 
   static dialogServiceMock = [
-    "openDialog"
+    "openDialog",
+    "closeDialog"
   ];
 
   static toastServiceMock = [

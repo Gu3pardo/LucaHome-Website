@@ -18,7 +18,12 @@ describe('TemperatureConverter', () => {
   });
 
   it('json with should throw errorJson', () => {
-    const errorJson = "Error: UnitTest";
-    expect(() => TemperatureConverter.ConvertJson(errorJson)).toThrow(errorJson);
+    const errorJson = "{\"Error\":\"UnitTest\"}";
+    expect(() => TemperatureConverter.ConvertJson(JSON.parse(errorJson))).toThrow("UnitTest");
+  });
+
+  it('json with invalid data should throw NoValidJson', () => {
+    const errorJson = "{\"Invalid\":\"\"}";
+    expect(() => TemperatureConverter.ConvertJson(JSON.parse(errorJson))).toThrow("NoValidJson");
   });
 });

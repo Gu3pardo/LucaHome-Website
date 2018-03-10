@@ -13,22 +13,20 @@ export class UserService implements OnInit, OnDestroy {
     private readonly apiService: ApiService,
     private readonly toastService: ToastService,
     private readonly userProviderService: UserProviderService) {
-  }
-
-  ngOnInit(): void {
     this.apiService.authentificateUserData.subscribe(data => {
       if (data) {
-        let conversionResult;
         try {
-          conversionResult = UserConverter.ConvertJson(JSON.parse(data));
+          const isValid = UserConverter.ConvertJson(JSON.parse(data));
+          this.userProviderService.SetUserIsValid(isValid);
         } catch (error) {
           this.toastService.DisplayError(error.toString());
-        }
-        if (conversionResult) {
-          this.userProviderService.SetUser(conversionResult);
+          this.userProviderService.SetUserIsValid(false);
         }
       }
     });
+  }
+
+  ngOnInit(): void {
   }
 
   ngOnDestroy(): void {
@@ -36,6 +34,6 @@ export class UserService implements OnInit, OnDestroy {
   }
 
   public AuthentificateUser(): void {
-    this.apiService.AuthentificateUser("AuthentificateUser: TODO");
+    this.apiService.AuthentificateUser();
   }
 }

@@ -13,9 +13,6 @@ export class MealService implements OnInit, OnDestroy {
   constructor(
     private readonly apiService: ApiService,
     private readonly toastService: ToastService) {
-  }
-
-  ngOnInit(): void {
     this.apiService.mealListData.subscribe(data => {
       if (data) {
         let conversionResult;
@@ -39,7 +36,9 @@ export class MealService implements OnInit, OnDestroy {
         }
       }
     });
+  }
 
+  ngOnInit(): void {
     this.LoadMealList();
   }
 

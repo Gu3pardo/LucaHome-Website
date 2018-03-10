@@ -1,16 +1,22 @@
-import { User } from "./user";
-
 export abstract class UserConverter {
-  public static ConvertJson(json: string): User {
+  public static ConvertJson(json: JSON): boolean {
     if (!json) {
       throw "NoJsonProvided";
     }
 
-    if (json.indexOf("Error") >= 0) {
-      throw json;
+    if (json.hasOwnProperty("Error")) {
+      throw json["Error"];
     }
 
-    // TODO implement conversion
-    return { name: "Jonas Schubert", passphrase: "Secret", isValid: true };
+    if (!json.hasOwnProperty("Data")) {
+      throw "NoValidJson";
+    }
+
+    const category: string = json["Category"];
+    const action: string = json["Action"];
+    const success: boolean = json["Success"];
+    const data = json["Data"];
+
+    return success;
   }
 }

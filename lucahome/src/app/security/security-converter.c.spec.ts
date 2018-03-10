@@ -17,8 +17,13 @@ describe('SecurityConverter', () => {
     expect(() => SecurityConverter.ConvertJson(null)).toThrow("NoJsonProvided");
   });
 
-  it('json with should throw errorJson', () => {
-    const errorJson = "Error: UnitTest";
-    expect(() => SecurityConverter.ConvertJson(errorJson)).toThrow(errorJson);
+  it('json with error should throw errorJson', () => {
+    const errorJson = "{\"Error\":\"UnitTest\"}";
+    expect(() => SecurityConverter.ConvertJson(JSON.parse(errorJson))).toThrow("UnitTest");
+  });
+
+  it('json with invalid data should throw NoValidJson', () => {
+    const errorJson = "{\"Invalid\":\"\"}";
+    expect(() => SecurityConverter.ConvertJson(JSON.parse(errorJson))).toThrow("NoValidJson");
   });
 });

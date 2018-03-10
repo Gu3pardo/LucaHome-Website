@@ -19,7 +19,7 @@ describe('MealComponent', () => {
   let apiServiceMock = jasmine.createSpyObj<ApiService>("ApiService", Mock.apiServiceMock);
   let dialogServiceMock = jasmine.createSpyObj<DialogService>("DialogService", Mock.dialogServiceMock);
   let toastServiceMock = jasmine.createSpyObj<ToastService>("ToastService", Mock.toastServiceMock);
-
+  
   let mealMonday: Meal = {
     uuid: "UUID1",
     title: "Title1",

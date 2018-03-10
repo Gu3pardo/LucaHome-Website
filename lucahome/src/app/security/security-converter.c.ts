@@ -1,19 +1,30 @@
 import { Security } from "./security";
 
 export abstract class SecurityConverter {
-  public static ConvertJson(json: string): Security {
+  private static defaultSecurity: Security = {
+    active: true,
+    taskActive: true
+  };
+
+  public static ConvertJson(json: JSON): Security {
     if (!json) {
       throw "NoJsonProvided";
     }
 
-    if (json.indexOf("Error") >= 0) {
-      throw json;
+    if (json.hasOwnProperty("Error")) {
+      throw json["Error"];
     }
 
+    if (!json.hasOwnProperty("Data")) {
+      throw "NoValidJson";
+    }
+
+    const category: string = json["Category"];
+    const action: string = json["Action"];
+    const success: boolean = json["Success"];
+    const data = json["Data"];
+
     // TODO implement conversion
-    return {
-      active: true,
-      taskActive: true
-    };
+    return this.defaultSecurity;
   }
 }

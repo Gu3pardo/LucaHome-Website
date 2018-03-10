@@ -1,5 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
 
+import { Meal } from "./meal";
 import { MealConverter } from './meal-converter.c';
 
 describe('MealConverter', () => {
@@ -17,8 +18,17 @@ describe('MealConverter', () => {
     expect(() => MealConverter.ConvertJson(null)).toThrow("NoJsonProvided");
   });
 
-  it('json with should throw errorJson', () => {
-    const errorJson = "Error: UnitTest";
-    expect(() => MealConverter.ConvertJson(errorJson)).toThrow(errorJson);
+  it('json with should return default list', () => {
+    const errorJson = "{\"Error\":\"UnitTest\"}";
+    let actual = MealConverter.ConvertJson(JSON.parse(errorJson));
+    expect(actual.length).toBe(7);
+    expect(actual[0].weekday).toBe("Monday");
+  });
+
+  it('json with should return default list', () => {
+    const errorJson = "{\"Invalid\":\"\"}";
+    let actual = MealConverter.ConvertJson(JSON.parse(errorJson));
+    expect(actual.length).toBe(7);
+    expect(actual[0].weekday).toBe("Monday");
   });
 });

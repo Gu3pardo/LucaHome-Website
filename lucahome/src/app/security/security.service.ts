@@ -13,9 +13,6 @@ export class SecurityService implements OnInit, OnDestroy {
   constructor(
     private readonly apiService: ApiService,
     private readonly toastService: ToastService) {
-  }
-
-  ngOnInit(): void {
     this.apiService.securityData.subscribe(data => {
       if (data) {
         let conversionResult;
@@ -29,7 +26,9 @@ export class SecurityService implements OnInit, OnDestroy {
         }
       }
     });
+  }
 
+  ngOnInit(): void {
     this.LoadSecurity();
   }
 

@@ -18,15 +18,11 @@ export class ApiService implements ILucaApiService {
 
   private mealListData$: BehaviorSubject<string> = new BehaviorSubject("");
   private editMealData$: BehaviorSubject<string> = new BehaviorSubject("");
-
   private securityData$: BehaviorSubject<string> = new BehaviorSubject("");
   private setCameraStateData$: BehaviorSubject<string> = new BehaviorSubject("");
-
   private shoppingListData$: BehaviorSubject<string> = new BehaviorSubject("");
   private editShoppingItemData$: BehaviorSubject<string> = new BehaviorSubject("");
-
   private temperatureData$: BehaviorSubject<string> = new BehaviorSubject("");
-
   private authentificateUserData$: BehaviorSubject<string> = new BehaviorSubject("");
 
   constructor(
@@ -46,70 +42,98 @@ export class ApiService implements ILucaApiService {
     this.userProviderService.user.unsubscribe();
   }
 
-  get mealListData() { return this.mealListData$; }
-  get editMealData() { return this.editMealData$; }
-
-  get securityData() { return this.securityData$; }
-  get setCameraStateData() { return this.setCameraStateData$; }
-
-  get shoppingListData() { return this.shoppingListData$; }
-  get editShoppingItemData() { return this.editShoppingItemData$; }
-
-  get temperatureData() { return this.temperatureData$; }
-
-  get authentificateUserData() { return this.authentificateUserData$; }
+  get mealListData(): BehaviorSubject<string> { return this.mealListData$; }
+  get editMealData(): BehaviorSubject<string> { return this.editMealData$; }
+  get securityData(): BehaviorSubject<string> { return this.securityData$; }
+  get setCameraStateData(): BehaviorSubject<string> { return this.setCameraStateData$; }
+  get shoppingListData(): BehaviorSubject<string> { return this.shoppingListData$; }
+  get editShoppingItemData(): BehaviorSubject<string> { return this.editShoppingItemData$; }
+  get temperatureData(): BehaviorSubject<string> { return this.temperatureData$; }
+  get authentificateUserData(): BehaviorSubject<string> { return this.authentificateUserData$; }
 
   public LoadMealListData(): void {
-    this.sendCommand("MEAL::GET::ALL", this.mealListData$);
+    this.sendCommand(
+      "MEAL::GET::ALL",
+      (result: string): void => {
+        this.mealListData$.next(result);
+      });
   }
 
   public EditMeal(data: string): void {
-    this.sendCommand(data, this.editMealData$);
+    this.sendCommand(
+      data,
+      (result: string): void => {
+        this.editMealData$.next(result);
+      });
   }
 
   public LoadSecurityData(): void {
-    this.sendCommand("SECURITY::GET::MOTION", this.securityData$);
+    this.sendCommand(
+      "SECURITY::GET::MOTION",
+      (result: string): void => {
+        this.securityData$.next(result);
+      });
   }
 
   public SetCameraState(data: string): void {
-    this.sendCommand(data, this.setCameraStateData$);
+    this.sendCommand(
+      data,
+      (result: string): void => {
+        this.setCameraStateData$.next(result);
+      });
   }
 
   public LoadShoppingListData(): void {
-    this.sendCommand("SHOPPINGITEM::GET::ALL", this.shoppingListData$);
+    this.sendCommand(
+      "SHOPPINGITEM::GET::ALL",
+      (result: string): void => {
+        this.shoppingListData$.next(result);
+      });
   }
 
   public EditShoppingItem(data: string): void {
-    this.sendCommand(data, this.editShoppingItemData$);
+    this.sendCommand(
+      data,
+      (result: string): void => {
+        this.editShoppingItemData$.next(result);
+      });
   }
 
   public LoadTemperatureData(): void {
-    this.sendCommand("TEMPERATURE::GET::ALL", this.temperatureData$);
+    this.sendCommand(
+      "TEMPERATURE::GET::ALL",
+      (result: string): void => {
+        this.temperatureData$.next(result);
+      });
   }
 
-  public AuthentificateUser(data: string): void {
-    this.sendCommand(data, this.authentificateUserData$);
+  public AuthentificateUser(): void {
+    this.sendCommand(
+      "USER::VALIDATE::NOW",
+      (result: string): void => {
+        this.authentificateUserData$.next(result);
+      });
   }
 
-  private sendCommand(data: string, behaviorSubject: BehaviorSubject<string>): void {
+  private sendCommand(data: string, callback: (result: string) => any): void {
     // TODO remove console
     console.log("ApiService: Data: " + data);
 
-    if (data.length <= 0) {
-      this.toastService.DisplayError("No data provided!");
-      behaviorSubject.next("Error: No data provided!");
+    if (!callback) {
+      this.toastService.DisplayError("No callback provided!");
       return;
     }
 
-    if (!behaviorSubject) {
-      this.toastService.DisplayError("No behaviorSubject provided!");
+    if (data.length <= 0) {
+      this.toastService.DisplayError("No data provided!");
+      callback("{\"Error\":\"No data provided!\"}");
       return;
     }
 
     if (!this.user) {
       this.toastService.DisplayError("No user!");
       // TODO open login dialog
-      behaviorSubject.next("Error: No user!");
+      callback("{\"Error\":\"No user!\"}");
       return;
     }
 
@@ -121,7 +145,7 @@ export class ApiService implements ILucaApiService {
 
         if (!secret) {
           this.toastService.DisplayError("No secret received!");
-          behaviorSubject.next("Error: No secret received!");
+          callback("{\"Error\":\"No secret received!\"}");
           return;
         }
 
@@ -132,18 +156,18 @@ export class ApiService implements ILucaApiService {
         this.http.get<string>(commandUrl).subscribe(encryptedResult => {
           if (encryptedResult) {
             const decryptedResult = Decrypt.Decrypt(encryptedResult, secret);
-            behaviorSubject.next(decryptedResult);
+            callback(decryptedResult);
             return;
           }
 
           this.toastService.DisplayError("Command failed!");
-          behaviorSubject.next("Error: Command failed!");
+          callback("{\"Error\":\"Command failed!\"}");
           return;
         });
       }
 
       this.toastService.DisplayError("Handshake failed!");
-      behaviorSubject.next("Error: Handshake failed!");
+      callback("{\"Error\":\"Handshake failed!\"}");
     });
   }
 

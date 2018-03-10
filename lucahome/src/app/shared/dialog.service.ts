@@ -21,6 +21,10 @@ export class DialogService implements ILucaDialogService {
       this.animal = result;
     });*/
   }
+
+  closeDialog(): void {
+
+  }
 }
 /*
 @Component({
