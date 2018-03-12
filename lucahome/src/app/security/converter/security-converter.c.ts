@@ -1,11 +1,6 @@
 import { Security } from "../interfaces/security";
 
 export abstract class SecurityConverter {
-  private static defaultSecurity: Security = {
-    active: true,
-    taskActive: true
-  };
-
   public static ConvertJson(json: JSON): Security {
     if (!json) {
       throw "NoJsonProvided";
@@ -22,9 +17,28 @@ export abstract class SecurityConverter {
     const category: string = json["Category"];
     const action: string = json["Action"];
     const success: boolean = json["Success"];
-    const data = json["Data"];
 
-    // TODO implement conversion
-    return this.defaultSecurity;
+    if (!success) {
+      throw "NoSuccessJson";
+    }
+
+    const data = json["Data"];
+    if (data.length !== 1) {
+      throw "InvalidLengthJson";
+    }
+
+    if (!data[0].hasOwnProperty("Security")) {
+      throw "NoValidJsonProperty";
+    }
+
+    const securityJson: JSON = data[0]["Security"];
+
+    const active: boolean = securityJson.hasOwnProperty("Active") ? securityJson["Active"] : false;
+    const taskActive: boolean = securityJson.hasOwnProperty("TaskActive") ? securityJson["TaskActive"] : false;
+
+    return {
+      active: active,
+      taskActive: taskActive
+    };
   }
 }

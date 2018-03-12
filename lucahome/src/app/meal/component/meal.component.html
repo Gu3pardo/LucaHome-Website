@@ -1,6 +1,6 @@
 <div class="row lucahome-row meal">
   <div class="col-4 meal-weekday-select-row">
-    <div *ngFor="let weekdayEntry of weekdayArray">
+    <div *ngFor="let weekdayEntry of weekdayArray | enumToArray">
       <button type="button"
               [ngClass]="{
               'btn btn-sm meal-button ' : true,

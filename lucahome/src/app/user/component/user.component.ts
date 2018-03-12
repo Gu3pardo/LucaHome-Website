@@ -26,6 +26,9 @@ export class UserComponent implements OnInit {
     this.userProviderService.user.subscribe(user => {
       if (user) {
         this.user = user;
+        if (this.user.isValid) {
+          this.dialogService.closeDialog();
+        }
       }
     });
 

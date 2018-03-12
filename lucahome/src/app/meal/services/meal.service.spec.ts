@@ -6,6 +6,7 @@ import "rxjs/add/observable/of";
 import { Mock } from "../../mock";
 import { ApiService } from "../../shared/api/api.service";
 import { ToastService } from "../../shared/toast/toast.service";
+import { Weekday } from "../enums/weekday.e";
 
 import { MealService } from './meal.service';
 
@@ -42,7 +43,7 @@ describe('MealService', () => {
   }));
 
   it('UpdateMeal should call apiService.EditMeal', inject([MealService], (service: MealService) => {
-    service.UpdateMeal({ uuid: "", title: "", description: "", weekday: "" });
+    service.UpdateMeal({ uuid: "", title: "", description: "", weekday: Weekday.Sunday });
     expect(apiServiceMock.EditMeal).toHaveBeenCalled();
   }));
 });

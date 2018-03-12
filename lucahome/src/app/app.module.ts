@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpModule } from "@angular/http"
 import { MatDialogModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 import { NgModule } from '@angular/core';
 
@@ -18,6 +18,7 @@ import { UserDialogComponent } from './user/component/user-dialog.component';
 
 import { ApiService } from "./shared/api/api.service";
 import { DialogService } from "./shared/dialog/dialog.service";
+import { EnumToArrayPipe } from "./shared/pipes/enum-to-array-pipe.p";
 import { ToastService } from "./shared/toast/toast.service";
 
 import { MealService } from "./meal/services/meal.service";
@@ -37,16 +38,17 @@ import { UserProviderService } from "./user/services/user-provider.service";
     MealComponent,
     ShoppingComponent,
     UserComponent,
-    UserDialogComponent
+    UserDialogComponent,
+    EnumToArrayPipe
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
-    HttpClientModule,
     MatDialogModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    HttpModule
   ],
   providers: [
     ApiService,

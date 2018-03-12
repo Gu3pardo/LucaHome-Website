@@ -1,6 +1,9 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable } from "@angular/core"
+import { Response, Http } from "@angular/http"
+import { Observable } from "rxjs/Rx"
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
 
 import { DialogService } from "../dialog/dialog.service";
 import { ToastService } from "../toast/toast.service";
@@ -17,8 +20,6 @@ import { ILucaApiService } from "./api.service.i";
 @Injectable()
 export class ApiService implements ILucaApiService {
 
-  private user: User;
-
   private mealListData$: BehaviorSubject<string> = new BehaviorSubject("");
   private editMealData$: BehaviorSubject<string> = new BehaviorSubject("");
   private securityData$: BehaviorSubject<string> = new BehaviorSubject("");
@@ -29,20 +30,16 @@ export class ApiService implements ILucaApiService {
   private authentificateUserData$: BehaviorSubject<string> = new BehaviorSubject("");
 
   constructor(
-    private readonly http: HttpClient,
+    private readonly http: Http,
     private readonly userProviderService: UserProviderService,
     private readonly dialogService: DialogService,
     private readonly toastService: ToastService) {
   }
 
   ngOnInit(): void {
-    this.userProviderService.user.subscribe(user => {
-      this.user = user;
-    });
   }
 
   ngOnDestroy(): void {
-    this.userProviderService.user.unsubscribe();
   }
 
   get mealListData(): BehaviorSubject<string> { return this.mealListData$; }
@@ -119,87 +116,118 @@ export class ApiService implements ILucaApiService {
   }
 
   private sendCommand(data: string, callback: (result: string) => any): void {
-    // TODO remove console
-    console.log("ApiService: Data: " + data);
-
     if (!callback) {
+      console.warn("ApiService: No callback provided!");
       this.toastService.DisplayError("No callback provided!");
       return;
     }
 
     if (data.length <= 0) {
+      console.warn("ApiService: No data provided!");
       this.toastService.DisplayError("No data provided!");
       callback("{\"Error\":\"No data provided!\"}");
       return;
     }
 
-    if (!this.user) {
+    const user = this.userProviderService.user.value;
+    if (!user) {
+      console.error("ApiService: No user!");
       this.toastService.DisplayError("No user!");
-      // TODO open login dialog
       callback("{\"Error\":\"No user!\"}");
       return;
     }
 
     // First perform handshake to receive secret
     const handshakeUrl = "http://lucahome.fritz.box/api/lucahome/controller.php&action=Handshake";
-    this.http.get<string>(handshakeUrl).subscribe(handshakeResult => {
-      if (handshakeResult) {
-        let secret = this.parseSecret(handshakeResult);
+    this.http.get(handshakeUrl).catch(error => {
+      this.toastService.DisplayError("Handshake failed!");
 
-        if (!secret) {
-          this.toastService.DisplayError("No secret received!");
-          callback("{\"Error\":\"No secret received!\"}");
+      const errorJson = `{\"Error\":\"Handshake failed!\",\"Data\":\"${error.toString()}\",\"ClientAddress\":\"${handshakeUrl}\",\"Secret\":\"\"}`;
+      callback(errorJson);
+
+      const errorResponse: Response = {
+        type: 3,
+        ok: false,
+        url: handshakeUrl,
+        status: 666,
+        statusText: "Error",
+        bytesLoaded: 0,
+        totalBytes: 0,
+        headers: null,
+        text: (): string => { return errorJson; },
+        json: (): any => { return JSON.parse(errorJson); },
+        arrayBuffer: (): ArrayBuffer => { return null; },
+        blob: (): Blob => { return null; }
+      };
+      return Observable.of(errorResponse);
+
+    }).take(1).subscribe(handshakeResult => {
+      if (!handshakeResult) {
+        this.toastService.DisplayError("Handshake failed!");
+        callback("{\"Error\":\"Handshake failed!\"}");
+        return;
+      }
+
+      let secret = this.parseSecret(handshakeResult.json());
+
+      if (!secret) {
+        this.toastService.DisplayError("No secret received!");
+        callback("{\"Error\":\"No secret received!\"}");
+        return;
+      }
+
+      const userData = `${user.name}::${user.passphrase}::${data}`;
+      const encryptedUserData = Encrypt.Encrypt(userData, secret);
+      const commandUrl = "http://" + `lucahome.fritz.box/api/lucahome/controller.php&action=${encryptedUserData}`;
+
+      // TODO remove in production
+      console.info(`ApiService: commandUrl: ${commandUrl}`);
+
+      this.http.get(commandUrl).catch(error => {
+        this.toastService.DisplayError("Command failed!");
+
+        const errorJson = `{\"Error\":\"Command failed!\",\"Data\":\"${error.toString()}\"}`;
+        callback(errorJson);
+
+        const errorResponse: Response = {
+          type: 3,
+          ok: false,
+          url: handshakeUrl,
+          status: 666,
+          statusText: "Error",
+          bytesLoaded: 0,
+          totalBytes: 0,
+          headers: null,
+          text: (): string => { return errorJson; },
+          json: (): any => { return JSON.parse(errorJson); },
+          arrayBuffer: (): ArrayBuffer => { return null; },
+          blob: (): Blob => { return null; }
+        };
+        return Observable.of(errorResponse);
+
+      }).take(1).subscribe(encryptedResult => {
+        if (!encryptedResult) {
+          this.toastService.DisplayError("No result provided!");
+          callback("{\"Error\":\"No result provided!\"}");
           return;
         }
 
-        const userData = `${this.user.name}::${this.user.passphrase}::${data}`;
-        const encryptedUserData = Encrypt.Encrypt(userData, secret);
-        const commandUrl = "http://" + `lucahome.fritz.box/api/lucahome/controller.php&action=${encryptedUserData}`;
-
-        this.http.get<string>(commandUrl).subscribe(encryptedResult => {
-          if (encryptedResult) {
-            const decryptedResult = Decrypt.Decrypt(encryptedResult, secret);
-            callback(decryptedResult);
-            return;
-          }
-
-          this.toastService.DisplayError("Command failed!");
-          callback("{\"Error\":\"Command failed!\"}");
-          return;
-        });
-      }
-
-      this.toastService.DisplayError("Handshake failed!");
-      callback("{\"Error\":\"Handshake failed!\"}");
+        const decryptedResult = Decrypt.Decrypt(encryptedResult.text(), secret);
+        callback(decryptedResult);
+      });
     });
   }
 
-  private parseSecret(handshakeResult: string): string {
-    const jsonResult: Handshake = JSON.parse(handshakeResult);
+  private parseSecret(handshakeResult: JSON): string {
+    const clientAddress: string = handshakeResult.hasOwnProperty("ClientAddress") ? handshakeResult["ClientAddress"] : "";
+    const secret: string = handshakeResult.hasOwnProperty("Secret") ? handshakeResult["Secret"] : null;
+
+    const jsonResult: Handshake = { clientAddress: clientAddress, secret: secret };
+
     if (jsonResult.secret) {
       return jsonResult.secret;
     }
+
     return null;
   }
 }
-
-/*
-Communication contains a handshake to share the key
-
-1. Call:
-  Handshake to say hello and receive the key
-
-  1.1 Error:
-    Return error to caller
-  1.2 Success:
-    Encrypt command with key using Encrypt.encrypt(command, key)
-
-2. Call:
-  Send encrypted command
-
-  2.1 Error:
-    Return error to caller
-  2.2 Success:
-    Decrypt response with key using Decrypt.decrypt(message, key)
-
-*/

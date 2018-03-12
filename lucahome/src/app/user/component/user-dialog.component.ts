@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from "../../shared/api/api.service";
+import { UserProviderService } from "../services/user-provider.service";
 
 @Component({
   selector: 'lucahome-user-dialog',
@@ -10,13 +12,17 @@ export class UserDialogComponent implements OnInit {
   username: string;
   passphrase: string;
 
-  constructor() { }
+  constructor(
+    private readonly apiService: ApiService,
+    private readonly userProviderService: UserProviderService) {
+  }
 
   ngOnInit() {
   }
 
   login(): void {
-    console.log(`Login with username ${this.username} and passphrase ${this.passphrase}`)
+    this.userProviderService.SetUser({ name: this.username, passphrase: this.passphrase, isValid: false });
+    this.apiService.AuthentificateUser();
   }
 }
 

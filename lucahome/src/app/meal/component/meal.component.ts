@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DialogService } from "../../shared/dialog/dialog.service";
 import { MealService } from "../services/meal.service";
+import { Weekday } from "../enums/weekday.e";
 import { Meal } from "../interfaces/meal";
 
 @Component({
@@ -10,8 +11,8 @@ import { Meal } from "../interfaces/meal";
 })
 export class MealComponent implements OnInit {
 
-  weekdayArray: string[] = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  selectedMeal: Meal = { uuid: "", title: "", description: "", weekday: this.weekdayArray[0] };
+  weekdayArray = Weekday;
+  selectedMeal: Meal = { uuid: "", title: "", description: "", weekday: Weekday.Sunday };
   mealList: Meal[];
 
   constructor(
