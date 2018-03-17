@@ -136,8 +136,7 @@ export class ApiService implements ILucaApiService {
       callback("{\"Error\":\"No user!\"}");
       return;
     }
-
-    // First perform handshake to receive secret
+    
     const handshakeUrl = "http://lucahome.fritz.box/api/lucahome/controller.php&action=Handshake";
     this.http.get(handshakeUrl).catch(error => {
       this.toastService.DisplayError("Handshake failed!");
@@ -179,10 +178,7 @@ export class ApiService implements ILucaApiService {
       const userData = `${user.name}::${user.passphrase}::${data}`;
       const encryptedUserData = Encrypt.Encrypt(userData, secret);
       const commandUrl = "http://" + `lucahome.fritz.box/api/lucahome/controller.php&action=${encryptedUserData}`;
-
-      // TODO remove in production
-      console.info(`ApiService: commandUrl: ${commandUrl}`);
-
+      
       this.http.get(commandUrl).catch(error => {
         this.toastService.DisplayError("Command failed!");
 

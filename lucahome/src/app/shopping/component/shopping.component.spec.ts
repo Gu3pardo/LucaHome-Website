@@ -9,6 +9,7 @@ import { DialogService } from "../../shared/dialog/dialog.service";
 import { ToastService } from "../../shared/toast/toast.service";
 import { ShoppingItem } from "../interfaces/shopping-item";
 import { ShoppingService } from "../services/shopping.service";
+import { ShoppingItemType } from '../enums/shopping-item-type.e';
 
 import { ShoppingComponent } from './shopping.component';
 
@@ -21,8 +22,8 @@ describe('ShoppingComponent', () => {
   let toastServiceMock = jasmine.createSpyObj<ToastService>("ToastService", Mock.toastServiceMock);
 
   let shoppingListResult: ShoppingItem[] = [
-    { uuid: "UUID1", name: "Name1", type: 0, quantity: 1, unit: "Unit1" },
-    { uuid: "UUID2", name: "Name2", type: 0, quantity: 2, unit: "Unit2" }
+    { uuid: "UUID1", name: "Name1", type: ShoppingItemType.Other, quantity: 1, unit: "Unit1" },
+    { uuid: "UUID2", name: "Name2", type: ShoppingItemType.Other, quantity: 2, unit: "Unit2" }
   ];
   let shoppingServiceMock = {
     shoppingItemList: new BehaviorSubject(shoppingListResult),

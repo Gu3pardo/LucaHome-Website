@@ -6,6 +6,7 @@ import "rxjs/add/observable/of";
 import { Mock } from "../../mock";
 import { ApiService } from "../../shared/api/api.service";
 import { ToastService } from "../../shared/toast/toast.service";
+import { ShoppingItemType } from "../enums/shopping-item-type.e";
 
 import { ShoppingService } from '../services/shopping.service';
 
@@ -42,17 +43,17 @@ describe('ShoppingService', () => {
   }));
 
   it('AddShoppingItem should call apiService.EditShoppingItem', inject([ShoppingService], (service: ShoppingService) => {
-    service.AddShoppingItem({ uuid: "", name: "", type: 0, quantity: 0, unit: "" });
-    expect(apiServiceMock.EditShoppingItem).toHaveBeenCalled();
+    service.AddShoppingItem({ uuid: "Uuid1", name: "Name1", type: ShoppingItemType.Other, quantity: 2, unit: "litre" });
+    expect(apiServiceMock.EditShoppingItem).toHaveBeenCalledWith("SHOPPINGITEM::ADD::Uuid1::Name1::Other::2::litre");
   }));
 
   it('UpdateShoppingItem should call apiService.EditShoppingItem', inject([ShoppingService], (service: ShoppingService) => {
-    service.UpdateShoppingItem({ uuid: "", name: "", type: 0, quantity: 0, unit: "" });
-    expect(apiServiceMock.EditShoppingItem).toHaveBeenCalled();
+    service.UpdateShoppingItem({ uuid: "UUID2", name: "NAME2", type: ShoppingItemType.Other, quantity: 450, unit: "gr" });
+    expect(apiServiceMock.EditShoppingItem).toHaveBeenCalledWith("SHOPPINGITEM::UPDATE::UUID2::NAME2::Other::450::gr");
   }));
 
   it('DeleteShoppingItem should call apiService.EditShoppingItem', inject([ShoppingService], (service: ShoppingService) => {
-    service.DeleteShoppingItem({ uuid: "", name: "", type: 0, quantity: 0, unit: "" });
-    expect(apiServiceMock.EditShoppingItem).toHaveBeenCalled();
+    service.DeleteShoppingItem({ uuid: "uuid_3", name: "name_3", type: ShoppingItemType.Other, quantity: 4, unit: "packages" });
+    expect(apiServiceMock.EditShoppingItem).toHaveBeenCalledWith("SHOPPINGITEM::DELETE::uuid_3");
   }));
 });

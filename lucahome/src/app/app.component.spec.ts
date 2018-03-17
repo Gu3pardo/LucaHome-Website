@@ -4,6 +4,8 @@ import "rxjs/add/observable/of";
 
 import { Mock } from "./mock";
 
+import { EnumToArrayPipe } from "./shared/pipes/enum-to-array-pipe.p"
+
 import { AppComponent } from './app.component';
 import { FooterComponent } from "./footer/component/footer.component";
 import { MapComponent } from "./map/component/map.component";
@@ -38,7 +40,8 @@ describe('AppComponent', () => {
         SecurityComponent,
         ShoppingComponent,
         TemperatureComponent,
-        UserComponent
+        UserComponent,
+        EnumToArrayPipe
       ],
       providers: [
         { provide: DialogService, useValue: dialogServiceMock },

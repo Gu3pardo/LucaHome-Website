@@ -6,7 +6,7 @@ import { UserProviderService } from "../services/user-provider.service";
 
 import { UserDialogComponent } from './user-dialog.component';
 
-describe('UserDialogComponent', () => {
+xdescribe('UserDialogComponent', () => {
   let component: UserDialogComponent;
   let fixture: ComponentFixture<UserDialogComponent>;
 

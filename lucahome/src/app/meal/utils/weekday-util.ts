@@ -20,4 +20,17 @@ export abstract class WeekdayUtil {
 
     return Weekday.Sunday;
   }
+
+  static getIndexOfWeekday(value: Weekday): number {
+    let index = 0;
+
+    for (let key in Weekday) {
+      if (Weekday[Weekday[key]] === value) {
+        return index;
+      }
+      index++;
+    }
+
+    return 0;
+  }
 }

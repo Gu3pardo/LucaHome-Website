@@ -12,7 +12,7 @@ import { Meal } from "../interfaces/meal";
 export class MealComponent implements OnInit {
 
   weekdayArray = Weekday;
-  selectedMeal: Meal = { uuid: "", title: "", description: "", weekday: Weekday.Sunday };
+  selectedMeal: Meal = { uuid: "", title: "", description: "", weekday: Weekday.Sunday, day: 1, month: 1, year: 1970, shoppingItemUuidList: [] };
   mealList: Meal[];
 
   constructor(

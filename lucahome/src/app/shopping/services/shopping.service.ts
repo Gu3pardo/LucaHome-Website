@@ -54,17 +54,26 @@ export class ShoppingService implements OnInit, OnDestroy {
   }
 
   public AddShoppingItem(shoppingItem: ShoppingItem): void {
-    // TODO add proper command
-    this.apiService.EditShoppingItem(`AddShoppingItem: ${shoppingItem.toString()}`);
+    const uuid: string = shoppingItem.uuid;
+    const name: string = shoppingItem.name;
+    const type: string = shoppingItem.type;
+    const quantity: number = shoppingItem.quantity;
+    const unit: string = shoppingItem.unit;
+
+    this.apiService.EditShoppingItem(`SHOPPINGITEM::ADD::${uuid}::${name}::${type}::${quantity}::${unit}`);
   }
 
   public UpdateShoppingItem(shoppingItem: ShoppingItem): void {
-    // TODO add proper command
-    this.apiService.EditShoppingItem(`UpdateShoppingItem: ${shoppingItem.toString()}`);
+    const uuid: string = shoppingItem.uuid;
+    const name: string = shoppingItem.name;
+    const type: string = shoppingItem.type;
+    const quantity: number = shoppingItem.quantity;
+    const unit: string = shoppingItem.unit;
+
+    this.apiService.EditShoppingItem(`SHOPPINGITEM::UPDATE::${uuid}::${name}::${type}::${quantity}::${unit}`);
   }
 
   public DeleteShoppingItem(shoppingItem: ShoppingItem): void {
-    // TODO add proper command
-    this.apiService.EditShoppingItem(`DeleteShoppingItem: ${shoppingItem.toString()}`);
+    this.apiService.EditShoppingItem(`SHOPPINGITEM::DELETE::${shoppingItem.uuid}`);
   }
 }

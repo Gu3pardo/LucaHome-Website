@@ -49,4 +49,27 @@ describe('WeekdayUtil', () => {
     actual = WeekdayUtil.getEntryByString(Weekday.Saturday.valueOf());
     expect(actual).toBe(Weekday.Saturday);
   });
+
+  it('getIndexOfWeekday should return the expected number', () => {
+    let actual = WeekdayUtil.getIndexOfWeekday(Weekday.Sunday);
+    expect(actual).toBe(0);
+
+    actual = WeekdayUtil.getIndexOfWeekday(Weekday.Monday);
+    expect(actual).toBe(1);
+
+    actual = WeekdayUtil.getIndexOfWeekday(Weekday.Tuesday);
+    expect(actual).toBe(2);
+
+    actual = WeekdayUtil.getIndexOfWeekday(Weekday.Wednesday);
+    expect(actual).toBe(3);
+
+    actual = WeekdayUtil.getIndexOfWeekday(Weekday.Thursday);
+    expect(actual).toBe(4);
+
+    actual = WeekdayUtil.getIndexOfWeekday(Weekday.Friday);
+    expect(actual).toBe(5);
+
+    actual = WeekdayUtil.getIndexOfWeekday(Weekday.Saturday);
+    expect(actual).toBe(6);
+  });
 });

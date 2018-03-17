@@ -5,4 +5,8 @@ export interface Meal {
   title: string;
   description: string;
   weekday: Weekday;
+  day: number;
+  month: number;
+  year: number;
+  shoppingItemUuidList: string[];
 }

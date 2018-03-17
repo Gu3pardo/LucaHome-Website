@@ -1,20 +1,25 @@
 ID	PBI			Task																State
 
-1	API			Service to call Server API											WIP
-2	Services	Temperature Service (Get)											WIP
-3				Security Service (Get, Set)											WIP
-4				Meal Service (Get, Update)											WIP
-5				Shopping Service (Get, Add, Update, Delete)							WIP
+1	API			Service to call Server API											TO TEST
+2	Services	Temperature Service (Get)											TO TEST
+3				Security Service (Get, Set)											TO TEST
+4				Meal Service (Get, Update)											TO TEST
+5				Shopping Service (Get, Add, Update, Delete)							TO TEST
 6				MapContent Service (Get)											-
 7				WirelessSocket Service (Get, Set)									-
 8				WirelessSwitch Service (Get, Toggle)								-
 9				WirelessSchedule Service (Get, Set)									-
 10				WirelessTimer Service(Get)											-
-11				UserService (Authentificate)										WIP
-12	Dialogues	Login dialogue														-
+11				UserService (Authentificate)										TO TEST
+12	Dialogues	Login dialogue														TO TEST
 13				WirelessSocket/Switch dialogue										-
 14				Edit Meal dialogue													-
 15				Edit Shopping dialogue												-
 16	Crypto		Encrypt commands													WIP
 17				Decrypt answers														WIP
 18	Toast		Add module to display information about successes or errors			TO TEST
+19  Components	Temperature display data											TO TEST
+20				Security display data and provide actions							TO TEST
+21				Meal display data and provide actions								WIP
+22				Shopping display data and provide actions							WIP
+23				MapContent display data												-

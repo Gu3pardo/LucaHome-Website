@@ -17,7 +17,7 @@ describe('MealService', () => {
     mealListData: new BehaviorSubject(""),
     editMealData: new BehaviorSubject(""),
     LoadMealListData: () => { },
-    EditMeal: () => { }
+    EditMeal: (data: string): string => { return data; }
   };
 
   beforeEach(() => {
@@ -43,7 +43,21 @@ describe('MealService', () => {
   }));
 
   it('UpdateMeal should call apiService.EditMeal', inject([MealService], (service: MealService) => {
-    service.UpdateMeal({ uuid: "", title: "", description: "", weekday: Weekday.Sunday });
-    expect(apiServiceMock.EditMeal).toHaveBeenCalled();
+    const meal = {
+      uuid: "Uuid1",
+      title: "Title1",
+      description: "Description1",
+      weekday: Weekday.Sunday,
+      day: 18,
+      month: 3,
+      year: 2018,
+      shoppingItemUuidList: [
+        "UUID1", "UUID2", "uuid3"
+      ]
+    };
+
+    service.UpdateMeal(meal);
+
+    expect(apiServiceMock.EditMeal).toHaveBeenCalledWith("MEAL::UPDATE::Uuid1::Title1::Description1::0::18::3::2018::UUID1,,UUID2,,uuid3");
   }));
 });

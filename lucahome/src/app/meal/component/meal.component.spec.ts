@@ -8,9 +8,11 @@ import { ApiService } from "../../shared/api/api.service";
 import { DialogService } from "../../shared/dialog/dialog.service";
 import { ToastService } from "../../shared/toast/toast.service";
 import { MealService } from "../services/meal.service";
+import { EnumToArrayPipe } from "../../shared/pipes/enum-to-array-pipe.p"
 
 import { Meal } from "../interfaces/meal";
 import { MealComponent } from './meal.component';
+import { Weekday } from '../enums/weekday.e';
 
 describe('MealComponent', () => {
   let component: MealComponent;
@@ -24,13 +26,21 @@ describe('MealComponent', () => {
     uuid: "UUID1",
     title: "Title1",
     description: "Description1",
-    weekday: "Monday"
+    weekday: Weekday.Monday,
+    day: 12,
+    month: 2,
+    year: 2018,
+    shoppingItemUuidList: []
   };
   let mealTuesday: Meal = {
     uuid: "UUID2",
     title: "Title2",
     description: "Description2",
-    weekday: "Tuesday"
+    weekday: Weekday.Tuesday,
+    day: 13,
+    month: 2,
+    year: 2018,
+    shoppingItemUuidList: []
   };
   let mealListResult: Meal[] = [mealMonday, mealTuesday];
   let mealServiceMock = {
@@ -41,6 +51,7 @@ describe('MealComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
+        EnumToArrayPipe,
         MealComponent
       ],
       providers: [

@@ -1,5 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { Mock } from "../../mock";
@@ -9,8 +9,7 @@ import { ToastService } from "../toast/toast.service";
 
 import { ApiService } from './api.service';
 
-describe('ApiService', () => {
-  let httpMock: HttpTestingController;
+xdescribe('ApiService', () => {
   let dialogServiceMock = jasmine.createSpyObj<DialogService>("DialogService", Mock.dialogServiceMock);
   let toastServiceMock = jasmine.createSpyObj<ToastService>("ToastService", Mock.toastServiceMock);
 
@@ -30,8 +29,6 @@ describe('ApiService', () => {
         { provide: ToastService, useValue: toastServiceMock }
       ]
     });
-
-    httpMock = TestBed.get(HttpTestingController);
   });
 
   it('should be created', inject([ApiService], (service: ApiService) => {
