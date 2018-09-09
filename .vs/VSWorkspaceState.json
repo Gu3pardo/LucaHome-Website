@@ -1,6 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\documentation",
+    "\\lucahome",
+    "\\lucahome\\src"
   ],
+  "SelectedNode": "\\documentation\\Todo",
   "PreviewInSolutionExplorer": false
 }
